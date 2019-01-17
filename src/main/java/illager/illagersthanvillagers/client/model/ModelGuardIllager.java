@@ -1,5 +1,6 @@
 package illager.illagersthanvillagers.client.model;
 
+import illager.illagersthanvillagers.entity.EntityGuardIllager;
 import net.minecraft.client.renderer.entity.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -107,6 +108,7 @@ public class ModelGuardIllager extends ModelBase {
         this.RightLeg.rotateAngleY = 0.0F;
         this.LeftLeg.rotateAngleY = 0.0F;
         AbstractIllager.IllagerArmPose abstractillager$illagerarmpose = ((AbstractIllager)entityIn).getArmPose();
+        EntityGuardIllager entityGuardIllager = (EntityGuardIllager) entityIn;
         if (abstractillager$illagerarmpose == AbstractIllager.IllagerArmPose.ATTACKING) {
             float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
@@ -115,11 +117,27 @@ public class ModelGuardIllager extends ModelBase {
             this.RightOpenArm.rotateAngleY = 0.15707964F;
             this.LeftOpenArm.rotateAngleY = -0.15707964F;
             if (((EntityLivingBase)entityIn).getPrimaryHand() == EnumHandSide.RIGHT) {
-                this.RightOpenArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
-                this.LeftOpenArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.19F) * 0.5F;
-                this.RightOpenArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
-                this.LeftOpenArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
+                if (entityGuardIllager.isDrinkingPotion()) {
+                    this.RightOpenArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
+                    this.LeftOpenArm.rotateAngleX = -1.0F;
+                    this.LeftOpenArm.rotateAngleZ = -0.6F;
+                    this.RightOpenArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
+                    this.LeftOpenArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
+                } else {
+                    this.RightOpenArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
+                    this.LeftOpenArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.19F) * 0.5F;
+                    this.RightOpenArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
+                    this.LeftOpenArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
+                }
+
             } else {
+                if (entityGuardIllager.isDrinkingPotion()) {
+                    this.RightOpenArm.rotateAngleZ = 0.6F;
+                    this.RightOpenArm.rotateAngleX = 1.0F;
+                    this.LeftOpenArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
+                    this.RightOpenArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
+                    this.LeftOpenArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
+                }
                 this.RightOpenArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.19F) * 0.5F;
                 this.LeftOpenArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
                 this.RightOpenArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
