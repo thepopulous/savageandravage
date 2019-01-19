@@ -3,7 +3,7 @@ package illager.guardillagers;
 import illager.guardillagers.client.IllagerEntityRender;
 import illager.guardillagers.init.IllagerEntityRegistry;
 import illager.guardillagers.init.IllagerItems;
-import illager.guardillagers.init.IllagerSounds;
+import illager.guardillagers.init.IllagerSoundsRegister;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -40,7 +41,8 @@ public class GuardIllagers {
 
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
-
+        GameRegistry.findRegistry(IllagerSoundsRegister.class);
+        GameRegistry.findRegistry(IllagerEntityRegistry.class);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -59,11 +61,6 @@ public class GuardIllagers {
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
 
-    @SubscribeEvent
-    public static void registerSounds(final RegistryEvent.Register<SoundEvent> event) {
-        IForgeRegistry<SoundEvent> registry = event.getRegistry();
-        IllagerSounds.registerSounds(registry);
-    }
 
     @SubscribeEvent
     public void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
@@ -83,7 +80,15 @@ public class GuardIllagers {
     public void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
         IForgeRegistry<EntityType<?>> registry = event.getRegistry();
 
+
         IllagerEntityRegistry.registerEntity(registry);
+    }
+
+    @SubscribeEvent
+    public void onSoundRegistry(final RegistryEvent.Register<SoundEvent> soundEvent) {
+        IForgeRegistry<SoundEvent> registry = soundEvent.getRegistry();
+
+        IllagerSoundsRegister.registerSounds(registry);
     }
 
 }

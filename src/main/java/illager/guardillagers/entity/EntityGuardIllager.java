@@ -1,7 +1,7 @@
 package illager.guardillagers.entity;
 
 import illager.guardillagers.init.IllagerEntityRegistry;
-import illager.guardillagers.init.IllagerSounds;
+import illager.guardillagers.init.IllagerSoundsRegister;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -194,14 +194,14 @@ public class EntityGuardIllager extends AbstractIllager {
         }
     }
     protected SoundEvent getAmbientSound() {
-        return IllagerSounds.GUARDILLAGER_AMBIENT;
+        return IllagerSoundsRegister.GUARDILLAGER_AMBIENT;
     }
 
     protected SoundEvent getDeathSound() {
-        return IllagerSounds.GUARDILLAGER_DIE;
+        return IllagerSoundsRegister.GUARDILLAGER_DIE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return IllagerSounds.GUARDILLAGER_HURT;
+        return IllagerSoundsRegister.GUARDILLAGER_HURT;
     }
 }
