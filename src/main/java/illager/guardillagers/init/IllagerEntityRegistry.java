@@ -9,8 +9,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import static illager.guardillagers.GuardIllagers.MODID;
-
 public class IllagerEntityRegistry extends ForgeRegistryEntry<IllagerEntityRegistry> {
 
     public static final EntityType<EntityGuardIllager> GUARD_ILLAGER = register("guard_ilager", EntityType.Builder.create(EntityGuardIllager.class, EntityGuardIllager::new));
@@ -19,7 +17,7 @@ public class IllagerEntityRegistry extends ForgeRegistryEntry<IllagerEntityRegis
     public static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {
 
         EntityType<T> entitytype = builder.build(id);
-        ResourceLocation name = new ResourceLocation(GuardIllagers.MODID + id);
+        ResourceLocation name = new ResourceLocation(GuardIllagers.MODID + ":" + id);
 
         ForgeRegistries.ENTITIES.getSlaveMap(name, EntityType.class);
 
@@ -27,7 +25,7 @@ public class IllagerEntityRegistry extends ForgeRegistryEntry<IllagerEntityRegis
     }
 
     public static void register(EntityType entity, String name, IForgeRegistry<EntityType<?>> event) {
-        entity.setRegistryName(new ResourceLocation(MODID,name));
+        entity.setRegistryName(new ResourceLocation(GuardIllagers.MODID + ":" + name));
         event.register(entity);
 
     }

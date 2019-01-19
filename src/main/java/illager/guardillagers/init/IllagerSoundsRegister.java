@@ -18,7 +18,7 @@ public class IllagerSoundsRegister extends ForgeRegistryEntry<IllagerSoundsRegis
 
 
     private static SoundEvent createEvent(String soundname) {
-        ResourceLocation name = new ResourceLocation(GuardIllagers.MODID + soundname);
+        ResourceLocation name = new ResourceLocation(GuardIllagers.MODID + ":" + soundname);
 
         ForgeRegistries.SOUND_EVENTS.getSlaveMap(name, SoundEvent.class);
         return new SoundEvent(name).setRegistryName(name);
