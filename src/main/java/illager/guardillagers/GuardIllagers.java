@@ -1,6 +1,7 @@
 package illager.guardillagers;
 
 import illager.guardillagers.client.IllagerEntityRender;
+import illager.guardillagers.event.EntityEventHandler;
 import illager.guardillagers.init.IllagerEntityRegistry;
 import illager.guardillagers.init.IllagerItems;
 import illager.guardillagers.init.IllagerSoundsRegister;
@@ -43,6 +44,7 @@ public class GuardIllagers {
         // some preinit code
         GameRegistry.findRegistry(IllagerSoundsRegister.class);
         GameRegistry.findRegistry(IllagerEntityRegistry.class);
+        MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -56,6 +58,7 @@ public class GuardIllagers {
 
     private void processIMC(final InterModProcessEvent event) {
         // some example code to receive and process InterModComms from other mods
+        EntityEventHandler.addSpawn();
     }
 
 

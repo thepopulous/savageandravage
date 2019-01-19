@@ -5,8 +5,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemSpawnEgg;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Collections;
@@ -33,13 +31,9 @@ public class IllagerItems {
         registry.register(item);
     }
 
+
     public static void registerItems(IForgeRegistry<Item> registry) {
         register(registry, GUARD_ILLAGER_EGG.setRegistryName("guard_illager_egg"));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerModels() {
-
     }
 
 }
