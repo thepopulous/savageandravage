@@ -22,11 +22,11 @@ authors="TeamIllager" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="illagersthanvillagers" #mandatory
+modId="guardillagers" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 version="0.1.0" #mandatory
  # A display name for the mod
-displayName="Illagers Than Villagers" #mandatory
+displayName="GuardIllagers" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 add more illager and villager!

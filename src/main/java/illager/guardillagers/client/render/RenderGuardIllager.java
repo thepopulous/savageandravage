@@ -1,8 +1,8 @@
-package illager.illagersthanvillagers.client.render;
+package illager.guardillagers.client.render;
 
-import illager.illagersthanvillagers.IllagersThanVillagers;
-import illager.illagersthanvillagers.client.model.ModelGuardIllager;
-import illager.illagersthanvillagers.entity.EntityGuardIllager;
+import illager.guardillagers.GuardIllagers;
+import illager.guardillagers.client.model.ModelGuardIllager;
+import illager.guardillagers.entity.EntityGuardIllager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderGuardIllager extends RenderLiving<EntityMob> {
-    private static final ResourceLocation ILLAGER_TEXTURE = new ResourceLocation(IllagersThanVillagers.MODID,"textures/entity/illager/guardillager.png");
+    private static final ResourceLocation ILLAGER_TEXTURE = new ResourceLocation(GuardIllagers.MODID, "textures/entity/illager/guardillager.png");
 
     public RenderGuardIllager(RenderManager renderManagerIn) {
         super(renderManagerIn, new ModelGuardIllager(), 0.5F);

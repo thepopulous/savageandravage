@@ -1,6 +1,6 @@
-package illager.illagersthanvillagers.client.model;
+package illager.guardillagers.client.model;
 
-import illager.illagersthanvillagers.entity.EntityGuardIllager;
+import illager.guardillagers.entity.EntityGuardIllager;
 import net.minecraft.client.renderer.entity.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;

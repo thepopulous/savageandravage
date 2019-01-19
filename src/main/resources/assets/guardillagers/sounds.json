@@ -1,0 +1,23 @@
+{
+  "mob.guardillager.ambient": {
+    "category": "hostile",
+    "sounds": [
+      "guardillagers:mob/guardillager/guardillager_ambient"
+    ],
+    "subtitle": "guardillagers:subtitles.guardillager.ambient"
+  },
+  "mob.guardillager.hurt": {
+    "category": "hostile",
+    "sounds": [
+      "guardillagers:mob/guardillager/guardillager_hurt"
+    ],
+    "subtitle": "guardillagers:subtitles.guardillager.hurt"
+  },
+  "mob.guardillager.die": {
+    "category": "hostile",
+    "sounds": [
+      "guardillagers:mob/guardillager/guardillager_die"
+    ],
+    "subtitle": "guardillagers:subtitles.guardillager.die"
+  }
+}

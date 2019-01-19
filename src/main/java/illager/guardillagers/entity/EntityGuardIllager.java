@@ -1,6 +1,7 @@
-package illager.illagersthanvillagers.entity;
+package illager.guardillagers.entity;
 
-import illager.illagersthanvillagers.init.IllagerEntityRegistry;
+import illager.guardillagers.init.IllagerEntityRegistry;
+import illager.guardillagers.init.IllagerSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -65,7 +66,7 @@ public class EntityGuardIllager extends AbstractIllager {
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)0.35F);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
     }
 
@@ -193,14 +194,14 @@ public class EntityGuardIllager extends AbstractIllager {
         }
     }
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_VINDICATOR_AMBIENT;
+        return IllagerSounds.GUARDILLAGER_AMBIENT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_VINDICATOR_DEATH;
+        return IllagerSounds.GUARDILLAGER_DIE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_VINDICATOR_HURT;
+        return IllagerSounds.GUARDILLAGER_HURT;
     }
 }

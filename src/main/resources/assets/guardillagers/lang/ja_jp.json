@@ -1,0 +1,8 @@
+{
+  //entity
+  "entity.guardillagers.guard_illager.name": "守護者のIllager",
+  //sounds
+  "guardillagers:subtitles.guardillager.ambient": "守護者のIllagerがなにか言う",
+  "guardillagers:subtitles.guardillager.hurt": "守護者のIllagerがダメージを受ける",
+  "guardillagers:subtitles.guardillager.die": "守護者のIllagerが倒れる"
+}
