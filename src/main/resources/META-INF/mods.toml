@@ -16,9 +16,9 @@ loaderVersion="[24,)" #mandatory (24 is current forge version)
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="" #optional
 # A text field displayed in the mod UI
-#credits="" #optional
+credits="TeamIllager" #optional
 # A text field displayed in the mod UI
-authors="TeamIllager" #optional
+authors="bagu_chan" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -29,22 +29,22 @@ version="0.1.0" #mandatory
 displayName="GuardIllagers" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-add more illager and villager!
+Add GuardIllager that comes up to the new project under planning.
+Please look forward to!
 '''
 
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.illagersthanvillagers]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[24,)" #mandatory
+    versionRange="[24.0.86,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
-# Here's another dependency
+
 [[dependencies.illagersthanvillagers]]
     modId="minecraft"
     mandatory=true

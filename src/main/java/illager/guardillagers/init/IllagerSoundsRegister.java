@@ -3,32 +3,27 @@ package illager.guardillagers.init;
 import illager.guardillagers.GuardIllagers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class IllagerSoundsRegister extends ForgeRegistryEntry<IllagerSoundsRegister> {
+    public static final RegistryNamespaced<ResourceLocation, SoundEvent> REGISTRY = new RegistryNamespaced<ResourceLocation, SoundEvent>();
+    public static final SoundEvent GUARDILLAGER_AMBIENT = create("mob.guardillager.ambient");
+    public static final SoundEvent GUARDILLAGER_HURT = create("mob.guardillager.hurt");
+    public static final SoundEvent GUARDILLAGER_DIE = create("mob.guardillager.die");
 
 
-    public static final SoundEvent GUARDILLAGER_AMBIENT = createEvent("mob.guardillager.ambient");
+    private static SoundEvent create(String name) {
 
-    public static final SoundEvent GUARDILLAGER_HURT = createEvent("mob.guardillager.hurt");
+        ResourceLocation id = new ResourceLocation(GuardIllagers.MODID, name);
 
-    public static final SoundEvent GUARDILLAGER_DIE = createEvent("mob.guardillager.die");
-
-
-    private static SoundEvent createEvent(String soundname) {
-        ResourceLocation name = new ResourceLocation(GuardIllagers.MODID + ":" + soundname);
-
-        ForgeRegistries.SOUND_EVENTS.getSlaveMap(name, SoundEvent.class);
-        return new SoundEvent(name).setRegistryName(name);
-
+        return new SoundEvent(id).setRegistryName(id);
     }
 
     public static void registerSounds(IForgeRegistry<SoundEvent> registry) {
         registry.register(GUARDILLAGER_AMBIENT);
         registry.register(GUARDILLAGER_HURT);
         registry.register(GUARDILLAGER_DIE);
-
     }
 }

@@ -5,7 +5,6 @@ import illager.guardillagers.event.EntityEventHandler;
 import illager.guardillagers.init.IllagerEntityRegistry;
 import illager.guardillagers.init.IllagerItems;
 import illager.guardillagers.init.IllagerSoundsRegister;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
@@ -13,7 +12,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -24,7 +22,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 @Mod("guardillagers")
 public class GuardIllagers {
     public static final String MODID = "guardillagers";
-
 
     public GuardIllagers() {
         // Register the setup method for modloading
@@ -42,10 +39,10 @@ public class GuardIllagers {
 
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
-        GameRegistry.findRegistry(IllagerSoundsRegister.class);
-        GameRegistry.findRegistry(IllagerEntityRegistry.class);
+
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
     }
+
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
@@ -61,13 +58,12 @@ public class GuardIllagers {
         EntityEventHandler.addSpawn();
     }
 
-
     // You can use SubscribeEvent and let the Event Bus discover methods to call
-
-
     @SubscribeEvent
-    public void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-        // register a new block here
+    public void onSoundRegistry(final RegistryEvent.Register<SoundEvent> soundEvent) {
+        IForgeRegistry<SoundEvent> registry = soundEvent.getRegistry();
+
+        IllagerSoundsRegister.registerSounds(registry);
     }
 
     @SubscribeEvent
@@ -79,6 +75,7 @@ public class GuardIllagers {
         IllagerItems.registerItems(registry);
     }
 
+
     @SubscribeEvent
     public void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
         IForgeRegistry<EntityType<?>> registry = event.getRegistry();
@@ -87,11 +84,5 @@ public class GuardIllagers {
         IllagerEntityRegistry.registerEntity(registry);
     }
 
-    @SubscribeEvent
-    public void onSoundRegistry(final RegistryEvent.Register<SoundEvent> soundEvent) {
-        IForgeRegistry<SoundEvent> registry = soundEvent.getRegistry();
-
-        IllagerSoundsRegister.registerSounds(registry);
-    }
 
 }
