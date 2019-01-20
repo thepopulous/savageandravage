@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
@@ -47,15 +48,18 @@ public class EntityGuardIllager extends AbstractIllager {
         super(IllagerEntityRegistry.GUARD_ILLAGER, world);
         this.setSize(0.6F, 1.95F);
         this.setDropChance(EntityEquipmentSlot.OFFHAND, 0.4F);
+        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
     }
 
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
+        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(6, new EntityAIWander(this, 0.6D));
+        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, AbstractIllager.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
