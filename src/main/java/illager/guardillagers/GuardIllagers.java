@@ -7,7 +7,9 @@ import illager.guardillagers.init.IllagerItems;
 import illager.guardillagers.init.IllagerSoundsRegister;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +24,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 @Mod("guardillagers")
 public class GuardIllagers {
     public static final String MODID = "guardillagers";
+
+    public static final ResourceLocation LOOT_TABLE = LootTableList.register(new ResourceLocation(GuardIllagers.MODID, "entity/guard_illager"));
 
     public GuardIllagers() {
         // Register the setup method for modloading
@@ -57,6 +61,7 @@ public class GuardIllagers {
         // some example code to receive and process InterModComms from other mods
         EntityEventHandler.addSpawn();
     }
+
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent

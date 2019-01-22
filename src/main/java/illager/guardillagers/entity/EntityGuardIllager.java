@@ -1,5 +1,6 @@
 package illager.guardillagers.entity;
 
+import illager.guardillagers.GuardIllagers;
 import illager.guardillagers.init.IllagerEntityRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -29,7 +30,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -38,9 +38,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class EntityGuardIllager extends AbstractIllager {
+
+
     private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
     private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, 0)).setSaved(false);
     private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_STRONG = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.BOOLEAN);
 
     private int potionUseTimer;
 
@@ -67,8 +70,8 @@ public class EntityGuardIllager extends AbstractIllager {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)0.35F);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
@@ -77,7 +80,9 @@ public class EntityGuardIllager extends AbstractIllager {
     protected void registerData() {
         super.registerData();
         this.getDataManager().register(IS_DRINKING, false);
+        this.getDataManager().register(IS_STRONG, false);
     }
+
 
     public void setDrinkingPotion(boolean drinkingPotion) {
         this.getDataManager().set(IS_DRINKING, drinkingPotion);
@@ -87,12 +92,38 @@ public class EntityGuardIllager extends AbstractIllager {
         return this.getDataManager().get(IS_DRINKING);
     }
 
+    public boolean isStrong() {
+        return this.dataManager.get(IS_STRONG);
+    }
+
+    public void setStrong(boolean strong) {
+        this.dataManager.set(IS_STRONG, strong);
+        if (strong) {
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        } else {
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
+        }
+
+    }
+
+
+    public void writeAdditional(NBTTagCompound compound) {
+        super.writeAdditional(compound);
+        compound.setBoolean("Strong", this.isStrong());
+    }
+
+    public void readAdditional(NBTTagCompound compound) {
+        super.readAdditional(compound);
+        this.setStrong(compound.getBoolean("Strong"));
+    }
+
     public void livingTick() {
         if (!this.world.isRemote) {
             if (this.isDrinkingPotion()) {
                 if (this.potionUseTimer-- <= 0) {
                     this.setDrinkingPotion(false);
-                    ItemStack itemstack = this.getHeldItemMainhand();
+                    ItemStack itemstack = this.getHeldItemOffhand();
                     this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
                     if (itemstack.getItem() == Items.POTION) {
                         List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
@@ -142,8 +173,10 @@ public class EntityGuardIllager extends AbstractIllager {
 
     }
 
+    @Nullable
+    @Override
     protected ResourceLocation getLootTable() {
-        return LootTableList.ENTITIES_VINDICATION_ILLAGER;
+        return GuardIllagers.LOOT_TABLE;
     }
 
     @OnlyIn(Dist.CLIENT)

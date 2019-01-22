@@ -3,6 +3,7 @@
   "entity.guardillagers.guard_illager": "Guard Illager",
   //item
   "item.guardillagers.guard_illager_egg": "GuardIllager SpanwEgg",
+  "item.guardillagers.guard_helm": "Guard's Helm",
   //sounds
   "guardillagers:subtitles.guardillager.ambient": "GuardIllager murmur",
   "guardillagers:subtitles.guardillager.hurt": "GuardIllager hurts",

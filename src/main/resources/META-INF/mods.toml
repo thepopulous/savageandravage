@@ -24,7 +24,7 @@ authors="bagu_chan" #optional
 # The modid of the mod
 modId="guardillagers" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="1.0.0" #mandatory
+version="1.0.1" #mandatory
  # A display name for the mod
 displayName="GuardIllagers" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
@@ -39,7 +39,7 @@ https://i.imgur.com/FQisTCB.png
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[24.0.86,)" #mandatory
+    versionRange="[24.0.84,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
