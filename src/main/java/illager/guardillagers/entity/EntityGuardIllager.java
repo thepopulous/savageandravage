@@ -47,6 +47,28 @@ public class EntityGuardIllager extends AbstractIllager {
 
     private int potionUseTimer;
 
+    public double prevChasingPosX;
+    /**
+     * Previous Y position of the illager's cape
+     */
+    public double prevChasingPosY;
+    /**
+     * Previous Z position of the illager's cape
+     */
+    public double prevChasingPosZ;
+    /**
+     * Current X position of the illager's cape
+     */
+    public double chasingPosX;
+    /**
+     * Current Y position of the illager's cape
+     */
+    public double chasingPosY;
+    /**
+     * Current Z position of the illager's cape
+     */
+    public double chasingPosZ;
+
     public EntityGuardIllager(World world) {
         super(IllagerEntityRegistry.GUARD_ILLAGER, world);
         this.setSize(0.6F, 1.95F);
@@ -158,6 +180,54 @@ public class EntityGuardIllager extends AbstractIllager {
         }
 
         super.livingTick();
+    }
+
+    public void tick() {
+        super.tick();
+        this.updateCape();
+    }
+
+    private void updateCape() {
+        this.prevChasingPosX = this.chasingPosX;
+        this.prevChasingPosY = this.chasingPosY;
+        this.prevChasingPosZ = this.chasingPosZ;
+        double d0 = this.posX - this.chasingPosX;
+        double d1 = this.posY - this.chasingPosY;
+        double d2 = this.posZ - this.chasingPosZ;
+        double d3 = 10.0D;
+        if (d0 > 10.0D) {
+            this.chasingPosX = this.posX;
+            this.prevChasingPosX = this.chasingPosX;
+        }
+
+        if (d2 > 10.0D) {
+            this.chasingPosZ = this.posZ;
+            this.prevChasingPosZ = this.chasingPosZ;
+        }
+
+        if (d1 > 10.0D) {
+            this.chasingPosY = this.posY;
+            this.prevChasingPosY = this.chasingPosY;
+        }
+
+        if (d0 < -10.0D) {
+            this.chasingPosX = this.posX;
+            this.prevChasingPosX = this.chasingPosX;
+        }
+
+        if (d2 < -10.0D) {
+            this.chasingPosZ = this.posZ;
+            this.prevChasingPosZ = this.chasingPosZ;
+        }
+
+        if (d1 < -10.0D) {
+            this.chasingPosY = this.posY;
+            this.prevChasingPosY = this.chasingPosY;
+        }
+
+        this.chasingPosX += d0 * 0.25D;
+        this.chasingPosZ += d2 * 0.25D;
+        this.chasingPosY += d1 * 0.25D;
     }
 
     public void setRevengeTarget(@Nullable EntityLivingBase livingBase) {
