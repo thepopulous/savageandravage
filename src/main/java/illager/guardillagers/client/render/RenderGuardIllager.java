@@ -2,6 +2,7 @@ package illager.guardillagers.client.render;
 
 import illager.guardillagers.GuardIllagers;
 import illager.guardillagers.client.model.ModelGuardIllager;
+import illager.guardillagers.client.render.layer.LayerHeldItemGuard;
 import illager.guardillagers.entity.EntityGuardIllager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -32,6 +33,11 @@ public class RenderGuardIllager extends RenderLiving<EntityMob> {
                 ((ModelGuardIllager)this.livingEntityRenderer.getMainModel()).getArm(p_191361_1_).postRender(0.0625F);
             }
         });
+        this.addLayer(new LayerHeldItemGuard(this));
+    }
+
+    public ModelGuardIllager getMainModel() {
+        return (ModelGuardIllager) super.getMainModel();
     }
 
     /**

@@ -179,9 +179,10 @@ public class ModelGuardIllager extends ModelBase {
         return p_191216_1_ == EnumHandSide.LEFT ? this.LeftOpenArm : this.RightOpenArm;
     }
 
-    public ModelRenderer func_205062_a() {
-        return this.HatFlap;
+    public ModelRenderer crossHand() {
+        return this.MiddleClosedArm;
     }
+
 
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
