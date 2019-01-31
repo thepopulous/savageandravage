@@ -2,6 +2,7 @@ package illager.guardillagers.entity;
 
 import illager.guardillagers.GuardIllagers;
 import illager.guardillagers.init.IllagerEntityRegistry;
+import illager.guardillagers.init.IllagerSoundsRegister;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -86,8 +87,9 @@ public class EntityGuardIllager extends AbstractIllager {
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, AbstractIllager.class));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
     }
 
     protected void registerAttributes() {
@@ -300,15 +302,23 @@ public class EntityGuardIllager extends AbstractIllager {
             return false;
         }
     }
+
+    @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_VINDICATOR_AMBIENT;
+        if (this.isAggressive()) {
+            return IllagerSoundsRegister.GUARDILLAGER_ANGRY;
+        } else {
+            return IllagerSoundsRegister.GUARDILLAGER_AMBIENT;
+        }
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_VINDICATOR_DEATH;
+        return IllagerSoundsRegister.GUARDILLAGER_DIE;
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_VINDICATOR_HURT;
+        return IllagerSoundsRegister.GUARDILLAGER_HURT;
     }
 }

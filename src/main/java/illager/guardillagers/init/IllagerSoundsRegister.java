@@ -1,15 +1,23 @@
 package illager.guardillagers.init;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import illager.guardillagers.GuardIllagers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.registry.RegistryNamespaced;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class IllagerSoundsRegister extends ForgeRegistryEntry<IllagerSoundsRegister> {
-    public static final RegistryNamespaced<ResourceLocation, SoundEvent> REGISTRY = new RegistryNamespaced<ResourceLocation, SoundEvent>();
+import java.util.List;
+
+@Mod.EventBusSubscriber(modid = GuardIllagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(GuardIllagers.MODID)
+public class IllagerSoundsRegister {
+    private static List<SoundEvent> sounds = Lists.newArrayList();
     public static final SoundEvent GUARDILLAGER_AMBIENT = create("mob.guardillager.ambient");
+    public static final SoundEvent GUARDILLAGER_ANGRY = create("mob.guardillager.angry");
     public static final SoundEvent GUARDILLAGER_HURT = create("mob.guardillager.hurt");
     public static final SoundEvent GUARDILLAGER_DIE = create("mob.guardillager.die");
 
@@ -17,13 +25,22 @@ public class IllagerSoundsRegister extends ForgeRegistryEntry<IllagerSoundsRegis
     private static SoundEvent create(String name) {
 
         ResourceLocation id = new ResourceLocation(GuardIllagers.MODID, name);
+        SoundEvent sound = new SoundEvent(id);
 
-        return new SoundEvent(id).setRegistryName(id);
+        sound.setRegistryName(id);
+
+        sounds.add(sound);
+        return sound;
     }
 
-    public static void registerSounds(IForgeRegistry<SoundEvent> registry) {
-        registry.register(GUARDILLAGER_AMBIENT);
-        registry.register(GUARDILLAGER_HURT);
-        registry.register(GUARDILLAGER_DIE);
+    @SubscribeEvent
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> registry) {
+        for (SoundEvent sound : sounds) {
+
+            Preconditions.checkNotNull(sound.getRegistryName(), "registryName");
+
+            registry.getRegistry().register(sound);
+
+        }
     }
 }
