@@ -116,7 +116,7 @@ public class EntityGuardIllager extends AbstractIllager {
         return this.getDataManager().get(IS_DRINKING);
     }
 
-    public int getAgeInTicks() {
+    public int getGuardLevel() {
 
         return this.dataManager.get(GUARD_LEVEL).intValue();
 
@@ -130,12 +130,16 @@ public class EntityGuardIllager extends AbstractIllager {
             this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D + level);
             this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7.0D);
         }
+
+        if (level == 2) {
+            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.368F);
+        }
     }
 
 
     public void writeAdditional(NBTTagCompound compound) {
         super.writeAdditional(compound);
-        compound.setInt("GuardLevel", this.getAgeInTicks());
+        compound.setInt("GuardLevel", this.getGuardLevel());
     }
 
     public void readAdditional(NBTTagCompound compound) {
@@ -145,39 +149,42 @@ public class EntityGuardIllager extends AbstractIllager {
 
     public void livingTick() {
         if (!this.world.isRemote) {
-            if (this.isDrinkingPotion()) {
-                if (this.potionUseTimer-- <= 0) {
-                    this.setDrinkingPotion(false);
-                    ItemStack itemstack = this.getHeldItemOffhand();
-                    this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                    if (itemstack.getItem() == Items.POTION) {
-                        List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
-                        if (list != null) {
-                            for (PotionEffect potioneffect : list) {
-                                this.addPotionEffect(new PotionEffect(potioneffect));
+            if (this.getGuardLevel() >= 3) {
+
+                if (this.isDrinkingPotion()) {
+                    if (this.potionUseTimer-- <= 0) {
+                        this.setDrinkingPotion(false);
+                        ItemStack itemstack = this.getHeldItemOffhand();
+                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                        if (itemstack.getItem() == Items.POTION) {
+                            List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
+                            if (list != null) {
+                                for (PotionEffect potioneffect : list) {
+                                    this.addPotionEffect(new PotionEffect(potioneffect));
+                                }
                             }
                         }
+
+                        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
+                    }
+                } else {
+                    PotionType potiontype = null;
+
+                    if (this.rand.nextFloat() < 0.004F && this.getHealth() < this.getMaxHealth()) {
+                        potiontype = PotionTypes.HEALING;
+                    } else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(MobEffects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
+                        potiontype = PotionTypes.SWIFTNESS;
                     }
 
-                    this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
-                }
-            } else {
-                PotionType potiontype = null;
-
-                if (this.rand.nextFloat() < 0.004F && this.getHealth() < this.getMaxHealth()) {
-                    potiontype = PotionTypes.HEALING;
-                } else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(MobEffects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
-                    potiontype = PotionTypes.SWIFTNESS;
-                }
-
-                if (potiontype != null) {
-                    this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
-                    this.potionUseTimer = this.getHeldItemOffhand().getUseDuration();
-                    this.setDrinkingPotion(true);
-                    this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
-                    IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-                    iattributeinstance.removeModifier(MODIFIER);
-                    iattributeinstance.applyModifier(MODIFIER);
+                    if (potiontype != null) {
+                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
+                        this.potionUseTimer = this.getHeldItemOffhand().getUseDuration();
+                        this.setDrinkingPotion(true);
+                        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+                        IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+                        iattributeinstance.removeModifier(MODIFIER);
+                        iattributeinstance.applyModifier(MODIFIER);
+                    }
                 }
             }
         }
@@ -293,6 +300,9 @@ public class EntityGuardIllager extends AbstractIllager {
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        if (getGuardLevel() >= 3) {
+            this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+        }
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
     }
 
