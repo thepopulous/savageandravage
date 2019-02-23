@@ -44,7 +44,7 @@ public class EntityGuardIllager extends AbstractIllager {
     private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
     private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, 0)).setSaved(false);
     private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_STRONG = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.VARINT);
 
     private int potionUseTimer;
 
@@ -96,7 +96,7 @@ public class EntityGuardIllager extends AbstractIllager {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
         this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
     }
@@ -104,7 +104,7 @@ public class EntityGuardIllager extends AbstractIllager {
     protected void registerData() {
         super.registerData();
         this.getDataManager().register(IS_DRINKING, false);
-        this.getDataManager().register(IS_STRONG, false);
+        this.getDataManager().register(GUARD_LEVEL, 1);
     }
 
 
@@ -116,30 +116,31 @@ public class EntityGuardIllager extends AbstractIllager {
         return this.getDataManager().get(IS_DRINKING);
     }
 
-    public boolean isStrong() {
-        return this.dataManager.get(IS_STRONG);
+    public int getAgeInTicks() {
+
+        return this.dataManager.get(GUARD_LEVEL).intValue();
+
     }
 
-    public void setStrong(boolean strong) {
-        this.dataManager.set(IS_STRONG, strong);
-        if (strong) {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-        } else {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
+    public void setGuardLevel(int level) {
+        this.dataManager.set(GUARD_LEVEL, level);
+        if (level > 0) {
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(23.0D + level * 4);
+            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D + level);
+            this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D + level);
+            this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7.0D);
         }
-
     }
 
 
     public void writeAdditional(NBTTagCompound compound) {
         super.writeAdditional(compound);
-        compound.setBoolean("Strong", this.isStrong());
+        compound.setInt("GuardLevel", this.getAgeInTicks());
     }
 
     public void readAdditional(NBTTagCompound compound) {
         super.readAdditional(compound);
-        this.setStrong(compound.getBoolean("Strong"));
+        this.setGuardLevel(compound.getInt("GuardLevel"));
     }
 
     public void livingTick() {
@@ -243,6 +244,16 @@ public class EntityGuardIllager extends AbstractIllager {
             }
         }
 
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else if (source.isProjectile()) {
+            return super.attackEntityFrom(source, amount * 0.95F);
+        } else {
+            return super.attackEntityFrom(source, amount);
+        }
     }
 
     @Nullable
