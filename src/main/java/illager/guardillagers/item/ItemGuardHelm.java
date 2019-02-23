@@ -22,8 +22,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemGuardHelm extends ItemArmor {
     protected static final ResourceLocation HAT_TEX = new ResourceLocation(GuardIllagers.MODID, "textures/overlay/guard_perspective.png");
 
-    public ItemGuardHelm(IArmorMaterial materialIn, EntityEquipmentSlot slots, Builder builder) {
-        super(materialIn, slots, builder);
+    public ItemGuardHelm(IArmorMaterial materialIn, EntityEquipmentSlot slots, Properties properties) {
+        super(materialIn, slots, properties);
     }
 
 

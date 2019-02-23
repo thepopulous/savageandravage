@@ -24,8 +24,8 @@ public class IllagerItems {
     private static final NonNullList<Item> ITEMS = NonNullList.create();
 
 
-    public static final Item GUARD_ILLAGER_EGG = new ItemSpawnEgg(IllagerEntityRegistry.GUARD_ILLAGER, 9804699, 0x879C9B, (new Item.Builder()).group(ItemGroup.MISC));
-    public static final Item GUARD_HELM = new ItemGuardHelm(IllagersArmorMaterial.GUARD_HELM, EntityEquipmentSlot.HEAD, (new Item.Builder()).group(ItemGroup.COMBAT));
+    public static final Item GUARD_ILLAGER_EGG = new ItemSpawnEgg(IllagerEntityRegistry.GUARD_ILLAGER, 9804699, 0x879C9B, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item GUARD_HELM = new ItemGuardHelm(IllagersArmorMaterial.GUARD_HELM, EntityEquipmentSlot.HEAD, (new Item.Properties()).group(ItemGroup.COMBAT));
 
     public static List<Item> getItems() {
         return Collections.unmodifiableList(ITEMS);
