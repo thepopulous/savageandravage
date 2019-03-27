@@ -3,6 +3,8 @@ package illager.guardillagers.entity;
 import illager.guardillagers.GuardIllagers;
 import illager.guardillagers.init.IllagerEntityRegistry;
 import illager.guardillagers.init.IllagerSoundsRegister;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -11,10 +13,7 @@ import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +28,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,27 +50,8 @@ public class EntityGuardIllager extends AbstractIllager {
 
     private int potionUseTimer;
 
-    public double prevChasingPosX;
-    /**
-     * Previous Y position of the illager's cape
-     */
-    public double prevChasingPosY;
-    /**
-     * Previous Z position of the illager's cape
-     */
-    public double prevChasingPosZ;
-    /**
-     * Current X position of the illager's cape
-     */
-    public double chasingPosX;
-    /**
-     * Current Y position of the illager's cape
-     */
-    public double chasingPosY;
-    /**
-     * Current Z position of the illager's cape
-     */
-    public double chasingPosZ;
+    public double prevCapeX, prevCapeY, prevCapeZ;
+    public double capeX, capeY, capeZ;
 
     public EntityGuardIllager(World world) {
         super(IllagerEntityRegistry.GUARD_ILLAGER, world);
@@ -94,6 +77,7 @@ public class EntityGuardIllager extends AbstractIllager {
 
     protected void registerAttributes() {
         super.registerAttributes();
+
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
@@ -102,9 +86,13 @@ public class EntityGuardIllager extends AbstractIllager {
     }
 
     protected void registerData() {
+
         super.registerData();
+
         this.getDataManager().register(IS_DRINKING, false);
+
         this.getDataManager().register(GUARD_LEVEL, 1);
+
     }
 
 
@@ -136,14 +124,16 @@ public class EntityGuardIllager extends AbstractIllager {
         }
     }
 
-
     public void writeAdditional(NBTTagCompound compound) {
         super.writeAdditional(compound);
+
         compound.setInt("GuardLevel", this.getGuardLevel());
     }
 
+
     public void readAdditional(NBTTagCompound compound) {
         super.readAdditional(compound);
+
         this.setGuardLevel(compound.getInt("GuardLevel"));
     }
 
@@ -155,7 +145,7 @@ public class EntityGuardIllager extends AbstractIllager {
                     if (this.potionUseTimer-- <= 0) {
                         this.setDrinkingPotion(false);
                         ItemStack itemstack = this.getHeldItemOffhand();
-                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
                         if (itemstack.getItem() == Items.POTION) {
                             List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
                             if (list != null) {
@@ -188,56 +178,29 @@ public class EntityGuardIllager extends AbstractIllager {
                 }
             }
         }
-
         super.livingTick();
     }
 
+    @Override
     public void tick() {
         super.tick();
         this.updateCape();
     }
 
+
     private void updateCape() {
-        this.prevChasingPosX = this.chasingPosX;
-        this.prevChasingPosY = this.chasingPosY;
-        this.prevChasingPosZ = this.chasingPosZ;
-        double d0 = this.posX - this.chasingPosX;
-        double d1 = this.posY - this.chasingPosY;
-        double d2 = this.posZ - this.chasingPosZ;
-        double d3 = 10.0D;
-        if (d0 > 10.0D) {
-            this.chasingPosX = this.posX;
-            this.prevChasingPosX = this.chasingPosX;
-        }
+        double elasticity = 0.25;
+        double gravity = -0.1;
 
-        if (d2 > 10.0D) {
-            this.chasingPosZ = this.posZ;
-            this.prevChasingPosZ = this.chasingPosZ;
-        }
+        this.prevCapeX = this.capeX;
+        this.prevCapeY = this.capeY;
+        this.prevCapeZ = this.capeZ;
 
-        if (d1 > 10.0D) {
-            this.chasingPosY = this.posY;
-            this.prevChasingPosY = this.chasingPosY;
-        }
+        this.capeY += gravity;
 
-        if (d0 < -10.0D) {
-            this.chasingPosX = this.posX;
-            this.prevChasingPosX = this.chasingPosX;
-        }
-
-        if (d2 < -10.0D) {
-            this.chasingPosZ = this.posZ;
-            this.prevChasingPosZ = this.chasingPosZ;
-        }
-
-        if (d1 < -10.0D) {
-            this.chasingPosY = this.posY;
-            this.prevChasingPosY = this.chasingPosY;
-        }
-
-        this.chasingPosX += d0 * 0.25D;
-        this.chasingPosZ += d2 * 0.25D;
-        this.chasingPosY += d1 * 0.25D;
+        this.capeX += (this.posX - this.capeX) * elasticity;
+        this.capeY += (this.posY - this.capeY) * elasticity;
+        this.capeZ += (this.posZ - this.capeZ) * elasticity;
     }
 
     public void setRevengeTarget(@Nullable EntityLivingBase livingBase) {
@@ -311,6 +274,15 @@ public class EntityGuardIllager extends AbstractIllager {
         this.setAggressive(this.getAttackTarget() != null);
     }
 
+    @Override
+    public boolean canSpawn(IWorld p_205020_1_, boolean p_205020_2_) {
+        int i = MathHelper.floor(this.posX);
+        int j = MathHelper.floor(this.getBoundingBox().minY);
+        int k = MathHelper.floor(this.posZ);
+        BlockPos blockpos = new BlockPos(i, j, k);
+        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && !this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
+    }
+
     /**
      * Returns whether this Entity is on the same team as the given Entity.
      */
@@ -341,5 +313,21 @@ public class EntityGuardIllager extends AbstractIllager {
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return IllagerSoundsRegister.GUARDILLAGER_HURT;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, IBlockState blockState) {
+
+        SoundType soundtype = blockState.getSoundType(world, pos, this);
+
+        SoundEvent soundEvent = IllagerSoundsRegister.GUARDILLAGER_STEP;
+
+        if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW) {
+            soundtype = Blocks.SNOW.getSoundType();
+            this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+        } else if (!blockState.getMaterial().isLiquid()) {
+            this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            this.playSound(soundEvent, 0.2F, soundtype.getPitch());
+        }
     }
 }

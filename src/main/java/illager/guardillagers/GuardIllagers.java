@@ -50,7 +50,6 @@ public class GuardIllagers {
 
     private void processIMC(final InterModProcessEvent event) {
         // some example code to receive and process InterModComms from other mods
-        EntityEventHandler.addSpawn();
     }
 
 
