@@ -1,78 +1,100 @@
 package illager.guardillagers.entity;
 
+import com.google.common.collect.Maps;
 import illager.guardillagers.GuardIllagers;
-import illager.guardillagers.init.IllagerEntityRegistry;
 import illager.guardillagers.init.IllagerSoundsRegister;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.monster.AbstractIllager;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.OpenDoorGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-public class EntityGuardIllager extends AbstractIllager {
+public class GuardIllagerEntity extends AbstractIllagerEntity {
 
 
     private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-    private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, 0)).setSaved(false);
-    private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(EntityGuardIllager.class, DataSerializers.VARINT);
+	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
+	private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.VARINT);
 
     private int potionUseTimer;
 
     public double prevCapeX, prevCapeY, prevCapeZ;
     public double capeX, capeY, capeZ;
 
-    public EntityGuardIllager(World world) {
-        super(IllagerEntityRegistry.GUARD_ILLAGER, world);
-        this.setSize(0.6F, 1.95F);
-        this.setDropChance(EntityEquipmentSlot.OFFHAND, 0.4F);
-        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
+	public GuardIllagerEntity(EntityType<? extends GuardIllagerEntity> type, World worldIn) {
+		super(type, worldIn);
+		this.setDropChance(EquipmentSlotType.OFFHAND, 0.4F);
+		((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
+		this.experienceValue = 6;
     }
 
-    protected void initEntityAI() {
-        super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, AbstractIllager.class));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
+	@Override
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
+		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
+		this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
+		this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
+		this.targetSelector.addGoal(2, (new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true)).setUnseenMemoryTicks(300));
+		this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false)).setUnseenMemoryTicks(300));
+		this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, false)).setUnseenMemoryTicks(300));
     }
 
     protected void registerAttributes() {
@@ -94,7 +116,6 @@ public class EntityGuardIllager extends AbstractIllager {
         this.getDataManager().register(GUARD_LEVEL, 1);
 
     }
-
 
     public void setDrinkingPotion(boolean drinkingPotion) {
         this.getDataManager().set(IS_DRINKING, drinkingPotion);
@@ -124,14 +145,14 @@ public class EntityGuardIllager extends AbstractIllager {
         }
     }
 
-    public void writeAdditional(NBTTagCompound compound) {
+	public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
 
-        compound.setInt("GuardLevel", this.getGuardLevel());
+		compound.putInt("GuardLevel", this.getGuardLevel());
     }
 
 
-    public void readAdditional(NBTTagCompound compound) {
+	public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
 
         this.setGuardLevel(compound.getInt("GuardLevel"));
@@ -145,12 +166,12 @@ public class EntityGuardIllager extends AbstractIllager {
                     if (this.potionUseTimer-- <= 0) {
                         this.setDrinkingPotion(false);
                         ItemStack itemstack = this.getHeldItemOffhand();
-                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+			    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.SHIELD));
                         if (itemstack.getItem() == Items.POTION) {
-                            List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
+				List<EffectInstance> list = PotionUtils.getEffectsFromStack(itemstack);
                             if (list != null) {
-                                for (PotionEffect potioneffect : list) {
-                                    this.addPotionEffect(new PotionEffect(potioneffect));
+				    for (EffectInstance potioneffect : list) {
+					    this.addPotionEffect(new EffectInstance(potioneffect));
                                 }
                             }
                         }
@@ -158,16 +179,16 @@ public class EntityGuardIllager extends AbstractIllager {
                         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
                     }
                 } else {
-                    PotionType potiontype = null;
+			Potion potiontype = null;
 
                     if (this.rand.nextFloat() < 0.004F && this.getHealth() < this.getMaxHealth()) {
-                        potiontype = PotionTypes.HEALING;
-                    } else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(MobEffects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
-                        potiontype = PotionTypes.SWIFTNESS;
+			    potiontype = Potions.HEALING;
+		    } else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(Effects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
+			    potiontype = Potions.SWIFTNESS;
                     }
 
                     if (potiontype != null) {
-                        this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
+			    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
                         this.potionUseTimer = this.getHeldItemOffhand().getUseDuration();
                         this.setDrinkingPotion(true);
                         this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
@@ -203,12 +224,12 @@ public class EntityGuardIllager extends AbstractIllager {
         this.capeZ += (this.posZ - this.capeZ) * elasticity;
     }
 
-    public void setRevengeTarget(@Nullable EntityLivingBase livingBase) {
+	public void setRevengeTarget(@Nullable LivingEntity livingBase) {
         super.setRevengeTarget(livingBase);
         if (livingBase != null) {
-            if (livingBase instanceof EntityPlayer) {
+		if (livingBase instanceof PlayerEntity) {
 
-                if (!((EntityPlayer) livingBase).isCreative() && this.isAlive()) {
+			if (!((PlayerEntity) livingBase).isCreative() && this.isAlive()) {
                     this.world.setEntityState(this, (byte) 13);
                 }
             }
@@ -233,17 +254,8 @@ public class EntityGuardIllager extends AbstractIllager {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isAggressive() {
-        return this.isAggressive(1);
-    }
-
-    public void setAggressive(boolean p_190636_1_) {
-        this.setAggressive(1, p_190636_1_);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public AbstractIllager.IllagerArmPose getArmPose() {
-        return this.isAggressive() ? AbstractIllager.IllagerArmPose.ATTACKING : AbstractIllager.IllagerArmPose.CROSSED;
+    public AbstractIllagerEntity.ArmPose getArmPose() {
+	    return this.isAggressive() ? AbstractIllagerEntity.ArmPose.ATTACKING : AbstractIllagerEntity.ArmPose.CROSSED;
     }
 
 
@@ -252,35 +264,90 @@ public class EntityGuardIllager extends AbstractIllager {
     }
 
     @Nullable
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData entityLivingData, @Nullable NBTTagCompound itemNbt) {
-        IEntityLivingData ientitylivingdata = super.onInitialSpawn(difficulty, entityLivingData, itemNbt);
-        this.setEquipmentBasedOnDifficulty(difficulty);
-        this.setEnchantmentBasedOnDifficulty(difficulty);
+    @Override
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+	    ILivingEntityData ientitylivingdata = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+	    this.setEquipmentBasedOnDifficulty(difficultyIn);
+	    this.setEnchantmentBasedOnDifficulty(difficultyIn);
         return ientitylivingdata;
     }
+
+	@Override
+	public SoundEvent getRaidLossSound() {
+		return SoundEvents.ENTITY_VINDICATOR_CELEBRATE;
+	}
 
     /**
      * Gives armor or weapon for entity based on given DifficultyInstance
      */
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         if (getGuardLevel() >= 3) {
-            this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+		this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+	}
+	    this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
+    }
+
+	@Override
+	public void func_213660_a(int p_213660_1_, boolean p_213660_2_) {
+		ItemStack itemstack = new ItemStack(Items.IRON_SWORD);
+		Raid raid = this.getRaid();
+		int i = 1;
+		if (p_213660_1_ > raid.getWaves(Difficulty.NORMAL)) {
+			i = 2;
+		}
+
+		boolean flag = this.rand.nextFloat() <= raid.func_221308_w();
+		boolean flag2 = this.rand.nextFloat() <= 0.25;
+		boolean flag3 = this.rand.nextFloat() <= 0.15;
+		if (flag) {
+			Map<Enchantment, Integer> map = Maps.newHashMap();
+			map.put(Enchantments.SHARPNESS, i);
+			EnchantmentHelper.setEnchantments(map, itemstack);
+			if (flag2) {
+				ItemStack stack2 = getIllagerShield();
+				Map<Enchantment, Integer> map2 = Maps.newHashMap();
+				map2.put(Enchantments.UNBREAKING, i);
+				EnchantmentHelper.setEnchantments(map2, stack2);
+
+				this.setItemStackToSlot(EquipmentSlotType.OFFHAND, stack2);
+			}
+
         }
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, itemstack);
+	}
+
+	public static ItemStack getIllagerShield() {
+		ItemStack banner = Raid.createIllagerBanner();
+
+		ItemStack shield = new ItemStack(Items.SHIELD, 1);
+
+		applyBanner(banner, shield);
+
+		return shield;
+	}
+
+
+	private static void applyBanner(ItemStack banner, ItemStack shield) {
+		CompoundNBT bannerNBT = banner.getChildTag("BlockEntityTag");
+
+		CompoundNBT shieldNBT = bannerNBT == null ? new CompoundNBT() : bannerNBT.copy();
+
+		shield.setTagInfo("BlockEntityTag", shieldNBT);
     }
 
     protected void updateAITasks() {
         super.updateAITasks();
-        this.setAggressive(this.getAttackTarget() != null);
     }
 
+
     @Override
-    public boolean canSpawn(IWorld p_205020_1_, boolean p_205020_2_) {
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         int i = MathHelper.floor(this.posX);
         int j = MathHelper.floor(this.getBoundingBox().minY);
         int k = MathHelper.floor(this.posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
-        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && !this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
+	    return this.world.getDifficulty() != Difficulty.PEACEFUL && !this.world.canBlockSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
     }
 
     /**
@@ -289,7 +356,7 @@ public class EntityGuardIllager extends AbstractIllager {
     public boolean isOnSameTeam(Entity entityIn) {
         if (super.isOnSameTeam(entityIn)) {
             return true;
-        } else if (entityIn instanceof EntityLivingBase && ((EntityLivingBase) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
+	} else if (entityIn instanceof LivingEntity && ((LivingEntity) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
             return this.getTeam() == null && entityIn.getTeam() == null;
         } else {
             return false;
@@ -316,15 +383,15 @@ public class EntityGuardIllager extends AbstractIllager {
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, IBlockState blockState) {
+    protected void playStepSound(BlockPos pos, BlockState blockState) {
 
         SoundType soundtype = blockState.getSoundType(world, pos, this);
 
         SoundEvent soundEvent = IllagerSoundsRegister.GUARDILLAGER_STEP;
 
-        if (this.world.getBlockState(pos.up()).getBlock() == Blocks.SNOW) {
-            soundtype = Blocks.SNOW.getSoundType();
+	    if (soundtype == SoundType.SNOW) {
             this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+		    this.playSound(soundEvent, 0.2F, soundtype.getPitch());
         } else if (!blockState.getMaterial().isLiquid()) {
             this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
             this.playSound(soundEvent, 0.2F, soundtype.getPitch());

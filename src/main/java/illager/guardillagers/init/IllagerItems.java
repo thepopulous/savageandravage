@@ -3,11 +3,11 @@ package illager.guardillagers.init;
 import com.google.common.base.Preconditions;
 import illager.guardillagers.GuardIllagers;
 import illager.guardillagers.item.ItemGuardHelm;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemSpawnEgg;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,8 +24,8 @@ public class IllagerItems {
     private static final NonNullList<Item> ITEMS = NonNullList.create();
 
 
-    public static final Item GUARD_ILLAGER_EGG = new ItemSpawnEgg(IllagerEntityRegistry.GUARD_ILLAGER, 9804699, 0x879C9B, (new Item.Properties()).group(ItemGroup.MISC));
-    public static final Item GUARD_HELM = new ItemGuardHelm(IllagersArmorMaterial.GUARD_HELM, EntityEquipmentSlot.HEAD, (new Item.Properties()).group(ItemGroup.COMBAT));
+	public static final Item GUARD_ILLAGER_EGG = new SpawnEggItem(IllagerEntityRegistry.GUARD_ILLAGER, 9804699, 0x879C9B, (new Item.Properties()).group(ItemGroup.MISC));
+	public static final Item GUARD_HELM = new ItemGuardHelm(IllagersArmorMaterial.GUARD_HELM, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.COMBAT));
 
     public static List<Item> getItems() {
         return Collections.unmodifiableList(ITEMS);
@@ -35,8 +35,8 @@ public class IllagerItems {
     public static void register(RegistryEvent.Register<Item> registry, Item item, String id) {
         ITEMS.add(item);
 
-        if (item instanceof ItemBlock && item.getRegistryName() == null) {
-            item.setRegistryName(((ItemBlock) item).getBlock().getRegistryName());
+	    if (item instanceof BlockItem && item.getRegistryName() == null) {
+		    item.setRegistryName(((BlockItem) item).getBlock().getRegistryName());
         }
 
         item.setRegistryName(new ResourceLocation(GuardIllagers.MODID, id));

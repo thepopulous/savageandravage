@@ -1,44 +1,46 @@
 package illager.guardillagers.client.render.layer;
 
-import illager.guardillagers.client.render.RenderGuardIllager;
-import illager.guardillagers.entity.EntityGuardIllager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import illager.guardillagers.client.model.GuardIllagerModel;
+import illager.guardillagers.entity.GuardIllagerEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.entity.monster.AbstractIllager;
-import net.minecraft.init.Items;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.item.Items;
 
-public class LayerHeldItemGuard implements LayerRenderer<EntityGuardIllager> {
-    private final RenderGuardIllager guardRenderer;
+public class HeldItemGuardLayer<T extends GuardIllagerEntity> extends LayerRenderer<T, GuardIllagerModel<T>> {
+	private final GuardIllagerModel guardModel;
 
-    public LayerHeldItemGuard(RenderGuardIllager guardRendererIn) {
-        this.guardRenderer = guardRendererIn;
+	public HeldItemGuardLayer(IEntityRenderer<T, GuardIllagerModel<T>> p_i50916_1_) {
+		super(p_i50916_1_);
+		this.guardModel = p_i50916_1_.getEntityModel();
     }
 
-    public void render(EntityGuardIllager entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(GuardIllagerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         ItemStack itemstack = entitylivingbaseIn.getHeldItemOffhand();
-        AbstractIllager.IllagerArmPose abstractillager$illagerarmpose = ((AbstractIllager) entitylivingbaseIn).getArmPose();
-        if (abstractillager$illagerarmpose != AbstractIllager.IllagerArmPose.ATTACKING) {
+		AbstractIllagerEntity.ArmPose abstractillager$illagerarmpose = ((AbstractIllagerEntity) entitylivingbaseIn).getArmPose();
+		if (abstractillager$illagerarmpose != AbstractIllagerEntity.ArmPose.ATTACKING) {
             if (!itemstack.isEmpty()) {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 GlStateManager.pushMatrix();
-                if (this.guardRenderer.getMainModel().isChild) {
+		    if (this.guardModel.isChild) {
                     GlStateManager.translatef(0.0F, 0.625F, 0.0F);
                     GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
                     float f = 0.5F;
                     GlStateManager.scalef(0.5F, 0.5F, 0.5F);
                 }
 
-                this.guardRenderer.getMainModel().crossHand().postRender(0.0625F);
+		    this.guardModel.crossHand().postRender(0.0625F);
                 GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
                 Item item = itemstack.getItem();
                 Minecraft minecraft = Minecraft.getInstance();
-                if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == EnumBlockRenderType.ENTITYBLOCK_ANIMATED) {
+		    if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == BlockRenderType.ENTITYBLOCK_ANIMATED) {
                     GlStateManager.translatef(0.0F, -0.2875F, -0.46F);
                     GlStateManager.rotatef(30.0F, 1.0F, 0.0F, 0.0F);
                     GlStateManager.rotatef(-5.0F, 0.0F, 1.0F, 0.0F);

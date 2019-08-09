@@ -1,43 +1,47 @@
 package illager.guardillagers.item;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import illager.guardillagers.GuardIllagers;
-import illager.guardillagers.client.model.ModelGuardHat;
+import illager.guardillagers.client.model.GuardHatModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.model.ModelBiped;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemGuardHelm extends ItemArmor {
+import javax.annotation.Nullable;
+
+public class ItemGuardHelm extends ArmorItem {
     protected static final ResourceLocation HAT_TEX = new ResourceLocation(GuardIllagers.MODID, "textures/overlay/guard_perspective.png");
 
-    public ItemGuardHelm(IArmorMaterial materialIn, EntityEquipmentSlot slots, Properties properties) {
+	public ItemGuardHelm(IArmorMaterial materialIn, EquipmentSlotType slots, Properties properties) {
         super(materialIn, slots, properties);
     }
 
 
     @OnlyIn(Dist.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
-        return new ModelGuardHat();
+    public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
+	    return new GuardHatModel();
     }
 
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return GuardIllagers.MODID + ":" + "textures/armor/guard_hat.png";
-    }
+	@Nullable
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+		return GuardIllagers.MODID + ":textures/models/armor/guard_hat.png";
+	}
 
-    @Override
-    public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, int width, int height, float partialTicks) {
+	@Override
+	public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks) {
 
         GlStateManager.disableDepthTest();
         GlStateManager.depthMask(false);
