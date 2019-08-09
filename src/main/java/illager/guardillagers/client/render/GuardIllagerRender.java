@@ -7,6 +7,7 @@ import illager.guardillagers.client.render.layer.HeldItemGuardLayer;
 import illager.guardillagers.entity.GuardIllagerEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.HeadLayer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +19,8 @@ public class GuardIllagerRender<T extends GuardIllagerEntity> extends MobRendere
 	private static final ResourceLocation ILLAGER_TEXTURE = new ResourceLocation(GuardIllagers.MODID, "textures/entity/illager/guardillager.png");
 
 	public GuardIllagerRender(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn, new GuardIllagerModel(), 0.5F);
+		super(renderManagerIn, new GuardIllagerModel<>(), 0.5F);
+		this.addLayer(new HeadLayer<>(this));
 		this.addLayer(new HeldItemLayer(this) {
 			public void render(LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 				if (((GuardIllagerEntity) entitylivingbaseIn).isAggressive()) {
@@ -27,7 +29,14 @@ public class GuardIllagerRender<T extends GuardIllagerEntity> extends MobRendere
 
 			}
 		});
-		this.addLayer(new HeldItemGuardLayer(this));
+		this.addLayer(new HeldItemGuardLayer(this) {
+			public void render(GuardIllagerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+				if (!entitylivingbaseIn.isAggressive()) {
+					super.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+				}
+
+			}
+		});
 	}
 
 	protected ResourceLocation getEntityTexture(GuardIllagerEntity entity) {

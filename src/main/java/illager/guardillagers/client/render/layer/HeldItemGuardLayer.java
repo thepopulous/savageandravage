@@ -9,10 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
 
 public class HeldItemGuardLayer<T extends GuardIllagerEntity> extends LayerRenderer<T, GuardIllagerModel<T>> {
 	private final GuardIllagerModel guardModel;
@@ -24,8 +24,8 @@ public class HeldItemGuardLayer<T extends GuardIllagerEntity> extends LayerRende
 
 	public void render(GuardIllagerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         ItemStack itemstack = entitylivingbaseIn.getHeldItemOffhand();
-		AbstractIllagerEntity.ArmPose abstractillager$illagerarmpose = ((AbstractIllagerEntity) entitylivingbaseIn).getArmPose();
-		if (abstractillager$illagerarmpose != AbstractIllagerEntity.ArmPose.ATTACKING) {
+        GuardIllagerEntity.ArmPose abstractillager$illagerarmpose = ((GuardIllagerEntity) entitylivingbaseIn).getArmPose();
+        if (!(itemstack.getItem() instanceof ShieldItem)) {
             if (!itemstack.isEmpty()) {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 GlStateManager.pushMatrix();
