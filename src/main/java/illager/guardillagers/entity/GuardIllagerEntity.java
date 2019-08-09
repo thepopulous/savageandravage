@@ -65,22 +65,22 @@ import java.util.UUID;
 public class GuardIllagerEntity extends AbstractIllagerEntity {
 
 
-    private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
+	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
 	private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.VARINT);
 
-    private int potionUseTimer;
+	private int potionUseTimer;
 
-    public double prevCapeX, prevCapeY, prevCapeZ;
-    public double capeX, capeY, capeZ;
+	public double prevCapeX, prevCapeY, prevCapeZ;
+	public double capeX, capeY, capeZ;
 
 	public GuardIllagerEntity(EntityType<? extends GuardIllagerEntity> type, World worldIn) {
 		super(type, worldIn);
 		this.setDropChance(EquipmentSlotType.OFFHAND, 0.4F);
 		((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
 		this.experienceValue = 6;
-    }
+	}
 
 	@Override
 	protected void registerGoals() {
@@ -95,197 +95,198 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
 		this.targetSelector.addGoal(2, (new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true)).setUnseenMemoryTicks(300));
 		this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false)).setUnseenMemoryTicks(300));
 		this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, false)).setUnseenMemoryTicks(300));
-    }
+	}
 
-    protected void registerAttributes() {
-        super.registerAttributes();
+	protected void registerAttributes() {
+		super.registerAttributes();
 
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
-    }
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
+		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
+	}
 
-    protected void registerData() {
+	protected void registerData() {
 
-        super.registerData();
+		super.registerData();
 
-        this.getDataManager().register(IS_DRINKING, false);
+		this.getDataManager().register(IS_DRINKING, false);
 
-        this.getDataManager().register(GUARD_LEVEL, 1);
+		this.getDataManager().register(GUARD_LEVEL, 1);
 
-    }
+	}
 
-    public void setDrinkingPotion(boolean drinkingPotion) {
-        this.getDataManager().set(IS_DRINKING, drinkingPotion);
-    }
+	public void setDrinkingPotion(boolean drinkingPotion) {
+		this.getDataManager().set(IS_DRINKING, drinkingPotion);
+	}
 
-    public boolean isDrinkingPotion() {
-        return this.getDataManager().get(IS_DRINKING);
-    }
+	public boolean isDrinkingPotion() {
+		return this.getDataManager().get(IS_DRINKING);
+	}
 
-    public int getGuardLevel() {
+	public int getGuardLevel() {
 
-        return this.dataManager.get(GUARD_LEVEL).intValue();
+		return this.dataManager.get(GUARD_LEVEL).intValue();
 
-    }
+	}
 
-    public void setGuardLevel(int level) {
-        this.dataManager.set(GUARD_LEVEL, level);
-        if (level > 0) {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(23.0D + level * 4);
-            this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D + level);
-            this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D + level);
-            this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7.0D);
-        }
+	public void setGuardLevel(int level) {
+		this.dataManager.set(GUARD_LEVEL, level);
+		if (level > 0) {
+			this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D + level * 2);
+			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D + level * 0.5F);
+			this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D + level);
+			this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7.0D);
+		}
 
-        if (level == 2) {
-            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.368F);
-        }
-    }
+		if (level == 2) {
+			this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.368F);
+		}
+	}
 
 	public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+		super.writeAdditional(compound);
 
 		compound.putInt("GuardLevel", this.getGuardLevel());
-    }
+	}
 
 
 	public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+		super.readAdditional(compound);
 
-        this.setGuardLevel(compound.getInt("GuardLevel"));
-    }
+		this.setGuardLevel(compound.getInt("GuardLevel"));
+	}
 
-    public void livingTick() {
-        if (!this.world.isRemote) {
-            if (this.getGuardLevel() >= 3) {
+	public void livingTick() {
+		if (!this.world.isRemote) {
+			if (this.getGuardLevel() >= 3) {
 
-                if (this.isDrinkingPotion()) {
-                    if (this.potionUseTimer-- <= 0) {
-                        this.setDrinkingPotion(false);
-                        ItemStack itemstack = this.getHeldItemOffhand();
-			    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.SHIELD));
-                        if (itemstack.getItem() == Items.POTION) {
-				List<EffectInstance> list = PotionUtils.getEffectsFromStack(itemstack);
-                            if (list != null) {
-				    for (EffectInstance potioneffect : list) {
-					    this.addPotionEffect(new EffectInstance(potioneffect));
-                                }
-                            }
-                        }
+				if (this.isDrinkingPotion()) {
+					if (this.potionUseTimer-- <= 0) {
+						this.setDrinkingPotion(false);
+						ItemStack itemstack = this.getHeldItemOffhand();
+						this.setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.SHIELD));
+						if (itemstack.getItem() == Items.POTION) {
+							List<EffectInstance> list = PotionUtils.getEffectsFromStack(itemstack);
+							if (list != null) {
+								for (EffectInstance potioneffect : list) {
+									this.addPotionEffect(new EffectInstance(potioneffect));
+								}
+							}
+						}
 
-                        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
-                    }
-                } else {
-			Potion potiontype = null;
+						this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
+					}
+				} else {
+					Potion potiontype = null;
 
-                    if (this.rand.nextFloat() < 0.004F && this.getHealth() < this.getMaxHealth()) {
-			    potiontype = Potions.HEALING;
-		    } else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(Effects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
-			    potiontype = Potions.SWIFTNESS;
-                    }
+					if (this.rand.nextFloat() < 0.004F && this.getHealth() < this.getMaxHealth()) {
+						potiontype = Potions.HEALING;
+					} else if (this.rand.nextFloat() < 0.008F && this.getAttackTarget() != null && !this.isPotionActive(Effects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
+						potiontype = Potions.SWIFTNESS;
+					}
 
-                    if (potiontype != null) {
-			    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
-                        this.potionUseTimer = this.getHeldItemOffhand().getUseDuration();
-                        this.setDrinkingPotion(true);
-                        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
-                        IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-                        iattributeinstance.removeModifier(MODIFIER);
-                        iattributeinstance.applyModifier(MODIFIER);
-                    }
-                }
-            }
-        }
-        super.livingTick();
-    }
+					if (potiontype != null) {
+						this.setItemStackToSlot(EquipmentSlotType.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
+						this.potionUseTimer = this.getHeldItemOffhand().getUseDuration();
+						this.setDrinkingPotion(true);
+						this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+						IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+						iattributeinstance.removeModifier(MODIFIER);
+						iattributeinstance.applyModifier(MODIFIER);
+					}
+				}
+			}
+		}
+		super.livingTick();
+	}
 
-    @Override
-    public void tick() {
-        super.tick();
-        this.updateCape();
-    }
+	@Override
+	public void tick() {
+		super.tick();
+		this.updateCape();
+	}
 
 
-    private void updateCape() {
-        double elasticity = 0.25;
-        double gravity = -0.1;
+	private void updateCape() {
+		double elasticity = 0.25;
+		double gravity = -0.1;
 
-        this.prevCapeX = this.capeX;
-        this.prevCapeY = this.capeY;
-        this.prevCapeZ = this.capeZ;
+		this.prevCapeX = this.capeX;
+		this.prevCapeY = this.capeY;
+		this.prevCapeZ = this.capeZ;
 
-        this.capeY += gravity;
+		this.capeY += gravity;
 
-        this.capeX += (this.posX - this.capeX) * elasticity;
-        this.capeY += (this.posY - this.capeY) * elasticity;
-        this.capeZ += (this.posZ - this.capeZ) * elasticity;
-    }
+		this.capeX += (this.posX - this.capeX) * elasticity;
+		this.capeY += (this.posY - this.capeY) * elasticity;
+		this.capeZ += (this.posZ - this.capeZ) * elasticity;
+	}
 
 	public void setRevengeTarget(@Nullable LivingEntity livingBase) {
-        super.setRevengeTarget(livingBase);
-        if (livingBase != null) {
-		if (livingBase instanceof PlayerEntity) {
+		super.setRevengeTarget(livingBase);
+		if (livingBase != null) {
+			if (livingBase instanceof PlayerEntity) {
 
-			if (!((PlayerEntity) livingBase).isCreative() && this.isAlive()) {
-                    this.world.setEntityState(this, (byte) 13);
-                }
-            }
-        }
+				if (!((PlayerEntity) livingBase).isCreative() && this.isAlive()) {
+					this.world.setEntityState(this, (byte) 13);
+				}
+			}
+		}
 
-    }
+	}
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else if (source.isProjectile()) {
-            return super.attackEntityFrom(source, amount * 0.95F);
-        } else {
-            return super.attackEntityFrom(source, amount);
-        }
-    }
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (this.isInvulnerableTo(source)) {
+			return false;
+		} else if (source.isProjectile()) {
+			return super.attackEntityFrom(source, amount * 0.95F);
+		} else {
+			return super.attackEntityFrom(source, amount);
+		}
+	}
 
-    @Nullable
-    @Override
-    protected ResourceLocation getLootTable() {
-        return GuardIllagers.LOOT_TABLE;
-    }
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return GuardIllagers.LOOT_TABLE;
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    public AbstractIllagerEntity.ArmPose getArmPose() {
-	    return this.isAggressive() ? AbstractIllagerEntity.ArmPose.ATTACKING : AbstractIllagerEntity.ArmPose.CROSSED;
-    }
+	@OnlyIn(Dist.CLIENT)
+	public AbstractIllagerEntity.ArmPose getArmPose() {
+		return this.isAggressive() ? AbstractIllagerEntity.ArmPose.ATTACKING : AbstractIllagerEntity.ArmPose.CROSSED;
+	}
 
 
-    public void setHomePos() {
-        this.setHomePosAndDistance(new BlockPos(this), 26);
-    }
+	public void setHomePos() {
+		this.setHomePosAndDistance(new BlockPos(this), 26);
+	}
 
-    @Nullable
-    @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-	    ILivingEntityData ientitylivingdata = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-	    this.setEquipmentBasedOnDifficulty(difficultyIn);
-	    this.setEnchantmentBasedOnDifficulty(difficultyIn);
-        return ientitylivingdata;
-    }
+	@Nullable
+	@Override
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData ientitylivingdata = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		this.setGuardLevel(rand.nextInt(2));
+		this.setEquipmentBasedOnDifficulty(difficultyIn);
+		this.setEnchantmentBasedOnDifficulty(difficultyIn);
+		return ientitylivingdata;
+	}
 
 	@Override
 	public SoundEvent getRaidLossSound() {
 		return SoundEvents.ENTITY_VINDICATOR_CELEBRATE;
 	}
 
-    /**
-     * Gives armor or weapon for entity based on given DifficultyInstance
-     */
-    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-        if (getGuardLevel() >= 3) {
-		this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+	/**
+	 * Gives armor or weapon for entity based on given DifficultyInstance
+	 */
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		if (getGuardLevel() >= 3) {
+			this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+		}
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
 	}
-	    this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
-    }
 
 	@Override
 	public void func_213660_a(int p_213660_1_, boolean p_213660_2_) {
@@ -310,9 +311,15 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
 				EnchantmentHelper.setEnchantments(map2, stack2);
 
 				this.setItemStackToSlot(EquipmentSlotType.OFFHAND, stack2);
+				this.setGuardLevel(3);
+			} else {
+				this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+				this.setGuardLevel(1 + rand.nextInt(2));
 			}
 
-        }
+		} else {
+			this.setGuardLevel(rand.nextInt(1));
+		}
 
 		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, itemstack);
 	}
@@ -334,67 +341,67 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
 		CompoundNBT shieldNBT = bannerNBT == null ? new CompoundNBT() : bannerNBT.copy();
 
 		shield.setTagInfo("BlockEntityTag", shieldNBT);
-    }
+	}
 
-    protected void updateAITasks() {
-        super.updateAITasks();
-    }
+	protected void updateAITasks() {
+		super.updateAITasks();
+	}
 
 
-    @Override
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        int i = MathHelper.floor(this.posX);
-        int j = MathHelper.floor(this.getBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
-        BlockPos blockpos = new BlockPos(i, j, k);
-	    return this.world.getDifficulty() != Difficulty.PEACEFUL && !this.world.canBlockSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
-    }
+	@Override
+	public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+		int i = MathHelper.floor(this.posX);
+		int j = MathHelper.floor(this.getBoundingBox().minY);
+		int k = MathHelper.floor(this.posZ);
+		BlockPos blockpos = new BlockPos(i, j, k);
+		return this.world.getDifficulty() != Difficulty.PEACEFUL && !this.world.canBlockSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
+	}
 
-    /**
-     * Returns whether this Entity is on the same team as the given Entity.
-     */
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (super.isOnSameTeam(entityIn)) {
-            return true;
-	} else if (entityIn instanceof LivingEntity && ((LivingEntity) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
-            return this.getTeam() == null && entityIn.getTeam() == null;
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Returns whether this Entity is on the same team as the given Entity.
+	 */
+	public boolean isOnSameTeam(Entity entityIn) {
+		if (super.isOnSameTeam(entityIn)) {
+			return true;
+		} else if (entityIn instanceof LivingEntity && ((LivingEntity) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
+			return this.getTeam() == null && entityIn.getTeam() == null;
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        if (this.isAggressive()) {
-            return IllagerSoundsRegister.GUARDILLAGER_ANGRY;
-        } else {
-            return IllagerSoundsRegister.GUARDILLAGER_AMBIENT;
-        }
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		if (this.isAggressive()) {
+			return IllagerSoundsRegister.GUARDILLAGER_ANGRY;
+		} else {
+			return IllagerSoundsRegister.GUARDILLAGER_AMBIENT;
+		}
+	}
 
-    @Override
-    protected SoundEvent getDeathSound() {
-        return IllagerSoundsRegister.GUARDILLAGER_DIE;
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return IllagerSoundsRegister.GUARDILLAGER_DIE;
+	}
 
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return IllagerSoundsRegister.GUARDILLAGER_HURT;
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return IllagerSoundsRegister.GUARDILLAGER_HURT;
+	}
 
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState blockState) {
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockState) {
 
-        SoundType soundtype = blockState.getSoundType(world, pos, this);
+		SoundType soundtype = blockState.getSoundType(world, pos, this);
 
-        SoundEvent soundEvent = IllagerSoundsRegister.GUARDILLAGER_STEP;
+		SoundEvent soundEvent = IllagerSoundsRegister.GUARDILLAGER_STEP;
 
-	    if (soundtype == SoundType.SNOW) {
-            this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
-		    this.playSound(soundEvent, 0.2F, soundtype.getPitch());
-        } else if (!blockState.getMaterial().isLiquid()) {
-            this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
-            this.playSound(soundEvent, 0.2F, soundtype.getPitch());
-        }
-    }
+		if (soundtype == SoundType.SNOW) {
+			this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+			this.playSound(soundEvent, 0.2F, soundtype.getPitch());
+		} else if (!blockState.getMaterial().isLiquid()) {
+			this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+			this.playSound(soundEvent, 0.2F, soundtype.getPitch());
+		}
+	}
 }
