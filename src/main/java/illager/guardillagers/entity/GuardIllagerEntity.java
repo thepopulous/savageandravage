@@ -384,11 +384,6 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
         shield.setTagInfo("BlockEntityTag", shieldNBT);
     }
 
-    protected void updateAITasks() {
-        super.updateAITasks();
-    }
-
-
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         int i = MathHelper.floor(this.posX);
@@ -410,6 +405,7 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
             return false;
         }
     }
+
 
     @Override
     protected SoundEvent getAmbientSound() {

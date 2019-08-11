@@ -21,7 +21,7 @@ public class IllagerEntityRegistry extends ForgeRegistryEntry<IllagerEntityRegis
 
     @SubscribeEvent
     public static void registerEntity(RegistryEvent.Register<EntityType<?>> event) {
-	    event.getRegistry().register(GUARD_ILLAGER.setRegistryName("guard_ilager"));
+		event.getRegistry().register(GUARD_ILLAGER.setRegistryName("guard_illager"));
 
     }
 }

@@ -26,7 +26,7 @@ public class GuardHatModel<T extends LivingEntity> extends BipedModel<T> {
         this.Hat3.addBox(-8.0F, -3.0F, -8.0F, 16, 0, 16, 0.0F);
 		this.Hat2 = new RendererModel(this, 32, 0);
         this.Hat2.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Hat2.addBox(-4.0F, -8.14F, -4.0F, 8, 8, 8, 0.5F);
+        this.Hat2.addBox(-4.0F, -8.14F, -4.0F, 8, 8, 8, 0.6F);
         this.Hat1.addChild(Hat2);
         this.Hat1.addChild(Hat3);
     }
@@ -34,7 +34,7 @@ public class GuardHatModel<T extends LivingEntity> extends BipedModel<T> {
     @Override
     public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 	    this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        if (entity.isSneaking()) {
+        if (entity.shouldRenderSneaking()) {
             GlStateManager.translatef(0.0F, 0.2F, 0.0F);
         }
         this.Hat1.render(scale);
