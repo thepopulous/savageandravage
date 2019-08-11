@@ -177,8 +177,10 @@ public class GuardIllagerModel<T extends GuardIllagerEntity> extends EntityModel
         double deltaY = guardY - capeY;
         double deltaZ = capeZ - guardZ;
 
+        deltaY = MathHelper.sqrt(deltaY * deltaY);
+
         double deltaXZ = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-        this.Cape.rotateAngleX = (float) (Math.PI / 2 - MathHelper.atan2(deltaY, deltaXZ));
+        this.Cape.rotateAngleX = (float) (Math.PI / 2 + (deltaY * 0.3F) - MathHelper.atan2(deltaY, deltaXZ));
     }
 
 	@Override
