@@ -136,12 +136,6 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
         }
     }
 
-    @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand) {
-        this.getJumpController().setJumping();
-        return super.processInteract(player, hand);
-    }
-
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
 
