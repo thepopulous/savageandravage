@@ -216,13 +216,13 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
 
     @Override
     public void tick() {
-        this.updateCape();
         super.tick();
+        this.updateCape();
     }
 
 
     private void updateCape() {
-        double elasticity = 0.15;
+        double elasticity = 0.25;
         double gravity = -0.1;
 
         this.prevCapeX = this.capeX;
