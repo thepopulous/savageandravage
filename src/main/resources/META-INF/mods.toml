@@ -30,7 +30,6 @@ displayName="GuardIllagers" #mandatory
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 a 1.14.4 mod that adds evil guard Illagers!
-https://i.imgur.com/FQisTCB.png
 '''
 
 [[dependencies.guardillagers]] #optional
