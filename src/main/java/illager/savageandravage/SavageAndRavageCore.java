@@ -1,0 +1,55 @@
+package illager.savageandravage;
+
+import illager.savageandravage.client.IllagerEntityRender;
+import illager.savageandravage.event.EntityEventHandler;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+@Mod("savageandravage")
+public class SavageAndRavageCore {
+    public static final String MODID = "savageandravage";
+
+    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(SavageAndRavageCore.MODID, "entity/guard_illager");
+
+    public SavageAndRavageCore() {
+        // Register the setup method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        // Register the enqueueIMC method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+        // Register the processIMC method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        // Register the doClientStuff method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+
+        // Register ourselves for server, registry and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
+        // some preinit code
+
+        MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
+    }
+
+
+    private void doClientStuff(final FMLClientSetupEvent event) {
+        // do something that can only be done on the client
+        IllagerEntityRender.entityRender();
+    }
+
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+        // some example code to dispatch IMC to another mod
+    }
+
+    private void processIMC(final InterModProcessEvent event) {
+        // some example code to receive and process InterModComms from other mods
+    }
+
+
+}

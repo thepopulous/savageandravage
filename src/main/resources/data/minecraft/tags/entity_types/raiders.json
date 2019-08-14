@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "guardillagers:guard_illager"
+    "savageandravage:guard_illager",
+    "savageandravage:griefer_illager"
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "entity.savageandravage.creepies": "クリーピー",
+  "entity.savageandravage.griefer_illager": "グリファー",
+  "entity.savageandravage.guard_illager.name": "守護者のIllager",
+  "item.savageandravage.guard_illager_egg": "守護者のIllagerのスポーンエッグ",
+  "item.savageandravage.guard_helm": "守護者のIllagerのヘルメット",
+  "item.savageandravage.creeper_spores": "クリーパーの粉",
+  "item.savageandravage.griefer_spawnegg": "グリファーのスポーンエッグ",
+  "savageandravage:subtitles.guardillager.ambient": "守護者のIllagerがつぶやく",
+  "savageandravage:subtitles.guardillager.hurt": "守護者のIllagerがダメージを受ける",
+  "savageandravage:subtitles.guardillager.die": "守護者のIllagerが倒れる"
+}
