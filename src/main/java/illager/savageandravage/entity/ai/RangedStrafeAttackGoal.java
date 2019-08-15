@@ -38,8 +38,8 @@ public class RangedStrafeAttackGoal extends Goal {
             this.maxRangedAttackTime = maxAttackTime;
             this.attackRadius = maxAttackDistanceIn;
             this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
@@ -117,7 +117,7 @@ public class RangedStrafeAttackGoal extends Goal {
             this.attacker.getNavigator().tryMoveToEntityLiving(this.field_75323_c, this.entityMoveSpeed);
         }
 
-        this.attacker.getLookController().setLookPositionWithEntity(this.field_75323_c, 30.0F, 30.0F);
+        this.attacker.getLookController().setLookPositionWithEntity(this.field_75323_c, 10.0F, (float) this.attacker.getVerticalFaceSpeed());
         if (--this.rangedAttackTime == 0) {
             if (!flag) {
                 return;

@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -46,12 +47,15 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
 
     @Override
     protected void registerGoals() {
-        super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
-        this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(5, new RangedStrafeAttackGoal(this, 0.75D, 60, 20.0F));
+        this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(1, new AbstractRaiderEntity.PromoteLeaderGoal<>(this));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
+        this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
+        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal(this, 0.75D, 60, 20.0F));
+
+        this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
@@ -219,6 +223,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
          * Execute a one shot task or start executing a continuous task
          */
         public void startExecuting() {
+            this.raider.func_213655_u(true);
             super.startExecuting();
         }
 
@@ -226,6 +231,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void resetTask() {
+            this.raider.func_213655_u(false);
             super.resetTask();
         }
 
@@ -233,6 +239,14 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
+            if (!this.raider.isSilent() && this.raider.rand.nextInt(100) == 0) {
+                raider.playSound(raider.getRaidLossSound(), raider.getSoundVolume(), raider.getSoundPitch());
+            }
+
+            if (!this.raider.isPassenger() && this.raider.rand.nextInt(50) == 0) {
+                this.raider.getJumpController().setJumping();
+            }
+
             if (canSeeSky((ServerWorld) this.raider.world, this.raider) && this.raider.rand.nextInt(80) == 0) {
                 DyeColor dyecolor = DyeColor.values()[this.raider.rand.nextInt(DyeColor.values().length)];
                 int i = this.raider.rand.nextInt(3);

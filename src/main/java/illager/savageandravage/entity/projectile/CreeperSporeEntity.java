@@ -79,7 +79,7 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
 
         if (!this.world.isRemote) {
 
-            List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(4.0D, 2.0D, 4.0D));
+            List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(1.0D, 2.0D, 1.0D));
             SporeCloudEntity areaeffectcloudentity = new SporeCloudEntity(this.world, this.posX, this.posY, this.posZ);
             areaeffectcloudentity.setOwner(this.getThrower());
             areaeffectcloudentity.setParticleData(ParticleTypes.SNEEZE);
@@ -88,6 +88,7 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
             areaeffectcloudentity.setDuration(200);
             areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
             areaeffectcloudentity.addEffect(new EffectInstance(Effects.NAUSEA, 100, 0));
+
             if (!list.isEmpty()) {
                 for (LivingEntity livingentity : list) {
                     double d0 = this.getDistanceSq(livingentity);
