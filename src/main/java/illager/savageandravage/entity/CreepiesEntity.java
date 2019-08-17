@@ -160,6 +160,9 @@ public class CreepiesEntity extends MonsterEntity {
         return this.owner;
     }
 
+    protected float getSoundVolume() {
+        return 0.25F * (float) this.getGrowSize();
+    }
 
     /**
      * Called to update the entity's position/logic.
@@ -173,7 +176,7 @@ public class CreepiesEntity extends MonsterEntity {
 
             int i = this.getCreeperState();
             if (i > 0 && this.timeSinceIgnited == 0) {
-                this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0F, 0.5F);
+                this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, this.getSoundVolume(), 0.5F);
             }
             if (getGrowSize() < 6) {
                 if (this.rand.nextInt(140) == 0) {

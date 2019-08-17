@@ -1,6 +1,6 @@
 package illager.savageandravage.item;
 
-import illager.savageandravage.entity.CreeperSporeEntity;
+import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

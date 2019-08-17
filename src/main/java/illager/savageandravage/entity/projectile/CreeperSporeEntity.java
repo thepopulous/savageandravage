@@ -1,5 +1,6 @@
-package illager.savageandravage.entity;
+package illager.savageandravage.entity.projectile;
 
+import illager.savageandravage.entity.CreepiesEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
 import net.minecraft.entity.*;
@@ -70,12 +71,18 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
             }
 
             entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) 2);
-        }
 
+            spawnCreepies();
+        } else if (result.getType() == RayTraceResult.Type.BLOCK) {
+            spawnCreepies();
+        }
+    }
+
+    private void spawnCreepies() {
         if (!this.world.isRemote) {
 
             CreepiesEntity creepiesEntity = SavageEntityRegistry.CREEPIES.create(this.world);
-            creepiesEntity.setLocationAndAngles(this.getPosition().getX(), this.getPosition().getY() + 1.0F, this.getPosition().getZ(), 0.0F, 0.0F);
+            creepiesEntity.setLocationAndAngles(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), 0.0F, 0.0F);
             creepiesEntity.setOwner(this.getThrower());
 
             this.world.addEntity(creepiesEntity);

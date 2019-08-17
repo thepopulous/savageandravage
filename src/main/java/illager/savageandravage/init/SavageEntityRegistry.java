@@ -1,9 +1,9 @@
 package illager.savageandravage.init;
 
-import illager.savageandravage.entity.CreeperSporeEntity;
 import illager.savageandravage.entity.CreepiesEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.GuardIllagerEntity;
+import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.event.RegistryEvent;

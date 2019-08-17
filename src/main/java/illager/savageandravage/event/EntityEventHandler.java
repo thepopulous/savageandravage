@@ -6,6 +6,7 @@ import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +23,7 @@ public class EntityEventHandler {
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GuardIllagerEntity.class, 16.0F, 0.7D, 0.8D));
         }
 
-        if (event.getEntity() instanceof AbstractIllagerEntity) {
+        if (event.getEntity() instanceof AbstractIllagerEntity && !(event.getEntity() instanceof EvokerEntity)) {
 
             AbstractIllagerEntity pillager = (AbstractIllagerEntity) event.getEntity();
 
@@ -32,14 +33,14 @@ public class EntityEventHandler {
 
                     pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pillager.getPosition(), false);
                 }
-            }
-
-            if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
+                pillager.remove();
+            } else if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
                     GrieferIllagerEntity griferEntity = SavageEntityRegistry.GRIEFER_ILLAGER.create(world);
 
                     pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pillager.getPosition(), false);
                 }
+                pillager.remove();
             }
         }
     }

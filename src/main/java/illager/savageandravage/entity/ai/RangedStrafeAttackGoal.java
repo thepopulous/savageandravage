@@ -8,9 +8,8 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumSet;
 
-public class RangedStrafeAttackGoal extends Goal {
-    private final MobEntity attacker;
-    private final IRangedAttackMob rangedAttackEntityHost;
+public class RangedStrafeAttackGoal<T extends MobEntity & IRangedAttackMob> extends Goal {
+    private final T attacker;
     private LivingEntity field_75323_c;
     private int rangedAttackTime = -1;
     private final double entityMoveSpeed;
@@ -23,16 +22,15 @@ public class RangedStrafeAttackGoal extends Goal {
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public RangedStrafeAttackGoal(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn) {
+    public RangedStrafeAttackGoal(T attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn) {
         this(attacker, movespeed, maxAttackTime, maxAttackTime, maxAttackDistanceIn);
     }
 
-    public RangedStrafeAttackGoal(IRangedAttackMob attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn) {
+    public RangedStrafeAttackGoal(T attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn) {
         if (!(attacker instanceof LivingEntity)) {
             throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
         } else {
-            this.rangedAttackEntityHost = attacker;
-            this.attacker = (MobEntity) attacker;
+            this.attacker = attacker;
             this.entityMoveSpeed = movespeed;
             this.attackIntervalMin = p_i1650_4_;
             this.maxRangedAttackTime = maxAttackTime;
@@ -90,34 +88,39 @@ public class RangedStrafeAttackGoal extends Goal {
             this.seeTime = 0;
         }
 
+
         if (!(d0 > (double) this.maxAttackDistance) && this.seeTime >= 5) {
             this.attacker.getNavigator().clearPath();
+            ++this.strafingTime;
+        } else {
+            this.attacker.getNavigator().tryMoveToEntityLiving(this.field_75323_c, this.entityMoveSpeed);
+            this.strafingTime = -1;
+        }
 
-            if (this.strafingTime >= 20) {
-                if ((double) this.attacker.getRNG().nextFloat() < 0.3D) {
-                    this.strafingClockwise = !this.strafingClockwise;
-                }
-
-                if ((double) this.attacker.getRNG().nextFloat() < 0.3D) {
-                    this.strafingBackwards = !this.strafingBackwards;
-                }
-
-                this.strafingTime = 0;
+        if (this.strafingTime >= 20) {
+            if ((double) this.attacker.getRNG().nextFloat() < 0.3D) {
+                this.strafingClockwise = !this.strafingClockwise;
             }
 
-            if (d0 > (double) this.maxAttackDistance * 0.85F) {
+            if ((double) this.attacker.getRNG().nextFloat() < 0.3D) {
+                this.strafingBackwards = !this.strafingBackwards;
+            }
+
+            this.strafingTime = 0;
+        }
+
+        if (this.strafingTime > -1) {
+            if (d0 > (double) (this.maxAttackDistance * 0.75F)) {
                 this.strafingBackwards = false;
-            } else if (d0 < (double) this.maxAttackDistance * 0.65F) {
+            } else if (d0 < (double) (this.maxAttackDistance * 0.25F)) {
                 this.strafingBackwards = true;
             }
 
-
             this.attacker.getMoveHelper().strafe(this.strafingBackwards ? -0.3F : 0.3F, this.strafingClockwise ? 0.4F : -0.4F);
-        } else {
-            this.attacker.getNavigator().tryMoveToEntityLiving(this.field_75323_c, this.entityMoveSpeed);
+            this.attacker.faceEntity(this.field_75323_c, 30.0F, 30.0F);
         }
+        this.attacker.getLookController().setLookPositionWithEntity(this.field_75323_c, 30.0F, 30.0F);
 
-        this.attacker.getLookController().setLookPositionWithEntity(this.field_75323_c, 10.0F, (float) this.attacker.getVerticalFaceSpeed());
         if (--this.rangedAttackTime == 0) {
             if (!flag) {
                 return;
@@ -125,7 +128,7 @@ public class RangedStrafeAttackGoal extends Goal {
 
             float f = MathHelper.sqrt(d0) / this.attackRadius;
             float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
-            this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.field_75323_c, lvt_5_1_);
+            this.attacker.attackEntityWithRangedAttack(this.field_75323_c, lvt_5_1_);
             this.rangedAttackTime = MathHelper.floor(f * (float) (this.maxRangedAttackTime - this.attackIntervalMin) + (float) this.attackIntervalMin);
         } else if (this.rangedAttackTime < 0) {
             float f2 = MathHelper.sqrt(d0) / this.attackRadius;

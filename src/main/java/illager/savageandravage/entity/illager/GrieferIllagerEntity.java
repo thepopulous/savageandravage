@@ -1,11 +1,12 @@
 package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Lists;
-import illager.savageandravage.entity.CreeperSporeEntity;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
+import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -24,6 +25,9 @@ import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.village.PointOfInterestManager;
+import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -36,6 +40,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRangedAttackMob {
 
@@ -53,7 +59,8 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
         this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
-        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal(this, 0.75D, 60, 20.0F));
+        this.goalSelector.addGoal(4, new InvadeHomeGoal(this, (double) 1.05F, 1));
+        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 60, 20.0F));
         this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
@@ -287,6 +294,119 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
             }
 
             return itemstack;
+        }
+    }
+
+    static class InvadeHomeGoal extends Goal {
+        private final GrieferIllagerEntity field_220864_a;
+        private final double field_220865_b;
+        private BlockPos field_220866_c;
+        private final List<BlockPos> field_220867_d = Lists.newArrayList();
+        private final int field_220868_e;
+        private boolean field_220869_f;
+
+        public InvadeHomeGoal(GrieferIllagerEntity p_i50570_1_, double p_i50570_2_, int p_i50570_4_) {
+            this.field_220864_a = p_i50570_1_;
+            this.field_220865_b = p_i50570_2_;
+            this.field_220868_e = p_i50570_4_;
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute() {
+            this.func_220861_j();
+            return this.func_220862_g() && this.func_220863_h() && this.field_220864_a.getAttackTarget() == null;
+        }
+
+        private boolean func_220862_g() {
+            return this.field_220864_a.isRaidActive() && !this.field_220864_a.getRaid().func_221319_a();
+        }
+
+        private boolean func_220863_h() {
+            ServerWorld serverworld = (ServerWorld) this.field_220864_a.world;
+            BlockPos blockpos = new BlockPos(this.field_220864_a);
+            Optional<BlockPos> optional = serverworld.func_217443_B().func_219163_a((p_220859_0_) -> {
+                return p_220859_0_ == PointOfInterestType.HOME;
+            }, this::func_220860_a, PointOfInterestManager.Status.ANY, blockpos, 48, this.field_220864_a.rand);
+            if (!optional.isPresent()) {
+                return false;
+            } else {
+                this.field_220866_c = optional.get().toImmutable();
+                return true;
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting() {
+            if (this.field_220864_a.getNavigator().noPath()) {
+                return false;
+            } else {
+                return this.field_220864_a.getAttackTarget() == null && !this.field_220866_c.withinDistance(this.field_220864_a.getPositionVec(), (double) (this.field_220864_a.getWidth() + (float) this.field_220868_e)) && !this.field_220869_f;
+            }
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void resetTask() {
+            if (this.field_220866_c.withinDistance(this.field_220864_a.getPositionVec(), (double) this.field_220868_e)) {
+                this.field_220867_d.add(this.field_220866_c);
+            }
+
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            super.startExecuting();
+            this.field_220864_a.setIdleTime(0);
+            this.field_220864_a.getNavigator().tryMoveToXYZ((double) this.field_220866_c.getX(), (double) this.field_220866_c.getY(), (double) this.field_220866_c.getZ(), this.field_220865_b);
+            this.field_220869_f = false;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (this.field_220864_a.getNavigator().noPath()) {
+                int i = this.field_220866_c.getX();
+                int j = this.field_220866_c.getY();
+                int k = this.field_220866_c.getZ();
+                Vec3d vec3d = RandomPositionGenerator.findRandomTargetTowardsScaled(this.field_220864_a, 16, 7, new Vec3d((double) i, (double) j, (double) k), (double) ((float) Math.PI / 10F));
+                if (vec3d == null) {
+                    vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.field_220864_a, 8, 7, new Vec3d((double) i, (double) j, (double) k));
+                }
+
+                if (vec3d == null) {
+                    this.field_220869_f = true;
+                    return;
+                }
+
+                this.field_220864_a.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.field_220865_b);
+            }
+
+        }
+
+        private boolean func_220860_a(BlockPos p_220860_1_) {
+            for (BlockPos blockpos : this.field_220867_d) {
+                if (Objects.equals(p_220860_1_, blockpos)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void func_220861_j() {
+            if (this.field_220867_d.size() > 2) {
+                this.field_220867_d.remove(0);
+            }
+
         }
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -102,19 +103,21 @@ public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends EntityM
 
         GrieferIllagerEntity.ArmPose abstractillagerentity$armpose = entityIn.getArmPose();
 
-        this.RightArm.rotateAngleX = 0.08726646259971647F + MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.2F;
-        this.RightArm.rotateAngleY = -0.4363323129985824F;
-        this.RightArm.rotateAngleZ = -0.4363323129985824F;
-        this.LeftArm.rotateAngleX = 0.08726646259971647F + MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.2F;
-        this.LeftArm.rotateAngleY = 0.4363323129985824F;
-        this.LeftArm.rotateAngleZ = 0.4363323129985824F;
-
-        this.RightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-        this.RightLeg.rotateAngleY = 0.0F;
-        this.RightLeg.rotateAngleZ = 0.0F;
-        this.LeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
-        this.LeftLeg.rotateAngleY = 0.0F;
-        this.LeftLeg.rotateAngleZ = 0.0F;
+        if (Entity.func_213296_b(entityIn.getMotion()) > 0.0D) {
+            this.RightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.2F;
+            this.LeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.2F;
+            this.RightArm.rotateAngleY = 0.0F;
+            this.RightArm.rotateAngleZ = 0.0F;
+            this.LeftArm.rotateAngleY = 0.0F;
+            this.LeftArm.rotateAngleZ = 0.0F;
+        } else {
+            this.RightArm.rotateAngleX = 0.08726646259971647F;
+            this.RightArm.rotateAngleY = -0.4363323129985824F;
+            this.RightArm.rotateAngleZ = -0.4363323129985824F;
+            this.LeftArm.rotateAngleX = 0.08726646259971647F;
+            this.LeftArm.rotateAngleY = 0.4363323129985824F;
+            this.LeftArm.rotateAngleZ = 0.4363323129985824F;
+        }
 
         if (this.isSitting) {
 
@@ -131,6 +134,14 @@ public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends EntityM
             this.LeftLeg.rotateAngleX = -1.4137167F;
             this.LeftLeg.rotateAngleY = (-(float) Math.PI / 10F);
             this.LeftLeg.rotateAngleZ = -0.07853982F;
+        } else {
+            this.RightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+            this.RightLeg.rotateAngleY = 0.0F;
+            this.RightLeg.rotateAngleZ = 0.0F;
+            this.LeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+            this.LeftLeg.rotateAngleY = 0.0F;
+            this.LeftLeg.rotateAngleZ = 0.0F;
+
         }
 
         if (abstractillagerentity$armpose == GrieferIllagerEntity.ArmPose.ATTACKING) {
