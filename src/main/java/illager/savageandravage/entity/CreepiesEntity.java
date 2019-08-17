@@ -161,7 +161,7 @@ public class CreepiesEntity extends MonsterEntity {
     }
 
     protected float getSoundVolume() {
-        return 0.25F * (float) this.getGrowSize();
+        return 0.5F + 0.5F * (float) this.getGrowSize();
     }
 
     /**

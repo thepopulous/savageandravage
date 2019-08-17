@@ -1,6 +1,7 @@
 package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Lists;
+import illager.savageandravage.entity.CreepiesEntity;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
 import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.init.SavageItems;
@@ -44,6 +45,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRangedAttackMob {
+    private final EntityPredicate field_220843_e = (new EntityPredicate()).setDistance(30.0D).setLineOfSiteRequired().setUseInvisibilityCheck().allowInvulnerable().allowFriendlyFire();
+
 
     public GrieferIllagerEntity(EntityType<? extends GrieferIllagerEntity> type, World worldIn) {
         super(type, worldIn);
@@ -54,13 +57,13 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(1, new AbstractRaiderEntity.PromoteLeaderGoal<>(this));
+        this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
         this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
         this.goalSelector.addGoal(4, new InvadeHomeGoal(this, (double) 1.05F, 1));
-        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 60, 20.0F));
+        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 80, 20.0F));
         this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
@@ -171,22 +174,26 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        this.swingArm(Hand.MAIN_HAND);
+        int i = this.world.getTargettableEntitiesWithinAABB(CreepiesEntity.class, this.field_220843_e, this, this.getBoundingBox().grow(30.0D)).size();
 
-        this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+        if (i < 5) {
+            this.swingArm(Hand.MAIN_HAND);
 
-        CreeperSporeEntity snowballentity = new CreeperSporeEntity(this.world, this);
+            this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
 
-        double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-        double d1 = target.posX - this.posX;
-        double d2 = d0 - snowballentity.posY;
-        double d3 = target.posZ - this.posZ;
+            CreeperSporeEntity snowballentity = new CreeperSporeEntity(this.world, this);
 
-        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
-        snowballentity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
+            double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
+            double d1 = target.posX - this.posX;
+            double d2 = d0 - snowballentity.posY;
+            double d3 = target.posZ - this.posZ;
 
-        this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.addEntity(snowballentity);
+            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
+            snowballentity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
+
+            this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.world.addEntity(snowballentity);
+        }
     }
 
 
