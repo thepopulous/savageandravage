@@ -21,7 +21,8 @@ public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<Cr
     }
 
     protected void preRenderCallback(CreepiesEntity entitylivingbaseIn, float partialTickTime) {
-        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+        float f4 = 0.3F + entitylivingbaseIn.getGrowSize() * 0.05F;
+
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
         float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;
         f = MathHelper.clamp(f, 0.0F, 1.0F);
@@ -29,7 +30,7 @@ public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<Cr
         f = f * f;
         float f2 = (1.0F + f * 0.4F) * f1;
         float f3 = (1.0F + f * 0.1F) / f1;
-        GlStateManager.scalef(f2, f3, f2);
+        GlStateManager.scalef(f2 * f4, f3 * f4, f2 * f4);
     }
 
     protected int getColorMultiplier(CreepiesEntity entitylivingbaseIn, float lightBrightness, float partialTickTime) {

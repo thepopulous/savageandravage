@@ -1,8 +1,9 @@
 package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Lists;
+import illager.savageandravage.entity.CreepiesEntity;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
-import illager.savageandravage.entity.projectile.CreeperSporeEntity;
+import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
@@ -20,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +57,6 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
         this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
         this.goalSelector.addGoal(4, new RangedStrafeAttackGoal(this, 0.75D, 60, 20.0F));
-
         this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
@@ -165,18 +167,33 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        CreeperSporeEntity snowballentity = new CreeperSporeEntity(this.world, this);
-
         this.swingArm(Hand.MAIN_HAND);
 
-        double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-        double d1 = target.posX - this.posX;
-        double d2 = d0 - snowballentity.posY;
-        double d3 = target.posZ - this.posZ;
-        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
-        snowballentity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
-        this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.addEntity(snowballentity);
+        this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+
+
+        if (!this.world.isRemote) {
+
+            CreepiesEntity creepiesEntity = SavageEntityRegistry.CREEPIES.create(this.world);
+            creepiesEntity.setLocationAndAngles(this.getPosition().getX(), this.getPosition().getY() + 1.0F, this.getPosition().getZ(), 0.0F, 0.0F);
+            creepiesEntity.setOwner(this);
+
+            this.world.addEntity(creepiesEntity);
+
+
+        }
+        if (this.world.isRemote) {
+            IParticleData iparticledata = ParticleTypes.SNEEZE;
+            for (int i = 0; i < 6; ++i) {
+                float f1 = this.world.rand.nextFloat() * ((float) Math.PI * 2F);
+                float f2 = MathHelper.sqrt(this.world.rand.nextFloat()) * 0.2F;
+                float f3 = MathHelper.cos(f1) * f2;
+                float f4 = MathHelper.sin(f1) * f2;
+
+                this.world.addOptionalParticle(iparticledata, this.getPosition().getX() + (double) f3, this.getPosition().getY() + 1.0F, this.getPosition().getZ() + (double) f4, 0.0D, 0.0D, 0.0D);
+
+            }
+        }
     }
 
 

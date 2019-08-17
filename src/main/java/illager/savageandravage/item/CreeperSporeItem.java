@@ -1,18 +1,15 @@
 package illager.savageandravage.item;
 
-import illager.savageandravage.entity.projectile.SporeCloudEntity;
+import illager.savageandravage.entity.CreepiesEntity;
+import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 public class CreeperSporeItem extends Item {
@@ -42,24 +39,30 @@ public class CreeperSporeItem extends Item {
             BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult) raytraceresult;
             BlockPos blockpos = blockraytraceresult.getPos();
             if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, blockraytraceresult.getFace(), itemstack)) {
-                worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+                worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (worldIn.rand.nextFloat() * 0.4F + 0.8F));
 
 
                 if (!worldIn.isRemote) {
 
-                    SporeCloudEntity areaeffectcloudentity = new SporeCloudEntity(worldIn, blockpos.getX(), blockpos.getY() + 1.0F, blockpos.getZ());
-                    areaeffectcloudentity.setOwner(playerIn);
-                    areaeffectcloudentity.setParticleData(ParticleTypes.SNEEZE);
-                    areaeffectcloudentity.setRadius(2.0F);
-                    areaeffectcloudentity.setRadiusOnUse(-0.05F);
-                    areaeffectcloudentity.setDuration(200);
-                    areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
-                    areaeffectcloudentity.addEffect(new EffectInstance(Effects.NAUSEA, 100, 0));
+                    CreepiesEntity creepiesEntity = SavageEntityRegistry.CREEPIES.create(worldIn);
+                    creepiesEntity.setLocationAndAngles(blockpos.getX() + 0.5F, blockpos.getY() + 1.0F, blockpos.getZ() + 0.5F, 0.0F, 0.0F);
+                    creepiesEntity.setOwner(playerIn);
 
+                    worldIn.addEntity(creepiesEntity);
 
-                    worldIn.addEntity(areaeffectcloudentity);
 
                 }
+                IParticleData iparticledata = ParticleTypes.SNEEZE;
+                for (int i = 0; i < 6; ++i) {
+                    float f1 = worldIn.rand.nextFloat() * ((float) Math.PI * 2F);
+                    float f2 = MathHelper.sqrt(worldIn.rand.nextFloat()) * 0.2F;
+                    float f3 = MathHelper.cos(f1) * f2;
+                    float f4 = MathHelper.sin(f1) * f2;
+
+                    worldIn.addParticle(iparticledata, blockpos.getX() + (double) f3 + 0.5F, blockpos.getY() + 1.0F, blockpos.getZ() + (double) f4 + 0.5F, 0.0D, 0.0D, 0.0D);
+
+                }
+
             }
             playerIn.addStat(Stats.ITEM_USED.get(this));
             return new ActionResult<>(ActionResultType.SUCCESS, itemstack);

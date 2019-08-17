@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class CreepiesEntity extends MonsterEntity {
+    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.BOOLEAN);
@@ -69,7 +70,7 @@ public class CreepiesEntity extends MonsterEntity {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
     }
 
     /**
@@ -90,11 +91,13 @@ public class CreepiesEntity extends MonsterEntity {
 
     protected void registerData() {
         super.registerData();
+        this.dataManager.register(SIZE, 0);
         this.dataManager.register(STATE, -1);
         this.dataManager.register(POWERED, false);
         this.dataManager.register(IGNITED, false);
     }
 
+    @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         if (this.dataManager.get(POWERED)) {
@@ -104,15 +107,13 @@ public class CreepiesEntity extends MonsterEntity {
         if (this.ownerUniqueId != null) {
             compound.putUniqueId("OwnerUUID", this.ownerUniqueId);
         }
-
         compound.putShort("Fuse", (short) this.fuseTime);
         compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
         compound.putBoolean("ignited", this.hasIgnited());
+        compound.putInt("GrowSize", this.getGrowSize());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.dataManager.set(POWERED, compound.getBoolean("powered"));
@@ -126,11 +127,20 @@ public class CreepiesEntity extends MonsterEntity {
         if (compound.hasUniqueId("OwnerUUID")) {
             this.ownerUniqueId = compound.getUniqueId("OwnerUUID");
         }
-
         if (compound.getBoolean("ignited")) {
             this.ignite();
         }
 
+        this.setGrowSize(compound.getInt("GrowSize"));
+    }
+
+    public void notifyDataManagerChange(DataParameter<?> key) {
+        if (SIZE.equals(key)) {
+            this.recalculateSize();
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D + getGrowSize() * 1.0F);
+        }
+
+        super.notifyDataManagerChange(key);
     }
 
     public void setOwner(@Nullable LivingEntity ownerIn) {
@@ -165,7 +175,11 @@ public class CreepiesEntity extends MonsterEntity {
             if (i > 0 && this.timeSinceIgnited == 0) {
                 this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0F, 0.5F);
             }
-
+            if (getGrowSize() < 6) {
+                if (this.rand.nextInt(140) == 0) {
+                    grow();
+                }
+            }
             this.timeSinceIgnited += i;
             if (this.timeSinceIgnited < 0) {
                 this.timeSinceIgnited = 0;
@@ -178,6 +192,25 @@ public class CreepiesEntity extends MonsterEntity {
         }
 
         super.tick();
+    }
+
+    public float getRenderScale() {
+        return 0.3F + (this.getGrowSize() * 0.05F);
+    }
+
+    private void grow() {
+        this.setGrowSize(this.getGrowSize() + 1);
+    }
+
+    public void setGrowSize(int growSize) {
+        if (this.getGrowSize() < 20) {
+            this.dataManager.set(SIZE, growSize);
+        }
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D + getGrowSize() * 1.0F);
+    }
+
+    public int getGrowSize() {
+        return this.dataManager.get(SIZE);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -265,7 +298,7 @@ public class CreepiesEntity extends MonsterEntity {
     private void explode() {
         if (!this.world.isRemote) {
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            float f = this.getPowered() ? 0.8F : 0.4F;
+            float f = this.getPowered() ? 2.0F * this.getRenderScale() : 1.0F * this.getRenderScale();
             this.dead = true;
             this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, explosion$mode);
             this.remove();
@@ -278,10 +311,10 @@ public class CreepiesEntity extends MonsterEntity {
         Collection<EffectInstance> collection = this.getActivePotionEffects();
         if (!collection.isEmpty()) {
             AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, this.posX, this.posY, this.posZ);
-            areaeffectcloudentity.setRadius(1.5F);
-            areaeffectcloudentity.setRadiusOnUse(-0.5F);
-            areaeffectcloudentity.setWaitTime(10);
-            areaeffectcloudentity.setDuration(areaeffectcloudentity.getDuration() / 2);
+            areaeffectcloudentity.setRadius(0.8F * getGrowSize());
+            areaeffectcloudentity.setRadiusOnUse(-0.2F);
+            areaeffectcloudentity.setWaitTime(60);
+            areaeffectcloudentity.setDuration(20 * getGrowSize());
             areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
 
             for (EffectInstance effectinstance : collection) {

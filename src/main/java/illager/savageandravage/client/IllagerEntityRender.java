@@ -6,11 +6,7 @@ import illager.savageandravage.client.render.GuardIllagerRender;
 import illager.savageandravage.entity.CreepiesEntity;
 import illager.savageandravage.entity.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
-import illager.savageandravage.entity.projectile.CreeperSporeEntity;
-import illager.savageandravage.entity.projectile.SporeCloudEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.AreaEffectCloudRenderer;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -22,7 +18,5 @@ public class IllagerEntityRender {
 	    RenderingRegistry.registerEntityRenderingHandler(GuardIllagerEntity.class, GuardIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreepiesEntity.class, CreepiesRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GrieferIllagerEntity.class, GrieferIllagerRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(SporeCloudEntity.class, AreaEffectCloudRenderer::new);
     }
 }
