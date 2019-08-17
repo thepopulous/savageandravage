@@ -1,4 +1,4 @@
-package illager.savageandravage.entity;
+package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Maps;
 import illager.savageandravage.SavageAndRavageCore;

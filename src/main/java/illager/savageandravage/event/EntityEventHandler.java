@@ -1,7 +1,7 @@
 package illager.savageandravage.event;
 
-import illager.savageandravage.entity.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
+import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;

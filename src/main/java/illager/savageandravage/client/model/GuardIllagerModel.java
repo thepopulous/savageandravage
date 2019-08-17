@@ -1,6 +1,6 @@
 package illager.savageandravage.client.model;
 
-import illager.savageandravage.entity.GuardIllagerEntity;
+import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;

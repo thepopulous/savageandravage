@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.client.model.GuardIllagerModel;
 import illager.savageandravage.client.render.layer.HeldItemGuardLayer;
-import illager.savageandravage.entity.GuardIllagerEntity;
+import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.HeadLayer;

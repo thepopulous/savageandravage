@@ -1,11 +1,13 @@
 package illager.savageandravage.client;
 
 import illager.savageandravage.client.render.CreepiesRender;
+import illager.savageandravage.client.render.EmptyRender;
 import illager.savageandravage.client.render.GrieferIllagerRender;
 import illager.savageandravage.client.render.GuardIllagerRender;
+import illager.savageandravage.entity.CreeperSporeEntity;
 import illager.savageandravage.entity.CreepiesEntity;
-import illager.savageandravage.entity.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
+import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,5 +20,6 @@ public class IllagerEntityRender {
 	    RenderingRegistry.registerEntityRenderingHandler(GuardIllagerEntity.class, GuardIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreepiesEntity.class, CreepiesRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GrieferIllagerEntity.class, GrieferIllagerRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, EmptyRender::new);
     }
 }

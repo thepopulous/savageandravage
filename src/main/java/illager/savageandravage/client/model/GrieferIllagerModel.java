@@ -141,15 +141,15 @@ public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends EntityM
             this.RightArm.rotateAngleY = 0.15707964F;
             this.LeftArm.rotateAngleY = -0.15707964F;
             if (entityIn.getPrimaryHand() == HandSide.RIGHT) {
-                this.RightArm.rotateAngleX = -0.0F - MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
+                this.RightArm.rotateAngleX = -1.68F - MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
                 this.LeftArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
-                this.RightArm.rotateAngleX -= f * 2.2F - f1 * 0.4F;
+                this.RightArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
                 this.LeftArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
             } else {
                 this.RightArm.rotateAngleX = -0.0F - MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
-                this.LeftArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
+                this.LeftArm.rotateAngleX = -1.68F + MathHelper.cos(ageInTicks * 0.1F) * 0.3F;
                 this.RightArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
-                this.LeftArm.rotateAngleX -= f * 2.2F - f1 * 0.4F;
+                this.LeftArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
             }
 
             this.RightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;

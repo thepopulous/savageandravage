@@ -2,7 +2,7 @@ package illager.savageandravage.client.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.client.model.GuardIllagerModel;
-import illager.savageandravage.entity.GuardIllagerEntity;
+import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.client.Minecraft;
