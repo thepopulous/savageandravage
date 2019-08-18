@@ -42,7 +42,7 @@ public class CreepiesEntity extends MonsterEntity {
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.BOOLEAN);
     private int lastActiveTime;
     private int timeSinceIgnited;
-    private int fuseTime = 28;
+    private int fuseTime = 10;
     private int explosionRadius = 2;
     private int droppedSkulls;
 
@@ -69,7 +69,7 @@ public class CreepiesEntity extends MonsterEntity {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
     }
 

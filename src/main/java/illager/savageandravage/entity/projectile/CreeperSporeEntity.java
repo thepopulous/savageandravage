@@ -120,7 +120,9 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
         super.tick();
 
         if (this.world.isRemote) {
-            this.world.addParticle(ParticleTypes.SNEEZE, this.getPosition().getX(), this.getPosition().getY() + 1.0F, this.getPosition().getZ(), 0.0D, 0.0D, 0.0D);
+            for (int i = 0; i < 2; i++) {
+                this.world.addParticle(ParticleTypes.SNEEZE, this.getPosition().getX() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getY() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getZ() + this.world.rand.nextFloat() - 0.5F, 0.0D, 0.0D, 0.0D);
+            }
         }
     }
 

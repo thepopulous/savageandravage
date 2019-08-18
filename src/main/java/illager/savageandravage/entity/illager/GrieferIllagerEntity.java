@@ -62,7 +62,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
         this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
-        this.goalSelector.addGoal(4, new InvadeHomeGoal(this, (double) 1.05F, 1));
+        this.goalSelector.addGoal(4, new InvadeHomeGoal(this, (double) 1.0F, 1));
         this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 80, 20.0F));
         this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
@@ -77,7 +77,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
     protected void registerAttributes() {
         super.registerAttributes();
 
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.35F);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.335F);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(22.0D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
