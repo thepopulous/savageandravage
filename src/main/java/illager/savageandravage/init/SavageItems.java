@@ -29,6 +29,7 @@ public class SavageItems {
     public static final Item GUARD_HELM = new ItemGuardHelm(SavageArmorMaterial.GUARD_HELM, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.COMBAT));
     public static final Item CREEPER_SPORES = new CreeperSporeItem((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item GRIEFER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.GRIEFER_ILLAGER, 9804699, 0x403e43, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item POULTRYFARMER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -52,10 +53,11 @@ public class SavageItems {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> registry) {
 
-        register(registry, GUARD_ILLAGER_EGG, "guard_illager_egg");
+        register(registry, GUARD_ILLAGER_EGG, "guard_illager_spawnegg");
         register(registry, GUARD_HELM, "guard_helm");
         register(registry, CREEPER_SPORES, "creeper_spores");
         register(registry, GRIEFER_SPAWNEGG, "griefer_spawnegg");
+        register(registry, POULTRYFARMER_SPAWNEGG, "poultryfarmer_spawnegg");
     }
 
 }

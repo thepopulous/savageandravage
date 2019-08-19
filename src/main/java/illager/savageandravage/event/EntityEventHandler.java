@@ -2,6 +2,7 @@ package illager.savageandravage.event;
 
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.GuardIllagerEntity;
+import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -21,6 +22,7 @@ public class EntityEventHandler {
             AbstractVillagerEntity villager = (AbstractVillagerEntity) event.getEntity();
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GrieferIllagerEntity.class, 16.0F, 0.7D, 0.8D));
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GuardIllagerEntity.class, 16.0F, 0.7D, 0.8D));
+            villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, PoultryFarmerIllagerEntity.class, 16.0F, 0.65D, 0.75D));
         }
 
         if (event.getEntity() instanceof AbstractIllagerEntity && !(event.getEntity() instanceof EvokerEntity)) {

@@ -191,7 +191,6 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
             float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
             snowballentity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
 
-            this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.world.addEntity(snowballentity);
         }
     }

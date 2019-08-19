@@ -1,7 +1,7 @@
 package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Maps;
-import illager.savageandravage.SavageAndRavageCore;
+import illager.savageandravage.init.SavageLootTables;
 import illager.savageandravage.init.SavageSoundsRegister;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -292,7 +292,7 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
     @Nullable
     @Override
     protected ResourceLocation getLootTable() {
-        return SavageAndRavageCore.LOOT_TABLE;
+        return SavageLootTables.GUARD_ILLAGER;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -396,6 +396,7 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
     /**
      * Returns whether this Entity is on the same team as the given Entity.
      */
+    @Override
     public boolean isOnSameTeam(Entity entityIn) {
         if (super.isOnSameTeam(entityIn)) {
             return true;

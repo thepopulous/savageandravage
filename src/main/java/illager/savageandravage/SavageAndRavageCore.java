@@ -2,7 +2,7 @@ package illager.savageandravage;
 
 import illager.savageandravage.client.IllagerEntityRender;
 import illager.savageandravage.event.EntityEventHandler;
-import net.minecraft.util.ResourceLocation;
+import illager.savageandravage.init.SavageFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -14,8 +14,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod("savageandravage")
 public class SavageAndRavageCore {
     public static final String MODID = "savageandravage";
-
-    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(SavageAndRavageCore.MODID, "entity/guard_illager");
 
     public SavageAndRavageCore() {
         // Register the setup method for modloading
@@ -33,13 +31,13 @@ public class SavageAndRavageCore {
 
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
-
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
+
+        SavageFeatures.addStructureFeature();
     }
 
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
         IllagerEntityRender.entityRender();
     }
 
