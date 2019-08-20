@@ -1,32 +1,46 @@
 package illager.savageandravage.entity.illager;
 
+import illager.savageandravage.entity.ai.CropHarvestGoal;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+
 public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity implements IRangedAttackMob {
 
+    private final Inventory inventory = new Inventory(5);
 
     public PoultryFarmerIllagerEntity(EntityType<? extends PoultryFarmerIllagerEntity> type, World worldIn) {
         super(type, worldIn);
         ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
         this.experienceValue = 6;
+        this.setCanPickUpLoot(true);
     }
 
     @Override
@@ -34,9 +48,10 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(3, new MoveToHomeGoal(this, 5.0D, 0.85D));
+        this.goalSelector.addGoal(3, new MoveToHomeGoal(this, 18.0D, 0.85D));
         this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 60, 20.0F));
-        this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 0.75D));
+        this.goalSelector.addGoal(5, new CropHarvestGoal(this));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
@@ -86,12 +101,113 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
+    @Nullable
+    @Override
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        /*ChickenEntity chickenentity1 = EntityType.CHICKEN.create(this.world);
+        chickenentity1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+        chickenentity1.onInitialSpawn(worldIn, difficultyIn, SpawnReason.JOCKEY, (ILivingEntityData)null, (CompoundNBT)null);
+        worldIn.addEntity(chickenentity1);
+        chickenentity1.startRiding(this);*/
+        this.setEquipmentBasedOnDifficulty(difficultyIn);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.EGG));
     }
 
     @Override
-    public void setLeader(boolean p_213635_1_) {
+    protected void dropInventory() {
+        super.dropInventory();
+        if (this.inventory != null) {
+            for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
+                ItemStack itemstack = this.inventory.getStackInSlot(i);
+                if (!itemstack.isEmpty()) {
+                    this.entityDropItem(itemstack);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+
+        ListNBT listnbt = new ListNBT();
+
+        for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = this.inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty()) {
+                listnbt.add(itemstack.write(new CompoundNBT()));
+            }
+        }
+
+        compound.put("Inventory", listnbt);
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+
+        ListNBT listnbt = compound.getList("Inventory", 10);
+
+        for (int i = 0; i < listnbt.size(); ++i) {
+            ItemStack itemstack = ItemStack.read(listnbt.getCompound(i));
+            if (!itemstack.isEmpty()) {
+                this.inventory.addItem(itemstack);
+            }
+        }
+
+        this.setCanPickUpLoot(true);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    protected void updateEquipmentIfNeeded(ItemEntity itemEntity) {
+        ItemStack itemstack = itemEntity.getItem();
+        Item item = itemstack.getItem();
+        if (this.isFoodsOrCrop(item)) {
+            ItemStack itemstack1 = this.inventory.addItem(itemstack);
+            if (itemstack1.isEmpty()) {
+                itemEntity.remove();
+            } else {
+                itemstack.setCount(itemstack1.getCount());
+            }
+        } else {
+            super.updateEquipmentIfNeeded(itemEntity);
+        }
+    }
+
+    private boolean isFoodsOrCrop(Item item) {
+        return item == Items.BREAD || item == Items.WHEAT || item == Items.WHEAT_SEEDS;
+    }
+
+
+    @Nullable
+    @Override
+    public Entity getControllingPassenger() {
+        return null;
+    }
+
+    @Override
+    public void updatePassenger(Entity passenger) {
+        super.updatePassenger(passenger);
+
+        if (passenger instanceof ChickenEntity || passenger instanceof IFlyingAnimal) {
+            Vec3d vec3d = this.getMotion();
+            if (!this.onGround && vec3d.y < 0.0D) {
+                this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
+                this.fallDistance = 0.0F;
+            }
+
+        }
+
     }
 
     @Override

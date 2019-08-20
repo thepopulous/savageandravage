@@ -13,6 +13,7 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.BarrelTileEntity;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
@@ -35,17 +36,15 @@ import java.util.Map;
 import java.util.Random;
 
 public class PoultryHousePieces {
-    private static final ResourceLocation poultry_house = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/poultry_house");
+    private static final ResourceLocation poultry_house = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house");
 
-    private static final ResourceLocation bigpoutry_farm = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/bigpoultry_farm");
+    private static final ResourceLocation bigpoutry_farm = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_crops");
 
     private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, BlockPos.ZERO, bigpoutry_farm, new BlockPos(3, 0, 3));
 
     public static void addStructure(TemplateManager p_207617_0_, BlockPos p_207617_1_, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_) {
-
-        p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, bigpoutry_farm, p_207617_1_, p_207617_2_, 0));
-
         p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house, p_207617_1_, p_207617_2_, 0));
+        p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, bigpoutry_farm, p_207617_1_, p_207617_2_, 0));
     }
 
 
@@ -100,11 +99,23 @@ public class PoultryHousePieces {
                 hunterIllager.enablePersistence();
                 hunterIllager.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
                 worldIn.addEntity(hunterIllager);
-            } else if ("Chest".equals(function)) {
+            } else if ("CropChest".equals(function)) {
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
                 TileEntity tileentity = worldIn.getTileEntity(pos.down());
                 if (tileentity instanceof ChestTileEntity) {
-                    ((ChestTileEntity) tileentity).setLootTable(SavageLootTables.POULTRY_HOUSE_CHEST, rand.nextLong());
+                    ((ChestTileEntity) tileentity).setLootTable(SavageLootTables.POULTRY_FARMER_CROP_CHEST, rand.nextLong());
+                }
+            } else if ("FoodBarrel".equals(function)) {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                TileEntity tileentity = worldIn.getTileEntity(pos.down());
+                if (tileentity instanceof BarrelTileEntity) {
+                    ((BarrelTileEntity) tileentity).setLootTable(SavageLootTables.POULTRY_HOUSE_FOOD_CHEST, rand.nextLong());
+                }
+            } else if ("PreciousChest".equals(function)) {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                TileEntity tileentity = worldIn.getTileEntity(pos.down());
+                if (tileentity instanceof ChestTileEntity) {
+                    ((ChestTileEntity) tileentity).setLootTable(SavageLootTables.POULTRY_HOUSE_PRECIOUS_CHEST, rand.nextLong());
                 }
             }
         }
