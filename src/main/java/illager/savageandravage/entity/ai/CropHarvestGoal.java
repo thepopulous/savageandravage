@@ -84,8 +84,9 @@ public class CropHarvestGoal extends MoveToBlockGoal {
     }
 
     public double getTargetDistanceSq() {
-        return 0.25D;
+        return 2.0D;
     }
+
 
     /**
      * Return true to set given position as destination

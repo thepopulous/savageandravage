@@ -134,7 +134,15 @@ public class PoultryHousePieces {
             boolean flag = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
 
             if (this.field_207615_d.equals(PoultryHousePieces.bigpoutry_farm)) {
-                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(7, 0, 8)));
+                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(11, 0, 10)));
+                BlockState blockstate = worldIn.getBlockState(blockpos3.down());
+                if (!blockstate.isAir()) {
+                    worldIn.setBlockState(blockpos3, Blocks.DIRT.getDefaultState(), 3);
+                }
+            }
+
+            if (this.field_207615_d.equals(PoultryHousePieces.poultry_house)) {
+                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(17, 0, 11)));
                 BlockState blockstate = worldIn.getBlockState(blockpos3.down());
                 if (!blockstate.isAir()) {
                     worldIn.setBlockState(blockpos3, Blocks.DIRT.getDefaultState(), 3);
