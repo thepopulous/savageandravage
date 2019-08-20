@@ -1,7 +1,9 @@
 package illager.savageandravage.entity.illager;
 
 import illager.savageandravage.entity.ai.CropHarvestGoal;
+import illager.savageandravage.entity.ai.OpenGateGoal;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
+import illager.savageandravage.entity.path.GroundFencePathNavigator;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -20,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -38,7 +40,7 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
 
     public PoultryFarmerIllagerEntity(EntityType<? extends PoultryFarmerIllagerEntity> type, World worldIn) {
         super(type, worldIn);
-        ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
+        ((GroundFencePathNavigator) this.getNavigator()).setBreakDoors(true);
         this.experienceValue = 6;
         this.setCanPickUpLoot(true);
     }
@@ -48,6 +50,7 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(2, new OpenGateGoal(this, true));
         this.goalSelector.addGoal(3, new MoveToHomeGoal(this, 18.0D, 0.85D));
         this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 60, 20.0F));
         this.goalSelector.addGoal(5, new CropHarvestGoal(this));
@@ -58,6 +61,10 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.targetSelector.addGoal(2, (new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true, true)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, true, true)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, true, true)).setUnseenMemoryTicks(300));
+    }
+
+    protected PathNavigator createNavigator(World worldIn) {
+        return new GroundFencePathNavigator(this, worldIn);
     }
 
     @Override
