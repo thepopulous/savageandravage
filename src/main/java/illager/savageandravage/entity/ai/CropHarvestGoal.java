@@ -20,7 +20,7 @@ public class CropHarvestGoal extends MoveToBlockGoal {
     private boolean canPlant;
 
     public CropHarvestGoal(PoultryFarmerIllagerEntity illagerIn) {
-        super(illagerIn, (double) 0.8F, 16);
+        super(illagerIn, (double) 0.7F, 16);
         this.illager = illagerIn;
     }
 

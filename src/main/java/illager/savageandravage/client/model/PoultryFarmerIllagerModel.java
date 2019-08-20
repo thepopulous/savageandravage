@@ -168,6 +168,17 @@ public class PoultryFarmerIllagerModel<T extends PoultryFarmerIllagerEntity> ext
             this.LeftArm.rotateAngleZ = -2.3561945F;
             this.LeftArm.rotateAngleY = 0.0F;
         }
+
+        if (!entityIn.getPassengers().isEmpty() && entityIn.getPassengers().get(0) != null) {
+            this.RightArm.rotateAngleX = (float) Math.PI;
+            this.LeftArm.rotateAngleX = (float) Math.PI;
+            this.RightArm.rotateAngleY = 0.0F;
+            this.RightArm.rotateAngleZ = 0.0F;
+            this.LeftArm.rotateAngleY = 0.0F;
+            this.LeftArm.rotateAngleZ = 0.0F;
+
+        }
+
     }
 
     private RendererModel getArm(HandSide p_191216_1_) {

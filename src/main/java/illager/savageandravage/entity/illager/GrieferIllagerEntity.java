@@ -181,17 +181,17 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
 
             this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
 
-            CreeperSporeEntity snowballentity = new CreeperSporeEntity(this.world, this);
+            CreeperSporeEntity spore = new CreeperSporeEntity(this.world, this);
 
             double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
             double d1 = target.posX - this.posX;
-            double d2 = d0 - snowballentity.posY;
+            double d2 = d0 - spore.posY;
             double d3 = target.posZ - this.posZ;
 
             float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
-            snowballentity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
+            spore.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
 
-            this.world.addEntity(snowballentity);
+            this.world.addEntity(spore);
         }
     }
 

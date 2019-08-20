@@ -6,6 +6,7 @@ import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.projectile.CreeperSporeEntity;
+import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,6 +20,7 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(CreepiesEntity.class, CreepiesRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GrieferIllagerEntity.class, GrieferIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, EmptyRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(FakeThrownRiderEntity.class, EmptyRender::new);
         RenderingRegistry.registerEntityRenderingHandler(PoultryFarmerIllagerEntity.class, PoultryFarmerIllagerRender::new);
     }
 }
