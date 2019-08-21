@@ -50,8 +50,8 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(1, new OpenGateGoal(this, true));
-        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 10.0D, 0.7D));
-        this.goalSelector.addGoal(3, new RangedAttackWithChickenGoal(this, 0.75D, 60, 16.0F));
+        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 18.0D, 0.7D));
+        this.goalSelector.addGoal(3, new RangedAttackWithChickenGoal(this, 0.75D, 60, 10.0F));
         this.goalSelector.addGoal(4, new WakeUpGoal(this));
         this.goalSelector.addGoal(5, new GotoBedGoal(this, 0.7D));
         this.goalSelector.addGoal(6, new CropHarvestGoal(this, 0.7D));
