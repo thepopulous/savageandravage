@@ -22,8 +22,8 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
 
         head = new RendererModel(this);
         head.setRotationPoint(0.0F, 24.0F, 0.0F);
-        head.cubeList.add(new ModelBox(head, 0, 0, -3.0F, -15.0F, -7.0F, 6, 8, 6, 0.0F, false));
-        head.cubeList.add(new ModelBox(head, 24, 0, -1.0F, -10.0F, -9.0F, 2, 4, 2, 0.0F, false));
+        head.cubeList.add(new ModelBox(head, 0, 0, -3.0F, -15.0F, -8.0F, 6, 8, 6, 0.0F, false));
+        head.cubeList.add(new ModelBox(head, 24, 0, -1.0F, -10.0F, -10.0F, 2, 4, 2, 0.0F, false));
 
         body = new RendererModel(this);
         body.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -33,14 +33,14 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
         body.cubeList.add(new ModelBox(body, 1, 14, -3.0F, -8.0F, 5.0F, 6, 0, 5, 0.0F, false));
 
         leg_right = new RendererModel(this);
-        leg_right.setRotationPoint(0.0F, 24.0F, 0.0F);
-        leg_right.cubeList.add(new ModelBox(leg_right, 28, 8, -3.0F, -4.0F, 1.0F, 1, 4, 1, 0.0F, false));
-        leg_right.cubeList.add(new ModelBox(leg_right, 22, 6, -4.0F, 0.0F, 0.0F, 3, 0, 2, 0.0F, false));
+        leg_right.setRotationPoint(-2.0F, 20.0F, 2.0F);
+        leg_right.cubeList.add(new ModelBox(leg_right, 28, 8, -1.0F, 0.0F, -1.0F, 1, 4, 1, 0.0F, false));
+        leg_right.cubeList.add(new ModelBox(leg_right, 22, 6, -2.0F, 4.0F, -2.0F, 3, 0, 2, 0.0F, false));
 
         leg_left = new RendererModel(this);
-        leg_left.setRotationPoint(0.0F, 24.0F, 0.0F);
-        leg_left.cubeList.add(new ModelBox(leg_left, 28, 8, 2.0F, -4.0F, 1.0F, 1, 4, 1, 0.0F, false));
-        leg_left.cubeList.add(new ModelBox(leg_left, 22, 6, 1.0F, 0.0F, 0.0F, 3, 0, 2, 0.0F, false));
+        leg_left.setRotationPoint(2.0F, 20.0F, 2.0F);
+        leg_left.cubeList.add(new ModelBox(leg_left, 28, 8, 0.0F, 0.0F, -1.0F, 1, 4, 1, 0.0F, false));
+        leg_left.cubeList.add(new ModelBox(leg_left, 22, 6, -1.0F, 4.0F, -2.0F, 3, 0, 2, 0.0F, false));
     }
 
     @Override
