@@ -3,7 +3,7 @@ package illager.savageandravage.client.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.client.model.CreepiesModel;
 import illager.savageandravage.client.render.layer.CreepiesChargeLayer;
-import illager.savageandravage.entity.CreepiesEntity;
+import illager.savageandravage.entity.CreepieEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<CreepiesEntity>> {
+public class CreepiesRender extends MobRenderer<CreepieEntity, CreepiesModel<CreepieEntity>> {
     private static final ResourceLocation CREEPER_TEXTURES = new ResourceLocation("textures/entity/creeper/creeper.png");
 
     public CreepiesRender(EntityRendererManager renderManagerIn) {
@@ -20,7 +20,7 @@ public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<Cr
         this.addLayer(new CreepiesChargeLayer(this));
     }
 
-    protected void preRenderCallback(CreepiesEntity entitylivingbaseIn, float partialTickTime) {
+    protected void preRenderCallback(CreepieEntity entitylivingbaseIn, float partialTickTime) {
         float f4 = 0.3F + entitylivingbaseIn.getGrowSize() * 0.05F;
 
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
@@ -33,7 +33,7 @@ public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<Cr
         GlStateManager.scalef(f2 * f4, f3 * f4, f2 * f4);
     }
 
-    protected int getColorMultiplier(CreepiesEntity entitylivingbaseIn, float lightBrightness, float partialTickTime) {
+    protected int getColorMultiplier(CreepieEntity entitylivingbaseIn, float lightBrightness, float partialTickTime) {
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
         if ((int) (f * 10.0F) % 2 == 0) {
             return 0;
@@ -44,7 +44,7 @@ public class CreepiesRender extends MobRenderer<CreepiesEntity, CreepiesModel<Cr
         }
     }
 
-    protected ResourceLocation getEntityTexture(CreepiesEntity entity) {
+    protected ResourceLocation getEntityTexture(CreepieEntity entity) {
         return CREEPER_TEXTURES;
     }
 }

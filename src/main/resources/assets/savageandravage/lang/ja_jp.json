@@ -1,8 +1,8 @@
 {
-  "entity.savageandravage.creepies": "クリーピー",
+  "entity.savageandravage.creepie": "クリーピー",
   "entity.savageandravage.griefer_illager": "グリファー",
   "entity.savageandravage.guard_illager": "守護者のIllager",
-  "entity.savageandravage.poultryfarmer_illager": "鶏農家のIllager",
+  "entity.savageandravage.poultry_farmer": "鶏農家のIllager",
   "item.savageandravage.guard_illager_spawnegg": "守護者のIllagerのスポーンエッグ",
   "item.savageandravage.guard_helm": "守護者のIllagerのヘルメット",
   "item.savageandravage.creeper_spores": "クリーパーの粉",

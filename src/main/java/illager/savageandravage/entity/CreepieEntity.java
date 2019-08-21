@@ -35,11 +35,11 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
 
-public class CreepiesEntity extends MonsterEntity {
-    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepiesEntity.class, DataSerializers.BOOLEAN);
+public class CreepieEntity extends MonsterEntity {
+    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
     private int lastActiveTime;
     private int timeSinceIgnited;
     private int fuseTime = 10;
@@ -49,7 +49,7 @@ public class CreepiesEntity extends MonsterEntity {
     private LivingEntity owner;
     private UUID ownerUniqueId;
 
-    public CreepiesEntity(EntityType<? extends CreepiesEntity> type, World worldIn) {
+    public CreepieEntity(EntityType<? extends CreepieEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -58,7 +58,7 @@ public class CreepiesEntity extends MonsterEntity {
         this.goalSelector.addGoal(2, new CreepiesSwellGoal(this));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, OcelotEntity.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, CatEntity.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.15D, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
@@ -227,8 +227,8 @@ public class CreepiesEntity extends MonsterEntity {
     protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
         super.dropSpecialItems(source, looting, recentlyHitIn);
         Entity entity = source.getTrueSource();
-        if (entity != this && entity instanceof CreepiesEntity) {
-            CreepiesEntity creeperentity = (CreepiesEntity) entity;
+        if (entity != this && entity instanceof CreepieEntity) {
+            CreepieEntity creeperentity = (CreepieEntity) entity;
             if (creeperentity.ableToCauseSkullDrop()) {
                 creeperentity.incrementDroppedSkulls();
                 this.entityDropItem(Items.CREEPER_HEAD);
@@ -392,7 +392,7 @@ public class CreepiesEntity extends MonsterEntity {
 
             if (target == owner) {
                 return false;
-            } else if (target instanceof CreepiesEntity && ((CreepiesEntity) target).getOwner() == owner) {
+            } else if (target instanceof CreepieEntity && ((CreepieEntity) target).getOwner() == owner) {
                 return false;
             } else if (owner.isOnSameTeam(target)) {
                 return false;
@@ -420,23 +420,23 @@ public class CreepiesEntity extends MonsterEntity {
          * Returns whether the EntityAIBase should begin execution.
          */
         public boolean shouldExecute() {
-            LivingEntity livingentity = CreepiesEntity.this.getOwner();
+            LivingEntity livingentity = CreepieEntity.this.getOwner();
             if (livingentity != null) {
 
                 this.attacker = livingentity.getRevengeTarget();
-                CreepiesEntity.this.setAttackTarget(attacker);
+                CreepieEntity.this.setAttackTarget(attacker);
 
                 if (this.attacker == null) {
                     if (livingentity instanceof MobEntity) {
                         this.attacker = ((MobEntity) livingentity).getAttackTarget();
 
-                        return this.attacker != CreepiesEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepiesEntity.this.shouldAttackEntity(this.attacker, livingentity);
+                        return this.attacker != CreepieEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepieEntity.this.shouldAttackEntity(this.attacker, livingentity);
                     } else {
                         this.attacker = livingentity.getLastAttackedEntity();
-                        return this.attacker != CreepiesEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepiesEntity.this.shouldAttackEntity(this.attacker, livingentity);
+                        return this.attacker != CreepieEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepieEntity.this.shouldAttackEntity(this.attacker, livingentity);
                     }
                 } else {
-                    return this.attacker != CreepiesEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepiesEntity.this.shouldAttackEntity(this.attacker, livingentity);
+                    return this.attacker != CreepieEntity.this && this.isSuitableTarget(this.attacker, field_220803_b) && CreepieEntity.this.shouldAttackEntity(this.attacker, livingentity);
                 }
 
             }
@@ -450,7 +450,7 @@ public class CreepiesEntity extends MonsterEntity {
         public void startExecuting() {
             super.startExecuting();
 
-            CreepiesEntity.this.setAttackTarget(attacker);
+            CreepieEntity.this.setAttackTarget(attacker);
         }
     }
 }

@@ -1,6 +1,6 @@
 package illager.savageandravage.entity.projectile;
 
-import illager.savageandravage.entity.CreepiesEntity;
+import illager.savageandravage.entity.CreepieEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
 import net.minecraft.entity.*;
@@ -81,11 +81,11 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
     private void spawnCreepies() {
         if (!this.world.isRemote) {
 
-            CreepiesEntity creepiesEntity = SavageEntityRegistry.CREEPIES.create(this.world);
-            creepiesEntity.setLocationAndAngles(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), 0.0F, 0.0F);
-            creepiesEntity.setOwner(this.getThrower());
+            CreepieEntity creepieEntity = SavageEntityRegistry.CREEPIES.create(this.world);
+            creepieEntity.setLocationAndAngles(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), 0.0F, 0.0F);
+            creepieEntity.setOwner(this.getThrower());
 
-            this.world.addEntity(creepiesEntity);
+            this.world.addEntity(creepieEntity);
 
             AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
 

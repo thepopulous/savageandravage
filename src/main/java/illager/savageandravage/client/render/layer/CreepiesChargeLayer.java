@@ -2,7 +2,7 @@ package illager.savageandravage.client.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.client.model.CreepiesModel;
-import illager.savageandravage.entity.CreepiesEntity;
+import illager.savageandravage.entity.CreepieEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -12,15 +12,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CreepiesChargeLayer extends LayerRenderer<CreepiesEntity, CreepiesModel<CreepiesEntity>> {
+public class CreepiesChargeLayer extends LayerRenderer<CreepieEntity, CreepiesModel<CreepieEntity>> {
     private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
-    private final CreepiesModel<CreepiesEntity> creeperModel = new CreepiesModel<>(2.0F);
+    private final CreepiesModel<CreepieEntity> creeperModel = new CreepiesModel<>(2.0F);
 
-    public CreepiesChargeLayer(IEntityRenderer<CreepiesEntity, CreepiesModel<CreepiesEntity>> p_i50947_1_) {
+    public CreepiesChargeLayer(IEntityRenderer<CreepieEntity, CreepiesModel<CreepieEntity>> p_i50947_1_) {
         super(p_i50947_1_);
     }
 
-    public void render(CreepiesEntity entityIn, float p_212842_2_, float p_212842_3_, float p_212842_4_, float p_212842_5_, float p_212842_6_, float p_212842_7_, float p_212842_8_) {
+    public void render(CreepieEntity entityIn, float p_212842_2_, float p_212842_3_, float p_212842_4_, float p_212842_5_, float p_212842_6_, float p_212842_7_, float p_212842_8_) {
         if (entityIn.getPowered()) {
             boolean flag = entityIn.isInvisible();
             GlStateManager.depthMask(!flag);

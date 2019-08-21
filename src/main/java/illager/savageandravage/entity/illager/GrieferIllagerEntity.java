@@ -1,7 +1,7 @@
 package illager.savageandravage.entity.illager;
 
 import com.google.common.collect.Lists;
-import illager.savageandravage.entity.CreepiesEntity;
+import illager.savageandravage.entity.CreepieEntity;
 import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
 import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.init.SavageItems;
@@ -174,7 +174,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        int i = this.world.getTargettableEntitiesWithinAABB(CreepiesEntity.class, this.field_220843_e, this, this.getBoundingBox().grow(30.0D)).size();
+        int i = this.world.getTargettableEntitiesWithinAABB(CreepieEntity.class, this.field_220843_e, this, this.getBoundingBox().grow(30.0D)).size();
 
         if (i < 5) {
             this.swingArm(Hand.MAIN_HAND);
