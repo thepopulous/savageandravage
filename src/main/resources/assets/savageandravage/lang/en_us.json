@@ -1,14 +1,14 @@
 {
-  "entity.savageandravage.creepies": "Creepies",
+  "entity.savageandravage.creepie": "Creepie",
   "entity.savageandravage.griefer_illager": "Griefer Illager",
   "entity.savageandravage.guard_illager": "Guard Illager",
-  "entity.savageandravage.poultryfarmer_illager": "PoutryFarmer Illager",
+  "entity.savageandravage.poultryfarmer_illager": "Poutry Farmer",
   "item.savageandravage.creeper_spores": "Creeper Spores",
-  "item.savageandravage.griefer_spawnegg": "Griefer SpawnEgg",
+  "item.savageandravage.griefer_spawnegg": "Griefer Spawn Egg",
   "item.savageandravage.guard_illager_spawnegg": "Guard Illager Spawn Egg",
-  "item.savageandravage.poultryfarmer_spawnegg": "PoultryFarmer Illager Spawn Egg",
+  "item.savageandravage.poultryfarmer_spawnegg": "Poultry Farmer Spawn Egg",
   "item.savageandravage.guard_helm": "Guard's Helm",
-  "savageandravage:subtitles.guardillager.ambient": "GuardIllager murmur",
-  "savageandravage:subtitles.guardillager.hurt": "GuardIllager hurts",
-  "savageandravage:subtitles.guardillager.die": "GuardIllager die"
+  "savageandravage:subtitles.guardillager.ambient": "Guard Illager murmur",
+  "savageandravage:subtitles.guardillager.hurt": "Guard Illager hurts",
+  "savageandravage:subtitles.guardillager.die": "Guard Illager death"
 }
