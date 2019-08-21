@@ -27,7 +27,6 @@ public class CreepiesSwellGoal extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     public void startExecuting() {
-        this.field_75269_a.getNavigator().clearPath();
         this.field_75268_b = this.field_75269_a.getAttackTarget();
     }
 

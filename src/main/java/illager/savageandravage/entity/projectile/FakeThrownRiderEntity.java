@@ -50,6 +50,7 @@ public class FakeThrownRiderEntity extends ProjectileItemEntity {
 
             entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) 4);
         }
+        this.remove();
     }
 
     @Override

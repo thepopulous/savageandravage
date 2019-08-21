@@ -19,8 +19,8 @@ public class CropHarvestGoal extends MoveToBlockGoal {
     private boolean canHarvest;
     private boolean canPlant;
 
-    public CropHarvestGoal(PoultryFarmerIllagerEntity illagerIn) {
-        super(illagerIn, (double) 0.7F, 16);
+    public CropHarvestGoal(PoultryFarmerIllagerEntity illagerIn, double speed) {
+        super(illagerIn, speed, 16);
         this.illager = illagerIn;
     }
 

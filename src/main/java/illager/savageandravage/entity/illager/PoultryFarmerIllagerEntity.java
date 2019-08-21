@@ -1,8 +1,6 @@
 package illager.savageandravage.entity.illager;
 
-import illager.savageandravage.entity.ai.CropHarvestGoal;
-import illager.savageandravage.entity.ai.OpenGateGoal;
-import illager.savageandravage.entity.ai.RangedAttackWithChickenGoal;
+import illager.savageandravage.entity.ai.*;
 import illager.savageandravage.entity.path.GroundFencePathNavigator;
 import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import illager.savageandravage.init.SavageLootTables;
@@ -50,11 +48,13 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(2, new OpenGateGoal(this, true));
-        this.goalSelector.addGoal(3, new MoveToHomeGoal(this, 18.0D, 0.7D));
-        this.goalSelector.addGoal(4, new RangedAttackWithChickenGoal(this, 0.75D, 60, 16.5F));
-        this.goalSelector.addGoal(5, new CropHarvestGoal(this));
+        this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(1, new OpenGateGoal(this, true));
+        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 18.0D, 0.7D));
+        this.goalSelector.addGoal(3, new RangedAttackWithChickenGoal(this, 0.75D, 60, 16.0F));
+        this.goalSelector.addGoal(4, new WakeUpGoal(this));
+        this.goalSelector.addGoal(5, new GotoBedGoal(this, 0.7D));
+        this.goalSelector.addGoal(6, new CropHarvestGoal(this, 0.7D));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.7D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
@@ -109,6 +109,14 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
 
+ /*   @Override
+    public void tick() {
+        super.tick();
+        if((this.world.isDaytime() || this.getAttackTarget() != null) && this.isSleeping()){
+            this.wakeUp();
+        }
+    }*/
+
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
@@ -123,19 +131,6 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
 
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.EGG));
-    }
-
-    @Override
-    protected void dropInventory() {
-        super.dropInventory();
-        if (this.inventory != null) {
-            for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
-                ItemStack itemstack = this.inventory.getStackInSlot(i);
-                if (!itemstack.isEmpty()) {
-                    this.entityDropItem(itemstack);
-                }
-            }
-        }
     }
 
     @Override
@@ -196,16 +191,6 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         return item == Items.BREAD || item == Items.WHEAT || item == Items.WHEAT_SEEDS;
     }
 
-
-    @Nullable
-    @Override
-    public Entity getControllingPassenger() {
-        return null;
-    }
-
-    public boolean canBeSteered() {
-        return false;
-    }
 
     public double getMountedYOffset() {
         return 1.95D;

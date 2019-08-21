@@ -300,10 +300,9 @@ public class CreepiesEntity extends MonsterEntity {
      */
     private void explode() {
         if (!this.world.isRemote) {
-            Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
             float f = this.getPowered() ? 2.0F * this.getRenderScale() : 1.0F * this.getRenderScale();
             this.dead = true;
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, explosion$mode);
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, Explosion.Mode.NONE);
             this.remove();
             this.spawnLingeringCloud();
         }
