@@ -30,6 +30,7 @@ public class SavageItems {
     public static final Item CREEPER_SPORES = new CreeperSporeItem((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item GRIEFER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.GRIEFER_ILLAGER, 9804699, 0x403e43, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRYFARMER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item SAVAGELING_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SAVAGELING, 9804699, 9804690, (new Item.Properties()).group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -58,6 +59,7 @@ public class SavageItems {
         register(registry, CREEPER_SPORES, "creeper_spores");
         register(registry, GRIEFER_SPAWNEGG, "griefer_spawnegg");
         register(registry, POULTRYFARMER_SPAWNEGG, "poultryfarmer_spawnegg");
+        register(registry, SAVAGELING_SPAWNEGG, "savageling_spawnegg");
     }
 
 }

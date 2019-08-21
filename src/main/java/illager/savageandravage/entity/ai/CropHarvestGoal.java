@@ -41,16 +41,10 @@ public class CropHarvestGoal extends MoveToBlockGoal {
         return super.shouldExecute();
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean shouldContinueExecuting() {
         return (this.canHarvest || this.canPlant) && super.shouldContinueExecuting();
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
     public void tick() {
         super.tick();
         this.illager.getLookController().setLookPosition((double) this.destinationBlock.getX() + 0.5D, (double) (this.destinationBlock.getY() + 1), (double) this.destinationBlock.getZ() + 0.5D, 10.0F, (float) this.illager.getVerticalFaceSpeed());
@@ -88,8 +82,8 @@ public class CropHarvestGoal extends MoveToBlockGoal {
     }
 
 
-    /**
-     * Return true to set given position as destination
+    /*
+     *  Find a not planted farmland or crop
      */
     protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
         Block block = worldIn.getBlockState(pos).getBlock();

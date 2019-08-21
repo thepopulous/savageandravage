@@ -33,23 +33,21 @@ public class GotoBedGoal extends MoveToBlockGoal {
         return !this.illager.world.isDaytime() && (!this.illager.isSleeping() || this.sleepTick < 10 && this.illager.isSleeping() || illager.posY > (double) blockpos.getY() + 0.4D && blockpos.withinDistance(illager.getPositionVec(), 1.14D) && this.illager.isSleeping());
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+
     public void startExecuting() {
         super.startExecuting();
         this.sleepTick = 0;
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
     public void resetTask() {
         super.resetTask();
         this.illager.wakeUp();
         this.sleepTick = 0;
     }
 
+    /*
+     *  when moved Finded bed, he going to sleep
+     */
     @Override
     public void tick() {
         super.tick();

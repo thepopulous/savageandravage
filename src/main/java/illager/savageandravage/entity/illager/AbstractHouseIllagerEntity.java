@@ -68,9 +68,7 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             AbstractHouseIllagerEntity.this.navigator.clearPath();
         }
 
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
+
         public boolean shouldExecute() {
             BlockPos blockpos = this.illager.getIllagerHome();
             return blockpos != null && this.func_220846_a(blockpos, this.distance);
@@ -82,9 +80,7 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             return blockpos != null && this.func_220846_a(blockpos, this.distance * 0.85F);
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
+
         public void tick() {
             BlockPos blockpos = this.illager.getIllagerHome();
             if (blockpos != null && AbstractHouseIllagerEntity.this.navigator.noPath()) {
@@ -112,16 +108,11 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public void resetTask() {
             AbstractHouseIllagerEntity.this.navigator.clearPath();
         }
 
-        /**
-         * Returns whether the EntityAIBase should begin execution.
-         */
+
         public boolean shouldExecute() {
             BlockPos blockpos = this.illager.getIllagerHome();
 
@@ -135,9 +126,7 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             return blockpos != null && this.func_220846_a(blockpos, this.illager.world.isDaytime() ? this.distance * 0.8F : this.distance * 0.5F);
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
+
         public void tick() {
             BlockPos blockpos = this.illager.getIllagerHome();
             if (blockpos != null && AbstractHouseIllagerEntity.this.navigator.noPath()) {

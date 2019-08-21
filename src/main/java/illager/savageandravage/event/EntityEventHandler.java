@@ -54,7 +54,7 @@ public class EntityEventHandler {
     @SubscribeEvent
     public void onEntityHurt(LivingHurtEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
-        if (event.getSource().getImmediateSource() instanceof EggEntity) {
+        if (event.getSource().getImmediateSource() instanceof EggEntity && !(livingEntity instanceof SavagelingEntity)) {
             for (SavagelingEntity savageling : livingEntity.world.getEntitiesWithinAABB(SavagelingEntity.class, livingEntity.getBoundingBox().grow(20.0D))) {
                 savageling.setAttackTarget(livingEntity);
             }

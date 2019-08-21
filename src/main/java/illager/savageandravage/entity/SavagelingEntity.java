@@ -43,7 +43,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.1D, false));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.15D, false));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, false, TEMPTATION_ITEMS));
         this.goalSelector.addGoal(7, new FollowPlayerAndIllagerGoal(this, 1.0D, 2.5F, 12.0F));
@@ -51,7 +51,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setCallsForHelp());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChickenEntity.class, true));
     }
 
