@@ -18,7 +18,7 @@ import static illager.savageandravage.SavageAndRavageCore.MODID;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SavageEntityRegistry extends ForgeRegistryEntry<SavageEntityRegistry> {
 
-    public static final EntityType<CreepiesEntity> CREEPIES = EntityType.Builder.create(CreepiesEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.7F).build(prefix("creepies"));
+    public static final EntityType<CreepiesEntity> CREEPIES = EntityType.Builder.create(CreepiesEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.7F).build(prefix("creepie"));
     public static final EntityType<GrieferIllagerEntity> GRIEFER_ILLAGER = EntityType.Builder.create(GrieferIllagerEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 2.05F).build(prefix("griefer_illager"));
     public static final EntityType<GuardIllagerEntity> GUARD_ILLAGER = EntityType.Builder.create(GuardIllagerEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("guard_ilager"));
     public static final EntityType<CreeperSporeEntity> CREEPER_SPORE = EntityType.Builder.<CreeperSporeEntity>create(CreeperSporeEntity::new, EntityClassification.MISC).setTrackingRange(100).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).setCustomClientFactory(CreeperSporeEntity::new).size(0.25F, 0.25F).build(prefix("creeper_spore"));
@@ -33,10 +33,10 @@ public class SavageEntityRegistry extends ForgeRegistryEntry<SavageEntityRegistr
     @SubscribeEvent
     public static void registerEntity(RegistryEvent.Register<EntityType<?>> event) {
 		event.getRegistry().register(GUARD_ILLAGER.setRegistryName("guard_illager"));
-        event.getRegistry().register(CREEPIES.setRegistryName("creepies"));
+        event.getRegistry().register(CREEPIES.setRegistryName("creepie"));
         event.getRegistry().register(GRIEFER_ILLAGER.setRegistryName("griefer_illager"));
         event.getRegistry().register(CREEPER_SPORE.setRegistryName("creeper_spore"));
-        event.getRegistry().register(POULTRY_FARMER.setRegistryName("poultryfarmer_illager"));
+        event.getRegistry().register(POULTRY_FARMER.setRegistryName("poultry_farmer"));
         event.getRegistry().register(FAKE_THROWN_RIDER.setRegistryName("fakethrown_rider"));
     }
 }
