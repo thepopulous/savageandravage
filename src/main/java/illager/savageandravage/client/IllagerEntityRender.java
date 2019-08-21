@@ -2,6 +2,7 @@ package illager.savageandravage.client;
 
 import illager.savageandravage.client.render.*;
 import illager.savageandravage.entity.CreepieEntity;
+import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
@@ -22,5 +23,6 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, EmptyRender::new);
         RenderingRegistry.registerEntityRenderingHandler(FakeThrownRiderEntity.class, EmptyRender::new);
         RenderingRegistry.registerEntityRenderingHandler(PoultryFarmerIllagerEntity.class, PoultryFarmerIllagerRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(SavagelingEntity.class, SavagelingRender::new);
     }
 }
