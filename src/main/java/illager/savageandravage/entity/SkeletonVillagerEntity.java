@@ -1,7 +1,7 @@
 package illager.savageandravage.entity;
 
 import illager.savageandravage.api.entity.ArmPose;
-import illager.savageandravage.api.entity.ICrossArm;
+import illager.savageandravage.api.entity.IEntityArm;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.*;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements ICrossbowUser, ICrossArm {
+public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements ICrossbowUser, IEntityArm {
     private final RangedBowAttackGoal<SkeletonVillagerEntity> aiArrowAttack = new RangedBowAttackGoal<>(this, 1.0D, 20, 16.0F);
     private final MeleeAttackGoal aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false) {
         /**
