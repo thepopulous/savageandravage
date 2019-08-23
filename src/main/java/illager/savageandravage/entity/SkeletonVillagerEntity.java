@@ -52,6 +52,7 @@ public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements IC
     public SkeletonVillagerEntity(EntityType<? extends SkeletonVillagerEntity> type, World world) {
         super(type, world);
         this.setCombatTask();
+        this.experienceValue = 5;
     }
 
     protected void registerData() {

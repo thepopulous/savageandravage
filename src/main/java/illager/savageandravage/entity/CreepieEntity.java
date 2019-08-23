@@ -51,6 +51,7 @@ public class CreepieEntity extends MonsterEntity {
 
     public CreepieEntity(EntityType<? extends CreepieEntity> type, World worldIn) {
         super(type, worldIn);
+        this.experienceValue = 0;
     }
 
     protected void registerGoals() {

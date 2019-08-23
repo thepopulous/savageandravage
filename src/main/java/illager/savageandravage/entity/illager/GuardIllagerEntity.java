@@ -249,6 +249,13 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
 
     }
 
+    protected int getExperiencePoints(PlayerEntity player) {
+        this.experienceValue = (int) ((float) this.experienceValue + getGuardLevel());
+
+
+        return super.getExperiencePoints(player);
+    }
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;

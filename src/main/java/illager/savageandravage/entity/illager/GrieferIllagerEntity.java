@@ -51,7 +51,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
     public GrieferIllagerEntity(EntityType<? extends GrieferIllagerEntity> type, World worldIn) {
         super(type, worldIn);
         ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
-        this.experienceValue = 6;
+        this.experienceValue = 5;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, GrieferIllagerEntity.class)).setCallsForHelp());
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
         this.targetSelector.addGoal(2, (new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(3, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, false)).setUnseenMemoryTicks(300));
