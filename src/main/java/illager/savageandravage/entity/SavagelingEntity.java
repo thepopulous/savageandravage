@@ -1,5 +1,6 @@
 package illager.savageandravage.entity;
 
+import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
 import illager.savageandravage.entity.ai.FollowPlayerAndIllagerGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.block.BlockState;
@@ -44,10 +45,11 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.15D, false));
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, false, TEMPTATION_ITEMS));
+        this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.15D, false));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 1.0D, false, TEMPTATION_ITEMS));
+        this.goalSelector.addGoal(6, new FollowHeldHatPlayer(this, 1.0D, 2.5F, 7.0F));
         this.goalSelector.addGoal(7, new FollowPlayerAndIllagerGoal(this, 1.0D, 2.5F, 7.0F));
         this.goalSelector.addGoal(7, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
