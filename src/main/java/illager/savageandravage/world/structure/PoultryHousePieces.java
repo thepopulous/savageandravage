@@ -2,6 +2,7 @@ package illager.savageandravage.world.structure;
 
 import com.google.common.collect.ImmutableMap;
 import illager.savageandravage.SavageAndRavageCore;
+import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageFeatures;
@@ -37,13 +38,18 @@ import java.util.Random;
 
 public class PoultryHousePieces {
     private static final ResourceLocation poultry_house = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house");
+    private static final ResourceLocation poultry_house_savageling = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house_savageling");
 
     private static final ResourceLocation bigpoutry_farm = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_crops");
 
-    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, BlockPos.ZERO, bigpoutry_farm, new BlockPos(3, 0, 3));
+    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, new BlockPos(19, 0, 13), poultry_house_savageling, new BlockPos(21, -5, 16), bigpoutry_farm, new BlockPos(11, 0, 10));
 
     public static void addStructure(TemplateManager p_207617_0_, BlockPos p_207617_1_, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_) {
-        p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house, p_207617_1_, p_207617_2_, 0));
+        if (p_207617_4_.nextDouble() < 0.3D) {
+            p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house_savageling, p_207617_1_, p_207617_2_, 0));
+        } else {
+            p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house, p_207617_1_, p_207617_2_, 0));
+        }
         p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, bigpoutry_farm, p_207617_1_, p_207617_2_, 0));
     }
 
@@ -86,19 +92,26 @@ public class PoultryHousePieces {
         protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
             if ("Illager".equals(function)) {
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-                PoultryFarmerIllagerEntity hunterIllager = SavageEntityRegistry.POULTRY_FARMER.create(worldIn.getWorld());
-                hunterIllager.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
-                hunterIllager.enablePersistence();
-                hunterIllager.setIllagerHome(pos);
-                hunterIllager.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
-                worldIn.addEntity(hunterIllager);
+                PoultryFarmerIllagerEntity illager = SavageEntityRegistry.POULTRY_FARMER.create(worldIn.getWorld());
+                illager.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
+                illager.enablePersistence();
+                illager.setIllagerHome(pos);
+                illager.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
+                worldIn.addEntity(illager);
             } else if ("Chicken".equals(function)) {
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-                ChickenEntity hunterIllager = EntityType.CHICKEN.create(worldIn.getWorld());
-                hunterIllager.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
-                hunterIllager.enablePersistence();
-                hunterIllager.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
-                worldIn.addEntity(hunterIllager);
+                ChickenEntity chicken = EntityType.CHICKEN.create(worldIn.getWorld());
+                chicken.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
+                chicken.enablePersistence();
+                chicken.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
+                worldIn.addEntity(chicken);
+            } else if ("Savageling".equals(function)) {
+                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+                SavagelingEntity savageling = SavageEntityRegistry.SAVAGELING.create(worldIn.getWorld());
+                savageling.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
+                savageling.enablePersistence();
+                savageling.onInitialSpawn(worldIn, worldIn.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, (ILivingEntityData) null, (CompoundNBT) null);
+                worldIn.addEntity(savageling);
             } else if ("CropChest".equals(function)) {
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
                 TileEntity tileentity = worldIn.getTileEntity(pos.down());
@@ -127,28 +140,19 @@ public class PoultryHousePieces {
         public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_) {
             PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.field_207616_e).setMirror(Mirror.NONE).setCenterOffset(PoultryHousePieces.structurePos.get(this.field_207615_d)).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
             BlockPos blockpos = PoultryHousePieces.structurePos.get(this.field_207615_d);
-            BlockPos blockpos1 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(3 - blockpos.getX(), 0, 0 - blockpos.getZ())));
+            BlockPos blockpos1 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(blockpos.getX(), 0, blockpos.getX())));
             int i = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, blockpos1.getX(), blockpos1.getZ());
             BlockPos blockpos2 = this.templatePosition;
             this.templatePosition = this.templatePosition.add(0, i - 90 - 1, 0);
             boolean flag = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
 
             if (this.field_207615_d.equals(PoultryHousePieces.bigpoutry_farm)) {
-                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(11, 0, 10)));
+                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(18, 0, 0)));
                 BlockState blockstate = worldIn.getBlockState(blockpos3.down());
                 if (!blockstate.isAir()) {
                     worldIn.setBlockState(blockpos3, Blocks.DIRT.getDefaultState(), 3);
                 }
             }
-
-            if (this.field_207615_d.equals(PoultryHousePieces.poultry_house)) {
-                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(17, 0, 11)));
-                BlockState blockstate = worldIn.getBlockState(blockpos3.down());
-                if (!blockstate.isAir()) {
-                    worldIn.setBlockState(blockpos3, Blocks.DIRT.getDefaultState(), 3);
-                }
-            }
-
 
             this.templatePosition = blockpos2;
             return flag;

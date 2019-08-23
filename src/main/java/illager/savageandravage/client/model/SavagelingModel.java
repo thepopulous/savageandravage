@@ -63,7 +63,8 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
         this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
         this.head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
 
-        this.jaw.copyModelAngles(this.head);
+        this.jaw.rotateAngleX = entityIn.isAggressive() ? headPitch * ((float) Math.PI / 180F) + 0.3F : headPitch * ((float) Math.PI / 180F);
+        this.jaw.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
 
         this.leg_right.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
