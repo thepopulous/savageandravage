@@ -47,6 +47,27 @@
           ]
         }
       ]
+    },
+    {
+      "name": "hat",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "savageandravage:poultry_farmer_hat",
+          "weight": 1,
+          "conditions": [
+            {
+              "condition": "killed_by_player"
+            },
+            {
+              "condition": "random_chance_with_looting",
+              "chance": 0.06,
+              "looting_multiplier": 0.01
+            }
+          ]
+        }
+      ]
     }
   ]
 }

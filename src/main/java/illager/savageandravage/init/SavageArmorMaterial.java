@@ -17,6 +17,13 @@ public class SavageArmorMaterial {
 		.withEnchantability(12)
 		.withRepairMaterial(Ingredient.fromItems(Items.IRON_INGOT))
 		.build();
+    public static final IArmorMaterial POULTRY_FARMER_HAT = new Builder()
+            .withName(SavageAndRavageCore.MODID + ":poultry_farmer_hat")
+            .withDurabilityFactor(9)
+            .withDamageReductionAmounts(new int[]{2, 3, 3, 2})
+            .withEnchantability(16)
+            .withRepairMaterial(Ingredient.fromItems(Items.GRASS))
+            .build();
 
 	private static class Builder {
 		private String name;

@@ -1,5 +1,6 @@
 package illager.savageandravage.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.client.model.SavagelingModel;
 import illager.savageandravage.entity.SavagelingEntity;
@@ -17,6 +18,11 @@ public class SavagelingRender<T extends SavagelingEntity> extends MobRenderer<T,
         super(p_i50959_1_, new SavagelingModel<>(), 0.3F);
     }
 
+    protected void preRenderCallback(SavagelingEntity entitylivingbaseIn, float partialTickTime) {
+        float f = entitylivingbaseIn.getRenderScale();
+
+        GlStateManager.scalef(f, f, f);
+    }
 
     protected ResourceLocation getEntityTexture(SavagelingEntity entity) {
         return TEXTURES;
