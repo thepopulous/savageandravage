@@ -23,26 +23,24 @@ public class GotoBedGoal extends MoveToBlockGoal {
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute() {
-        return !this.illager.isBeingRidden() && !this.illager.world.isDaytime() && this.illager.getAttackTarget() == null && super.shouldExecute();
+        return !this.illager.isBeingRidden() && this.illager.getRaid() == null && !this.illager.world.isDaytime() && this.illager.getAttackTarget() == null && super.shouldExecute();
     }
 
     @Override
     public boolean shouldContinueExecuting() {
         BlockPos blockpos = new BlockPos(destinationBlock.getX(), destinationBlock.getY(), destinationBlock.getZ());
 
-        return !this.illager.world.isDaytime() && (!this.illager.isSleeping() || this.sleepTick < 10 && this.illager.isSleeping() || illager.posY > (double) blockpos.getY() + 0.4D && blockpos.withinDistance(illager.getPositionVec(), 1.14D) && this.illager.isSleeping());
+        return !this.illager.world.isDaytime() && this.illager.getRaid() == null && (illager.posY > (double) blockpos.getY() + 0.4D && blockpos.withinDistance(illager.getPositionVec(), 1.14D) && this.illager.isSleeping() && this.illager.getBedPosition().isPresent());
     }
 
 
     public void startExecuting() {
         super.startExecuting();
-        this.sleepTick = 0;
     }
 
     public void resetTask() {
         super.resetTask();
         this.illager.wakeUp();
-        this.sleepTick = 0;
     }
 
     /*
@@ -58,14 +56,6 @@ public class GotoBedGoal extends MoveToBlockGoal {
 
             if (this.getIsAboveDestination()) {
                 this.illager.startSleeping(this.destinationBlock);
-            }
-
-
-            this.sleepTick = 0;
-
-        } else {
-            if (this.sleepTick <= 10) {
-                this.sleepTick++;
             }
         }
     }
