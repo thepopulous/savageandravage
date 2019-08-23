@@ -16,7 +16,7 @@ public class PoultryFarmerHatModel<T extends LivingEntity> extends BipedModel<T>
 
         hat = new RendererModel(this);
         hat.setRotationPoint(0.0F, 24.0F, 0.0F);
-        hat.cubeList.add(new ModelBox(hat, 0, 0, -4.0F, -10.0F, -4.0F, 8, 4, 8, 0.4F, false));
+        hat.cubeList.add(new ModelBox(hat, 0, 0, -4.0F, -10.0F, -4.0F, 8, 4, 8, 0.6F, false));
         hat.cubeList.add(new ModelBox(hat, 0, 16, -8.0F, -6.0F, -8.0F, 16, 0, 16, 0.0F, false));
     }
 
