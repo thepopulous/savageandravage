@@ -7,14 +7,14 @@ import net.minecraft.client.renderer.model.ModelBox;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
-public class poultry_farmer_hat extends ModelBase {
-	private final ModelRenderer hat;
+public class PoultryFarmerHatModel<T extends LivingEntity> extends BipedModel<T> {
+    private final RendererModel hat;
 
-	public poultry_farmer_hat() {
+    public PoultryFarmerHatModel() {
 		textureWidth = 32;
 		textureHeight = 32;
 
-		hat = new ModelRenderer(this);
+        hat = new RendererModel(this);
 		hat.setRotationPoint(0.0F, 24.0F, 0.0F);
 		hat.cubeList.add(new ModelBox(hat, 0, 0, -4.0F, -11.61F, -4.0F, 8, 4, 8, 0.6F, false));
 		hat.cubeList.add(new ModelBox(hat, 0, 16, -8.0F, -7.0F, -8.0F, 16, 0, 16, 0.0F, false));

@@ -2,7 +2,6 @@ package illager.savageandravage.entity.illager;
 
 import illager.savageandravage.entity.ai.*;
 import illager.savageandravage.entity.path.GroundFencePathNavigator;
-import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -50,8 +49,8 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(1, new OpenGateGoal(this, true));
-        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 19.5D, 0.7D));
-        this.goalSelector.addGoal(3, new RangedAttackWithChickenGoal(this, 0.75D, 60, 10.0F));
+        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 20.0D, 0.7D));
+        this.goalSelector.addGoal(3, new RangedAttackWithMeleeGoal(this, 0.75D, 60, 10.0F));
         this.goalSelector.addGoal(4, new WakeUpGoal(this));
         this.goalSelector.addGoal(5, new GotoBedGoal(this, 0.7D));
         this.goalSelector.addGoal(6, new CropHarvestGoal(this, 0.7D));
@@ -106,7 +105,7 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.348F);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
  /*   @Override
@@ -130,7 +129,8 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
     }
 
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.EGG));
+        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_HOE));
+        this.setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.EGG));
     }
 
     @Override
@@ -234,40 +234,22 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        //Use projectile to make it look like you threw a Rider
-        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) != null) {
-            this.swingArm(Hand.MAIN_HAND);
 
-            this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+        this.swingArm(Hand.MAIN_HAND);
 
-            FakeThrownRiderEntity fakethrown = new FakeThrownRiderEntity(this.world, this);
+        this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
 
-            double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-            double d1 = target.posX - this.posX;
-            double d2 = d0 - fakethrown.posY;
-            double d3 = target.posZ - this.posZ;
+        EggEntity eggEntity = new EggEntity(this.world, this);
 
-            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
-            fakethrown.shoot(d1, d2 + (double) f, d3, 1.3F, 10.0F);
-            this.getPassengers().get(0).startRiding(fakethrown);
-            this.world.addEntity(fakethrown);
+        double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
+        double d1 = target.posX - this.posX;
+        double d2 = d0 - eggEntity.posY;
+        double d3 = target.posZ - this.posZ;
 
-        } else {
-            this.swingArm(Hand.MAIN_HAND);
+        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.03F;
+        eggEntity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
 
-            this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+        this.world.addEntity(eggEntity);
 
-            EggEntity eggEntity = new EggEntity(this.world, this);
-
-            double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-            double d1 = target.posX - this.posX;
-            double d2 = d0 - eggEntity.posY;
-            double d3 = target.posZ - this.posZ;
-
-            float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.03F;
-            eggEntity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
-
-            this.world.addEntity(eggEntity);
-        }
     }
 }
