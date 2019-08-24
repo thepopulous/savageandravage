@@ -35,6 +35,7 @@ import javax.annotation.Nullable;
 public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity implements IRangedAttackMob {
 
     private final Inventory inventory = new Inventory(5);
+    private boolean didAttack;
 
     public PoultryFarmerIllagerEntity(EntityType<? extends PoultryFarmerIllagerEntity> type, World worldIn) {
         super(type, worldIn);
@@ -49,11 +50,23 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(1, new OpenGateGoal(this, true));
-        this.goalSelector.addGoal(2, new MoveToHomeAndAtNightGoal(this, 20.0D, 0.7D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal(this, PlayerEntity.class, 4.0F, 0.9D, 1.1D) {
+            @Override
+            public boolean shouldExecute() {
+                return isDidAttack() && super.shouldExecute();
+            }
+
+            @Override
+            public void resetTask() {
+                super.resetTask();
+                setDidAttack(false);
+            }
+        });
         this.goalSelector.addGoal(3, new RangedAttackWithMeleeGoal(this, 0.75D, 60, 10.0F));
-        this.goalSelector.addGoal(4, new WakeUpGoal(this));
-        this.goalSelector.addGoal(5, new GotoBedGoal(this, 0.7D));
-        this.goalSelector.addGoal(6, new CropHarvestGoal(this, 0.7D));
+        this.goalSelector.addGoal(4, new MoveToHomeAndAtNightGoal(this, 20.0D, 0.7D));
+        this.goalSelector.addGoal(5, new WakeUpGoal(this));
+        this.goalSelector.addGoal(6, new GotoBedGoal(this, 0.7D));
+        this.goalSelector.addGoal(7, new CropHarvestGoal(this, 0.7D));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.7D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
@@ -131,6 +144,20 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_HOE));
         this.setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.EGG));
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        this.didAttack = true;
+        return super.attackEntityAsMob(entityIn);
+    }
+
+    public void setDidAttack(boolean didSpitIn) {
+        this.didAttack = didSpitIn;
+    }
+
+    public boolean isDidAttack() {
+        return didAttack;
     }
 
     @Override

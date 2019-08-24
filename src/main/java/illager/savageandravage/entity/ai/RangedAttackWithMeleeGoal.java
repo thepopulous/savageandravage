@@ -26,6 +26,11 @@ public class RangedAttackWithMeleeGoal extends RangedAttackGoal {
         this.illager.setAggroed(false);
     }
 
+    @Override
+    public boolean shouldContinueExecuting() {
+        return super.shouldContinueExecuting() && !this.illager.isDidAttack();
+    }
+
     public void tick() {
         super.tick();
         LivingEntity livingentity = this.illager.getAttackTarget();
