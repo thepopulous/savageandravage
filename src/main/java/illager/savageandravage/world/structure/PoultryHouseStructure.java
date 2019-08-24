@@ -84,11 +84,11 @@ public class PoultryHouseStructure extends Structure<NoFeatureConfig> {
     }
 
     protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {
-        return 26;
+        return 28;
     }
 
     protected int getBiomeFeatureSeparation(ChunkGenerator<?> chunkGenerator) {
-        return 4;
+        return 6;
     }
 
     public static class Start extends StructureStart {
