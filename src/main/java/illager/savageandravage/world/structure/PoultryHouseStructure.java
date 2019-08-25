@@ -92,15 +92,18 @@ public class PoultryHouseStructure extends Structure<NoFeatureConfig> {
     }
 
     public static class Start extends StructureStart {
+        private Biome biome;
+
         public Start(Structure<?> p_i50460_1_, int p_i50460_2_, int p_i50460_3_, Biome p_i50460_4_, MutableBoundingBox p_i50460_5_, int p_i50460_6_, long p_i50460_7_) {
             super(p_i50460_1_, p_i50460_2_, p_i50460_3_, p_i50460_4_, p_i50460_5_, p_i50460_6_, p_i50460_7_);
+            this.biome = p_i50460_4_;
         }
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
             BlockPos blockpos = new BlockPos(chunkX * 16, 90, chunkZ * 16);
 
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
-            PoultryHousePieces.addStructure(templateManagerIn, blockpos, rotation, this.components, this.rand);
+            PoultryHousePieces.addStructure(templateManagerIn, blockpos, rotation, this.components, this.rand, this.biome);
             this.recalculateStructureSize();
         }
 

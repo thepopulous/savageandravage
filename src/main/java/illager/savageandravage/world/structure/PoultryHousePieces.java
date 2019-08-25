@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
@@ -39,16 +40,26 @@ import java.util.Random;
 public class PoultryHousePieces {
     private static final ResourceLocation poultry_house = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house");
     private static final ResourceLocation poultry_house_savageling = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house_savageling");
+    private static final ResourceLocation poultry_house_savanna = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house_savanna");
+    private static final ResourceLocation poultry_house_savageling_savanna = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_house_savageling_savanna");
 
     private static final ResourceLocation bigpoutry_farm = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_crops");
 
-    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, new BlockPos(19, 0, 13), poultry_house_savageling, new BlockPos(21, -5, 16), bigpoutry_farm, new BlockPos(11, 0, 10));
+    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, new BlockPos(19, 0, 13), poultry_house_savageling, new BlockPos(21, -5, 16), poultry_house_savanna, new BlockPos(19, 0, 13), poultry_house_savageling_savanna, new BlockPos(21, -5, 16), bigpoutry_farm, new BlockPos(11, 0, 10));
 
-    public static void addStructure(TemplateManager p_207617_0_, BlockPos p_207617_1_, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_) {
-        if (p_207617_4_.nextDouble() < 0.3D) {
-            p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house_savageling, p_207617_1_, p_207617_2_, 0));
+    public static void addStructure(TemplateManager p_207617_0_, BlockPos p_207617_1_, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_, Biome biome) {
+        if (biome.getCategory() == Biome.Category.SAVANNA) {
+            if (p_207617_4_.nextDouble() < 0.3D) {
+                p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house_savageling_savanna, p_207617_1_, p_207617_2_, 0));
+            } else {
+                p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house_savanna, p_207617_1_, p_207617_2_, 0));
+            }
         } else {
-            p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house, p_207617_1_, p_207617_2_, 0));
+            if (p_207617_4_.nextDouble() < 0.3D) {
+                p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house_savageling, p_207617_1_, p_207617_2_, 0));
+            } else {
+                p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, poultry_house, p_207617_1_, p_207617_2_, 0));
+            }
         }
         p_207617_3_.add(new PoultryHousePieces.Piece(p_207617_0_, bigpoutry_farm, p_207617_1_, p_207617_2_, 0));
     }
