@@ -301,7 +301,7 @@ public class CreepieEntity extends MonsterEntity {
      */
     private void explode() {
         if (!this.world.isRemote) {
-            float f = this.getPowered() ? 2.0F * this.getRenderScale() : 1.0F * this.getRenderScale();
+            float f = this.getPowered() ? 1.85F * this.getRenderScale() : 0.85F * this.getRenderScale();
             this.dead = true;
             this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, Explosion.Mode.NONE);
             this.remove();

@@ -175,18 +175,4 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
         this.chickenJockey = jockey;
     }
 
-    @Override
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (super.isOnSameTeam(entityIn)) {
-            return true;
-        } else if (entityIn instanceof LivingEntity && ((LivingEntity) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
-            return this.getTeam() == null && entityIn.getTeam() == null;
-        } else {
-            return false;
-        }
-    }
-
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.ILLAGER;
-    }
 }

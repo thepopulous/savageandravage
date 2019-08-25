@@ -13,14 +13,14 @@ public class SavageArmorMaterial {
 	public static final IArmorMaterial GUARD_HELM = new Builder()
             .withName(SavageAndRavageCore.MODID + ":guard_hat")
 		.withDurabilityFactor(15)
-		.withDamageReductionAmounts(new int[]{2, 3, 2, 2})
+			.withDamageReductionAmounts(new int[]{3, 4, 4, 3})
 		.withEnchantability(12)
 		.withRepairMaterial(Ingredient.fromItems(Items.IRON_INGOT))
 		.build();
     public static final IArmorMaterial POULTRY_FARMER_HAT = new Builder()
             .withName(SavageAndRavageCore.MODID + ":poultry_farmer_hat")
             .withDurabilityFactor(9)
-            .withDamageReductionAmounts(new int[]{2, 3, 3, 2})
+			.withDamageReductionAmounts(new int[]{1, 2, 2, 1})
             .withEnchantability(16)
             .withRepairMaterial(Ingredient.fromItems(Items.GRASS))
             .build();
