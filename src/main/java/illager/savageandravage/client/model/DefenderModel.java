@@ -1,6 +1,6 @@
 package illager.savageandravage.client.model;
 
-import illager.savageandravage.entity.illager.GuardIllagerEntity;
+import illager.savageandravage.entity.illager.DefenderEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuardIllagerModel<T extends GuardIllagerEntity> extends EntityModel<T> implements IHasArm, IHasHead {
+public class DefenderModel<T extends DefenderEntity> extends EntityModel<T> implements IHasArm, IHasHead {
 	public RendererModel Head;
 	public RendererModel Nose;
 	public RendererModel HatLayer;
@@ -29,7 +29,7 @@ public class GuardIllagerModel<T extends GuardIllagerEntity> extends EntityModel
 	public RendererModel RightClosedArm;
 	public RendererModel LeftClosedArm;
 
-	public GuardIllagerModel() {
+    public DefenderModel() {
         this.textureWidth = 64;
         this.textureHeight = 128;
 		this.MiddleClosedArm = new RendererModel(this, 0, 56);
@@ -117,7 +117,7 @@ public class GuardIllagerModel<T extends GuardIllagerEntity> extends EntityModel
         this.LeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
         this.RightLeg.rotateAngleY = 0.0F;
         this.LeftLeg.rotateAngleY = 0.0F;
-	    GuardIllagerEntity guard = (GuardIllagerEntity) entityIn;
+        DefenderEntity guard = (DefenderEntity) entityIn;
 	    AbstractIllagerEntity.ArmPose armPose = guard.getArmPose();
 	    if (armPose == AbstractIllagerEntity.ArmPose.ATTACKING) {
             float f = MathHelper.sin(this.swingProgress * (float) Math.PI);

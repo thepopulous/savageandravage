@@ -42,7 +42,7 @@ public class CreepieEntity extends MonsterEntity {
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
     private int lastActiveTime;
     private int timeSinceIgnited;
-    private int fuseTime = 10;
+    private int fuseTime = 20;
     private int explosionRadius = 2;
     private int droppedSkulls;
 

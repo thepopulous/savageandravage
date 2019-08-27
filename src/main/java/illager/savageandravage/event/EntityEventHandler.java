@@ -1,18 +1,25 @@
 package illager.savageandravage.event;
 
 import illager.savageandravage.entity.SavagelingEntity;
+import illager.savageandravage.entity.SkeletonVillagerEntity;
 import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
+import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
-import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
+import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.projectile.EggEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -27,7 +34,7 @@ public class EntityEventHandler {
         if (event.getEntity() instanceof AbstractVillagerEntity) {
             AbstractVillagerEntity villager = (AbstractVillagerEntity) event.getEntity();
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GrieferIllagerEntity.class, 16.0F, 0.7D, 0.8D));
-            villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GuardIllagerEntity.class, 16.0F, 0.7D, 0.8D));
+            villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, DefenderEntity.class, 16.0F, 0.7D, 0.8D));
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, PoultryFarmerIllagerEntity.class, 16.0F, 0.65D, 0.75D));
         }
 
@@ -40,9 +47,29 @@ public class EntityEventHandler {
 
             AbstractIllagerEntity pillager = (AbstractIllagerEntity) event.getEntity();
 
+            /*if (pillager.isLeader() && pillager.getRaid() == null) {
+                PatrollerEntity patrollerentity = SavageEntityRegistry.SCAVENGERS.create(world);
+
+                patrollerentity.setLeader(true);
+                patrollerentity.resetPatrolTarget();
+
+                for (int i = 0; i < 1 + world.rand.nextInt(2); i++) {
+                    GuardIllagerEntity guardilalger = SavageEntityRegistry.GUARD_ILLAGER.create(world);
+
+                    guardilalger.setPosition((double) pillager.getPosition().getX(), (double) pillager.getPosition().getY(), (double) pillager.getPosition().getZ());
+                    guardilalger.onInitialSpawn(world, world.getDifficultyForLocation(pillager.getPosition()), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                    world.addEntity(guardilalger);
+                }
+
+                patrollerentity.setPosition((double) pillager.getPosition().getX(), (double) pillager.getPosition().getY(), (double) pillager.getPosition().getZ());
+                patrollerentity.onInitialSpawn(world, world.getDifficultyForLocation(pillager.getPosition()), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                world.addEntity(patrollerentity);
+                pillager.remove();
+            }*/
+
             if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(8) == 0) {
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
-                    GuardIllagerEntity guardilalger = SavageEntityRegistry.GUARD_ILLAGER.create(world);
+                    DefenderEntity guardilalger = SavageEntityRegistry.DEFENDER.create(world);
 
                     pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pillager.getPosition(), false);
                 }
@@ -55,6 +82,18 @@ public class EntityEventHandler {
                 }
                 pillager.remove();
             }
+        }
+
+        if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D) {
+            SkeletonEntity skeleton = (SkeletonEntity) event.getEntity();
+
+            SkeletonVillagerEntity skeletonVillager = SavageEntityRegistry.SKELETONVILLAGER.create(world);
+
+            skeletonVillager.setLocationAndAngles(skeleton.posX, skeleton.posY, skeleton.posZ, 0.0F, 0.0F);
+            skeletonVillager.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(skeleton)), SpawnReason.NATURAL, (ILivingEntityData) null, (CompoundNBT) null);
+            world.addEntity(skeletonVillager);
+
+            skeleton.remove();
         }
     }
 

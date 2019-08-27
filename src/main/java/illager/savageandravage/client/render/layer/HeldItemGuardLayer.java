@@ -1,8 +1,8 @@
 package illager.savageandravage.client.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import illager.savageandravage.client.model.GuardIllagerModel;
-import illager.savageandravage.entity.illager.GuardIllagerEntity;
+import illager.savageandravage.client.model.DefenderModel;
+import illager.savageandravage.entity.illager.DefenderEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.client.Minecraft;
@@ -14,17 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShieldItem;
 
-public class HeldItemGuardLayer<T extends GuardIllagerEntity> extends LayerRenderer<T, GuardIllagerModel<T>> {
-	private final GuardIllagerModel guardModel;
+public class HeldItemGuardLayer<T extends DefenderEntity> extends LayerRenderer<T, DefenderModel<T>> {
+    private final DefenderModel guardModel;
 
-	public HeldItemGuardLayer(IEntityRenderer<T, GuardIllagerModel<T>> p_i50916_1_) {
+    public HeldItemGuardLayer(IEntityRenderer<T, DefenderModel<T>> p_i50916_1_) {
 		super(p_i50916_1_);
 		this.guardModel = p_i50916_1_.getEntityModel();
     }
 
-	public void render(GuardIllagerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(DefenderEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         ItemStack itemstack = entitylivingbaseIn.getHeldItemOffhand();
-        GuardIllagerEntity.ArmPose abstractillager$illagerarmpose = ((GuardIllagerEntity) entitylivingbaseIn).getArmPose();
+        DefenderEntity.ArmPose abstractillager$illagerarmpose = ((DefenderEntity) entitylivingbaseIn).getArmPose();
         if (!(itemstack.getItem() instanceof ShieldItem)) {
             if (!itemstack.isEmpty()) {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);

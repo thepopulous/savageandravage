@@ -12,6 +12,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
@@ -19,10 +20,13 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -45,21 +49,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class GuardIllagerEntity extends AbstractIllagerEntity {
-
-
+public class DefenderEntity extends AbstractIllagerEntity {
     private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
     private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.24D, AttributeModifier.Operation.ADDITION)).setSaved(false);
-    private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_GUARD = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(GuardIllagerEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(DefenderEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_GUARD = EntityDataManager.createKey(DefenderEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> GUARD_LEVEL = EntityDataManager.createKey(DefenderEntity.class, DataSerializers.VARINT);
 
+    private final Inventory inventory = new Inventory(3);
+    
     private int itemUseTimer;
 
     public double prevCapeX, prevCapeY, prevCapeZ;
     public double capeX, capeY, capeZ;
 
-    public GuardIllagerEntity(EntityType<? extends GuardIllagerEntity> type, World worldIn) {
+    public DefenderEntity(EntityType<? extends DefenderEntity> type, World worldIn) {
         super(type, worldIn);
         this.setDropChance(EquipmentSlotType.OFFHAND, 0.4F);
         ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
@@ -140,6 +144,17 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
         super.writeAdditional(compound);
 
         compound.putInt("GuardLevel", this.getGuardLevel());
+
+        ListNBT listnbt = new ListNBT();
+
+        for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = this.inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty()) {
+                listnbt.add(itemstack.write(new CompoundNBT()));
+            }
+        }
+
+        compound.put("Inventory", listnbt);
     }
 
 
@@ -147,6 +162,40 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
         super.readAdditional(compound);
 
         this.setGuardLevel(compound.getInt("GuardLevel"));
+
+        ListNBT listnbt = compound.getList("Inventory", 10);
+
+        for (int i = 0; i < listnbt.size(); ++i) {
+            ItemStack itemstack = ItemStack.read(listnbt.getCompound(i));
+            if (!itemstack.isEmpty()) {
+                this.inventory.addItem(itemstack);
+            }
+        }
+
+        this.setCanPickUpLoot(true);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    protected void updateEquipmentIfNeeded(ItemEntity itemEntity) {
+        ItemStack itemstack = itemEntity.getItem();
+        Item item = itemstack.getItem();
+        if (this.isPotion(item)) {
+            ItemStack itemstack1 = this.inventory.addItem(itemstack);
+            if (itemstack1.isEmpty()) {
+                itemEntity.remove();
+            } else {
+                itemstack.setCount(itemstack1.getCount());
+            }
+        } else {
+            super.updateEquipmentIfNeeded(itemEntity);
+        }
+    }
+
+    private boolean isPotion(Item item) {
+        return item == Items.POTION;
     }
 
     public void livingTick() {
@@ -180,24 +229,19 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
                     this.resetActiveHand();
                 }
             } else {
-                Potion potiontype = null;
+                ItemStack potion = findPotion();
 
-                if (this.rand.nextFloat() < 0.005F && this.getHealth() < this.getMaxHealth()) {
-                    potiontype = Potions.HEALING;
-                } else if (this.rand.nextFloat() < 0.01F && this.getAttackTarget() != null && !this.isPotionActive(Effects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
-                    potiontype = Potions.SWIFTNESS;
-                }
-
-                if (potiontype != null) {
+                if (!potion.isEmpty()) {
                     this.resetActiveHand();
-                    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potiontype));
+                    this.setItemStackToSlot(EquipmentSlotType.OFFHAND, potion.copy());
+                    potion.shrink(1);
                     this.itemUseTimer = this.getHeldItemOffhand().getUseDuration();
                     this.setDrinkingPotion(true);
                     this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
                     IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
                     iattributeinstance.removeModifier(MODIFIER);
                     iattributeinstance.applyModifier(MODIFIER);
-                } else if (this.getHeldItemOffhand().getItem() instanceof ShieldItem && this.rand.nextFloat() < 0.0055F && this.getAttackTarget() != null) {
+                } else if (this.getHeldItemOffhand().getItem() instanceof ShieldItem && this.rand.nextFloat() < 0.0052F && this.getAttackTarget() != null) {
 
                     this.itemUseTimer = 100;
                     this.setGuardSelf(true);
@@ -212,6 +256,25 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
         }
         super.livingTick();
 
+    }
+
+    private ItemStack findPotion() {
+        for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
+            ItemStack stack = this.inventory.getStackInSlot(i);
+
+            if (!stack.isEmpty() && this.isPotion(stack.getItem())) {
+                Potion potion = PotionUtils.getPotionFromItem(stack);
+                if (potion == Potions.HEALING && this.rand.nextFloat() < 0.0052F && this.getHealth() < this.getMaxHealth()) {
+                    return stack;
+                } else if (potion == Potions.SWIFTNESS && this.rand.nextFloat() < 0.01F && this.getAttackTarget() != null && !this.isPotionActive(Effects.SPEED) && this.getAttackTarget().getDistanceSq(this) > 121.0D) {
+                    return stack;
+                }
+            } else {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -335,6 +398,10 @@ public class GuardIllagerEntity extends AbstractIllagerEntity {
             this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
         }
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
+
+        this.inventory.addItem(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING));
+        this.inventory.addItem(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING));
+        this.inventory.addItem(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.SWIFTNESS));
     }
 
     @Override

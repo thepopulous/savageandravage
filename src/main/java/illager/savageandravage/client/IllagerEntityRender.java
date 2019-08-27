@@ -4,9 +4,10 @@ import illager.savageandravage.client.render.*;
 import illager.savageandravage.entity.CreepieEntity;
 import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.SkeletonVillagerEntity;
+import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
-import illager.savageandravage.entity.illager.GuardIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
+import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import net.minecraft.client.Minecraft;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class IllagerEntityRender {
     private static final Minecraft MC = Minecraft.getInstance();
     public static void entityRender() {
-	    RenderingRegistry.registerEntityRenderingHandler(GuardIllagerEntity.class, GuardIllagerRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(DefenderEntity.class, DefenderRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreepieEntity.class, CreepiesRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GrieferIllagerEntity.class, GrieferIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, EmptyRender::new);
@@ -26,5 +27,6 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(PoultryFarmerIllagerEntity.class, PoultryFarmerIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(SavagelingEntity.class, SavagelingRender::new);
         RenderingRegistry.registerEntityRenderingHandler(SkeletonVillagerEntity.class, SkeletonVillagerRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ScavengersEntity.class, ScavengersRender::new);
     }
 }

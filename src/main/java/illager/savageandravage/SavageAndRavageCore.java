@@ -32,10 +32,11 @@ public class SavageAndRavageCore {
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
+        //MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
 
         SavageFeatures.addStructureFeature();
-    }
 
+    }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         IllagerEntityRender.entityRender();

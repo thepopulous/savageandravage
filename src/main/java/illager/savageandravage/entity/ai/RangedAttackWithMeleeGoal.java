@@ -34,9 +34,13 @@ public class RangedAttackWithMeleeGoal extends RangedAttackGoal {
     public void tick() {
         super.tick();
         LivingEntity livingentity = this.illager.getAttackTarget();
-        double d0 = this.illager.getDistanceSq(livingentity.posX, livingentity.getBoundingBox().minY, livingentity.posZ);
-        this.attackTick = Math.max(this.attackTick - 1, 0);
-        this.checkAndPerformAttack(livingentity, d0);
+        double d0 = 0;
+        if (livingentity != null) {
+            d0 = this.illager.getDistanceSq(livingentity.posX, livingentity.getBoundingBox().minY, livingentity.posZ);
+
+            this.attackTick = Math.max(this.attackTick - 1, 0);
+            this.checkAndPerformAttack(livingentity, d0);
+        }
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {

@@ -1,6 +1,5 @@
 package illager.savageandravage.init;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import illager.savageandravage.SavageAndRavageCore;
 import net.minecraft.util.ResourceLocation;
@@ -38,10 +37,7 @@ public class SavageSoundsRegister {
     public static void registerSounds(RegistryEvent.Register<SoundEvent> registry) {
         for (SoundEvent sound : sounds) {
 
-            Preconditions.checkNotNull(sound.getRegistryName(), "registryName");
-
             registry.getRegistry().register(sound);
-
         }
     }
 }
