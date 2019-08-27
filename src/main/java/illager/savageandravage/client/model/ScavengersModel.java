@@ -16,34 +16,34 @@ public class ScavengersModel<T extends ScavengersEntity> extends EntityModel<T> 
 
     public ScavengersModel() {
         textureWidth = 64;
-        textureHeight = 64;
+		textureHeight = 64;
 
-        head = new RendererModel(this);
-        head.setRotationPoint(0.0F, 4.0F, 0.0F);
-        head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -14.0F, -4.0F, 8, 10, 8, 0.0F, false));
-        head.cubeList.add(new ModelBox(head, 32, 0, -4.0F, -14.0F, -4.0F, 8, 11, 8, 0.3F, false));
-        head.cubeList.add(new ModelBox(head, 24, 0, -1.0F, -7.0F, -5.0F, 2, 4, 2, 0.0F, false));
+		head = new ModelRenderer(this);
+		head.setRotationPoint(0.0F, 0.0F, 4.0F);
+		head.cubeList.add(new ModelBox(head, 0, 0, -3.0F, -10.0F, -4.0F, 8, 10, 8, 0.0F, false));
+		head.cubeList.add(new ModelBox(head, 32, 0, -3.0F, -10.0F, -4.0F, 8, 11, 8, 0.3F, false));
+		head.cubeList.add(new ModelBox(head, 24, 0, 0.0F, -3.0F, -6.0F, 2, 4, 2, 0.0F, false));
 
-        body = new RendererModel(this);
-        body.setRotationPoint(0.0F, 20.0F, 0.0F);
-        body.cubeList.add(new ModelBox(body, 16, 20, -4.0F, -20.0F, -3.0F, 8, 12, 6, 0.0F, false));
-        body.cubeList.add(new ModelBox(body, 0, 38, -4.0F, -20.0F, -3.0F, 8, 19, 6, 0.35F, false));
+		body = new ModelRenderer(this);
+		body.setRotationPoint(0.0F, 20.0F, 0.0F);
+		body.cubeList.add(new ModelBox(body, 16, 20, -3.0F, -20.0F, 1.0F, 8, 12, 6, 0.0F, false));
+		body.cubeList.add(new ModelBox(body, 0, 38, -3.0F, -20.0F, 1.0F, 8, 19, 6, 0.35F, false));
 
-        arms_closed = new RendererModel(this);
-        arms_closed.setRotationPoint(0.0F, 1.0F, 4.0F);
-        setRotationAngle(arms_closed, -0.6981F, 0.0F, 0.0F);
-        arms_closed.cubeList.add(new ModelBox(arms_closed, 44, 22, -8.0F, 0.0F, -5.0F, 4, 8, 4, 0.0F, false));
-        arms_closed.cubeList.add(new ModelBox(arms_closed, 44, 22, 4.0F, 0.0F, -5.0F, 4, 8, 4, 0.0F, true));
-        arms_closed.cubeList.add(new ModelBox(arms_closed, 40, 38, -4.0F, 4.0F, -5.0F, 8, 4, 4, 0.0F, false));
+		arms_closed = new ModelRenderer(this);
+		arms_closed.setRotationPoint(0.0F, 1.0F, 4.0F);
+		setRotationAngle(arms_closed, -0.6981F, 0.0F, 0.0F);
+		arms_closed.cubeList.add(new ModelBox(arms_closed, 44, 22, -7.0F, 0.0F, -2.0F, 4, 8, 4, 0.0F, false));
+		arms_closed.cubeList.add(new ModelBox(arms_closed, 44, 22, 5.0F, 0.0F, -2.0F, 4, 8, 4, 0.0F, true));
+		arms_closed.cubeList.add(new ModelBox(arms_closed, 40, 38, -3.0F, 4.0F, -2.0F, 8, 4, 4, 0.0F, false));
 
-        leg_left = new RendererModel(this);
-        leg_left.setRotationPoint(3.0F, 12.0F, 4.0F);
-        leg_left.cubeList.add(new ModelBox(leg_left, 0, 22, -3.0F, 0.0F, -6.0F, 4, 12, 4, 0.0F, false));
+		leg_left = new ModelRenderer(this);
+		leg_left.setRotationPoint(3.0F, 12.0F, 4.0F);
+		leg_left.cubeList.add(new ModelBox(leg_left, 0, 22, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
 
-        leg_right = new RendererModel(this);
-        leg_right.setRotationPoint(-1.0F, 12.0F, 4.0F);
-        leg_right.cubeList.add(new ModelBox(leg_right, 0, 22, -3.0F, 0.0F, -6.0F, 4, 12, 4, 0.0F, false));
-    }
+		leg_right = new ModelRenderer(this);
+		leg_right.setRotationPoint(-1.0F, 12.0F, 4.0F);
+		leg_right.cubeList.add(new ModelBox(leg_right, 0, 22, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
+	}
 
     @Override
     public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
