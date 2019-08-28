@@ -25,7 +25,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -132,13 +134,12 @@ public class CreepieEntity extends MonsterEntity {
             this.ignite();
         }
 
-        this.setGrowSize(compound.getInt("GrowSize"));
+        this.setGrowSize(compound.getInt("GrowSize"), false, false);
     }
 
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (SIZE.equals(key)) {
             this.recalculateSize();
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D + getGrowSize() * 1.0F);
         }
 
         super.notifyDataManagerChange(key);
@@ -162,7 +163,7 @@ public class CreepieEntity extends MonsterEntity {
     }
 
     protected float getSoundVolume() {
-        return 0.5F + 0.5F * (float) this.getGrowSize();
+        return 0.5F + 0.25F * (float) this.getGrowSize();
     }
 
     /**
@@ -203,14 +204,25 @@ public class CreepieEntity extends MonsterEntity {
     }
 
     private void grow() {
-        this.setGrowSize(this.getGrowSize() + 1);
+        this.setGrowSize(this.getGrowSize() + 1, false, true);
     }
 
-    public void setGrowSize(int growSize) {
+    public void setGrowSize(int growSize, boolean resetHealth, boolean heal) {
+        this.setPosition(this.posX, this.posY, this.posZ);
+        this.recalculateSize();
+
         if (this.getGrowSize() < 20) {
             this.dataManager.set(SIZE, growSize);
         }
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D + getGrowSize() * 1.0F);
+
+        if (heal) {
+            this.heal(1.0F);
+        }
+
+        if (resetHealth) {
+            this.setHealth(this.getMaxHealth());
+        }
     }
 
     public int getGrowSize() {
@@ -223,6 +235,12 @@ public class CreepieEntity extends MonsterEntity {
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_CREEPER_DEATH;
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        this.setGrowSize(getGrowSize(), true, false);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
