@@ -4,15 +4,12 @@ import illager.savageandravage.entity.CreepieEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 
-import java.util.EnumSet;
-
 public class CreepiesSwellGoal extends Goal {
     private final CreepieEntity field_75269_a;
     private LivingEntity field_75268_b;
 
     public CreepiesSwellGoal(CreepieEntity entitycreeperIn) {
         this.field_75269_a = entitycreeperIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
