@@ -63,7 +63,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, IronGolemEntity.class, 5.5F, 0.9D, 1.1D));
         this.goalSelector.addGoal(3, new MoveTowardsRaidGoal<>(this));
         this.goalSelector.addGoal(4, new InvadeHomeGoal(this, (double) 1.0F, 1));
-        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 80, 20.0F));
+        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 60, 20.0F));
         this.goalSelector.addGoal(5, new GrieferIllagerEntity.CelebrateRaidLossFireWorkGoal(this));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
