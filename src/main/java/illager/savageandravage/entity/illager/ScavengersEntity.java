@@ -42,7 +42,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     protected void registerGoals() {
         super.registerGoals();
         this.field_213694_bC = new NearestAttackableTargetExpiringNonRaidGoal<>(this, AbstractRaiderEntity.class, true, (p_213693_1_) -> {
-            return p_213693_1_ != null && p_213693_1_.getType() != SavageEntityRegistry.SCAVENGERS;
+            return p_213693_1_ != null && p_213693_1_.getType() != SavageEntityRegistry.SCAVENGER;
         });
         this.field_213695_bD = new ToggleableNearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (Predicate<LivingEntity>) null);
         this.goalSelector.addGoal(0, new SwimGoal(this));

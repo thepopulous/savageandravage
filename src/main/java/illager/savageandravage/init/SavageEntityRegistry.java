@@ -29,7 +29,7 @@ public class SavageEntityRegistry extends ForgeRegistryEntry<SavageEntityRegistr
     public static final EntityType<FakeThrownRiderEntity> FAKE_THROWN_RIDER = EntityType.Builder.<FakeThrownRiderEntity>create(FakeThrownRiderEntity::new, EntityClassification.MISC).setTrackingRange(100).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).size(0.45F, 0.45F).build(prefix("fakethrown_rider"));
     public static final EntityType<SavagelingEntity> SAVAGELING = EntityType.Builder.create(SavagelingEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 0.75F).build(prefix("savageling"));
     public static final EntityType<SkeletonVillagerEntity> SKELETONVILLAGER = EntityType.Builder.create(SkeletonVillagerEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("skeleton_villager"));
-    public static final EntityType<ScavengersEntity> SCAVENGERS = EntityType.Builder.create(ScavengersEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("scavengers"));
+    public static final EntityType<ScavengersEntity> SCAVENGER = EntityType.Builder.create(ScavengersEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("scavenger"));
 
 
     private static String prefix(String path) {
@@ -46,7 +46,7 @@ public class SavageEntityRegistry extends ForgeRegistryEntry<SavageEntityRegistr
         event.getRegistry().register(FAKE_THROWN_RIDER.setRegistryName("fakethrown_rider"));
         event.getRegistry().register(SAVAGELING.setRegistryName("savageling"));
         event.getRegistry().register(SKELETONVILLAGER.setRegistryName("skeleton_villager"));
-        event.getRegistry().register(SCAVENGERS.setRegistryName("scavengers"));
+        event.getRegistry().register(SCAVENGER.setRegistryName("scavenger"));
     }
 
     public static void addEntitySpawn() {
