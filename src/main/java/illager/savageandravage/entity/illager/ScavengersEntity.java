@@ -1,7 +1,6 @@
 package illager.savageandravage.entity.illager;
 
 import illager.savageandravage.entity.ai.NearestAttackableTargetExpiringNonRaidGoal;
-import illager.savageandravage.entity.ai.RangedStrafeAttackGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -55,7 +54,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
                 return list.size() <= 1 && super.shouldExecute();
             }
         });
-        this.goalSelector.addGoal(4, new RangedStrafeAttackGoal<>(this, 0.75D, 80, 14.5F));
+        this.goalSelector.addGoal(4, new RangedAttackGoal(this, 0.75D, 80, 14.5F));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
