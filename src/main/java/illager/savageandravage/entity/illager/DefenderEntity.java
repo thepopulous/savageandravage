@@ -339,7 +339,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
         boolean flag = false;
         if (entity instanceof AbstractArrowEntity) {
             AbstractArrowEntity abstractarrowentity = (AbstractArrowEntity) entity;
-            if (abstractarrowentity.func_213874_s() > 0) {
+            if (abstractarrowentity.getPierceLevel() > 0) {
                 flag = true;
             }
         }

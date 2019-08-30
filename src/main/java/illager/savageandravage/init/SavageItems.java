@@ -5,6 +5,7 @@ import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.item.CreeperSporeItem;
 import illager.savageandravage.item.ItemGuardHelm;
 import illager.savageandravage.item.PoultryFarmerHatItem;
+import illager.savageandravage.item.SinisterHornItem;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -15,13 +16,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Collections;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = SavageAndRavageCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-@ObjectHolder(SavageAndRavageCore.MODID)
 public class SavageItems {
     private static final NonNullList<Item> ITEMS = NonNullList.create();
 
@@ -30,6 +29,7 @@ public class SavageItems {
     public static final Item GUARD_HELM = new ItemGuardHelm(SavageArmorMaterial.GUARD_HELM, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.COMBAT));
     public static final Item CREEPER_SPORES = new CreeperSporeItem((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRY_FARMER_HAT = new PoultryFarmerHatItem(SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.TOOLS));
+    public static final Item SINISTERHORN = new SinisterHornItem((new Item.Properties()).group(ItemGroup.COMBAT));
 
     public static final Item GRIEFER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.GRIEFER_ILLAGER, 9804699, 0x403e43, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRYFARMER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
@@ -62,6 +62,7 @@ public class SavageItems {
         register(registry, GUARD_HELM, "guard_helm");
         register(registry, CREEPER_SPORES, "creeper_spores");
         register(registry, POULTRY_FARMER_HAT, "poultry_farmer_hat");
+        register(registry, SINISTERHORN, "sinister_horn");
         register(registry, GRIEFER_SPAWNEGG, "griefer_spawnegg");
         register(registry, POULTRYFARMER_SPAWNEGG, "poultryfarmer_spawnegg");
         register(registry, SCAVENGER_SPAWNEGG, "scavenger_spawnegg");

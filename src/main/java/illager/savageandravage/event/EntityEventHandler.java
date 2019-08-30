@@ -6,6 +6,7 @@ import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
 import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
+import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -19,9 +20,12 @@ import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -100,10 +104,31 @@ public class EntityEventHandler {
     @SubscribeEvent
     public void onEntityHurt(LivingHurtEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
-        if (event.getSource().getImmediateSource() instanceof EggEntity && !(livingEntity instanceof SavagelingEntity)) {
+        if (livingEntity.isAlive() && event.getSource().getImmediateSource() instanceof EggEntity && !(livingEntity instanceof SavagelingEntity)) {
             for (SavagelingEntity savageling : livingEntity.world.getEntitiesWithinAABB(SavagelingEntity.class, livingEntity.getBoundingBox().grow(20.0D))) {
                 savageling.setAttackTarget(livingEntity);
             }
         }
+
+        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
+            EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY);
+            int i = 1;
+            int i2 = 30;
+            if (effectinstance1 != null) {
+                i += effectinstance1.getAmplifier();
+                i2 = effectinstance1.getDuration();
+                livingEntity.removeActivePotionEffect(SavageEffectRegistry.TENACITY);
+            } else {
+                --i;
+            }
+
+            i = MathHelper.clamp(i, 0, 7);
+
+            livingEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, i2, i));
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityAttack(LivingAttackEvent event) {
     }
 }
