@@ -18,6 +18,7 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
@@ -25,8 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class EntityEventHandler {
@@ -110,7 +111,14 @@ public class EntityEventHandler {
             }
         }
 
-        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
+
+    }
+
+    @SubscribeEvent
+    public void onEntityAttack(AttackEntityEvent event) {
+        PlayerEntity livingEntity = event.getEntityPlayer();
+
+        if (livingEntity.isAlive() && livingEntity.world.rand.nextFloat() < 0.15F && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
             EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY);
             int i = 1;
             int i2 = 30;
@@ -128,7 +136,4 @@ public class EntityEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onEntityAttack(LivingAttackEvent event) {
-    }
 }
