@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -27,7 +28,8 @@ public class SinisterHornItem extends Item {
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
         if (!(entityLiving instanceof PlayerEntity)) {
             for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(LivingEntity.class, entityLiving.getBoundingBox().grow(10.0D))) {
-                aroundEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 1200, 0));
+                aroundEntity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0));
+                aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
             }
 
             worldIn.playSound((PlayerEntity) null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
