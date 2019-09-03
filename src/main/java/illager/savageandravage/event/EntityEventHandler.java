@@ -74,7 +74,7 @@ public class EntityEventHandler {
                 pillager.remove();
             }*/
 
-            if (!pillager.isRaidActive() && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+            if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
                 BlockPos pos = pillager.getPosition();
 
                 pillager.remove();
