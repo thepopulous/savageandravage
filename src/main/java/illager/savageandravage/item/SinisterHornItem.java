@@ -27,7 +27,7 @@ public class SinisterHornItem extends Item {
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
         if (!(entityLiving instanceof PlayerEntity)) {
             for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(LivingEntity.class, entityLiving.getBoundingBox().grow(10.0D))) {
-                aroundEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 600, 0));
+                aroundEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 1200, 0));
             }
 
             worldIn.playSound((PlayerEntity) null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
@@ -42,7 +42,7 @@ public class SinisterHornItem extends Item {
             worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
 
             for (PlayerEntity aroundPlayer : playerIn.world.getEntitiesWithinAABB(PlayerEntity.class, playerIn.getBoundingBox().grow(10.0D))) {
-                aroundPlayer.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 1200, 0));
+                aroundPlayer.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 4800, 0));
             }
 
             playerIn.addStat(Stats.ITEM_USED.get(this));
