@@ -1,42 +1,43 @@
 package illager.savageandravage.client.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import illager.savageandravage.client.model.DefenderModel;
-import illager.savageandravage.entity.illager.DefenderEntity;
+import illager.savageandravage.client.model.IHasCrossArm;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShieldItem;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class HeldItemGuardLayer<T extends DefenderEntity> extends LayerRenderer<T, DefenderModel<T>> {
-    private final DefenderModel guardModel;
-
-    public HeldItemGuardLayer(IEntityRenderer<T, DefenderModel<T>> p_i50916_1_) {
-		super(p_i50916_1_);
-		this.guardModel = p_i50916_1_.getEntityModel();
+@OnlyIn(Dist.CLIENT)
+public class HeldCrossItemLayer<T extends AbstractIllagerEntity, M extends EntityModel<T> & IHasCrossArm> extends LayerRenderer<T, M> {
+    public HeldCrossItemLayer(IEntityRenderer<T, M> p_i50934_1_) {
+        super(p_i50934_1_);
     }
 
-    public void render(DefenderEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         ItemStack itemstack = entitylivingbaseIn.getHeldItemOffhand();
-        DefenderEntity.ArmPose abstractillager$illagerarmpose = ((DefenderEntity) entitylivingbaseIn).getArmPose();
+        AbstractIllagerEntity.ArmPose abstractillager$illagerarmpose = ((AbstractIllagerEntity) entitylivingbaseIn).getArmPose();
         if (!(itemstack.getItem() instanceof ShieldItem)) {
             if (!itemstack.isEmpty()) {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 GlStateManager.pushMatrix();
-		    if (this.guardModel.isChild) {
+                if (this.getEntityModel().isChild) {
                     GlStateManager.translatef(0.0F, 0.625F, 0.0F);
                     GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
                     float f = 0.5F;
                     GlStateManager.scalef(0.5F, 0.5F, 0.5F);
                 }
 
-		    this.guardModel.crossHand().postRender(0.0625F);
+                this.getEntityModel().crossHand().postRender(0.0625F);
                 GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
                 Item item = itemstack.getItem();
                 Minecraft minecraft = Minecraft.getInstance();

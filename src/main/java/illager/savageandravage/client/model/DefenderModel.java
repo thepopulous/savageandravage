@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DefenderModel<T extends DefenderEntity> extends EntityModel<T> implements IHasArm, IHasHead {
+public class DefenderModel<T extends DefenderEntity> extends EntityModel<T> implements IHasArm, IHasHead, IHasCrossArm {
 	public RendererModel Head;
 	public RendererModel Nose;
 	public RendererModel HatLayer;

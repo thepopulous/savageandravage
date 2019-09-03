@@ -35,7 +35,7 @@ public class SavageItems {
     public static final Item POULTRYFARMER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SAVAGELING_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SAVAGELING, 9804699, 9804690, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SKELETONVILLAGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SKELETONVILLAGER, 12698049, 4802889, (new Item.Properties()).group(ItemGroup.MISC));
-    public static final Item SCAVENGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SCAVENGER, 12698049, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item SCAVENGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SCAVENGER, 9804699, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {

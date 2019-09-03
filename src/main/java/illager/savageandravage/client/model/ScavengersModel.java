@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.ModelBox;
 import net.minecraft.util.math.MathHelper;
 
-public class ScavengersModel<T extends ScavengersEntity> extends EntityModel<T> implements IHasHead {
+public class ScavengersModel<T extends ScavengersEntity> extends EntityModel<T> implements IHasHead, IHasCrossArm {
     private final RendererModel head;
     private final RendererModel body;
     private final RendererModel arms_closed;
@@ -68,6 +68,11 @@ public class ScavengersModel<T extends ScavengersEntity> extends EntityModel<T> 
 
     public RendererModel func_205072_a() {
         return this.head;
+    }
+
+    @Override
+    public RendererModel crossHand() {
+        return this.arms_closed;
     }
 
     public void setRotationAngle(RendererModel modelRenderer, float x, float y, float z) {

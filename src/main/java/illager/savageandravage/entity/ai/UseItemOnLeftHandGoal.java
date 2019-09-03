@@ -10,13 +10,13 @@ import net.minecraft.util.SoundEvent;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class UseItemOnRightHandGoal<T extends MobEntity> extends Goal {
+public class UseItemOnLeftHandGoal<T extends MobEntity> extends Goal {
     private final T field_220766_a;
     private final ItemStack field_220767_b;
     private final Predicate<? super T> field_220768_c;
     private final SoundEvent field_220769_d;
 
-    public UseItemOnRightHandGoal(T p_i50319_1_, ItemStack p_i50319_2_, @Nullable SoundEvent p_i50319_3_, Predicate<? super T> p_i50319_4_) {
+    public UseItemOnLeftHandGoal(T p_i50319_1_, ItemStack p_i50319_2_, @Nullable SoundEvent p_i50319_3_, Predicate<? super T> p_i50319_4_) {
         this.field_220766_a = p_i50319_1_;
         this.field_220767_b = p_i50319_2_;
         this.field_220769_d = p_i50319_3_;

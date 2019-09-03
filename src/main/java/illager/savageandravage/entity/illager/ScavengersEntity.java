@@ -2,6 +2,7 @@ package illager.savageandravage.entity.illager;
 
 import illager.savageandravage.entity.ai.NearestAttackableTargetExpiringNonRaidGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
+import illager.savageandravage.init.SavageItems;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.Potion;
@@ -45,16 +47,35 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
         });
         this.field_213695_bD = new ToggleableNearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (Predicate<LivingEntity>) null);
         this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new UseItemGoal<>(this, new ItemStack(SavageItems.SINISTERHORN), SoundEvents.ENTITY_VINDICATOR_CELEBRATE, (p_213736_1_) -> {
+            List<AbstractIllagerEntity> list = world.getEntitiesWithinAABB(AbstractIllagerEntity.class, getBoundingBox().grow(22.0D));
+            return list.size() >= 1 && this.world.rand.nextInt(50) == 0;
+        }));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal(this, PlayerEntity.class, 4.0F, 0.82D, 1.0D) {
+        this.goalSelector.addGoal(3, new AvoidEntityGoal(this, PlayerEntity.class, 22.0F, 0.82D, 1.0D) {
 
             @Override
             public boolean shouldExecute() {
-                List<AbstractIllagerEntity> list = world.getEntitiesWithinAABB(AbstractIllagerEntity.class, getBoundingBox().grow(30.0D));
+                List<AbstractIllagerEntity> list = world.getEntitiesWithinAABB(AbstractIllagerEntity.class, getBoundingBox().grow(22.0D));
                 return list.size() <= 1 && super.shouldExecute();
             }
+
+            @Override
+            public void tick() {
+                super.tick();
+
+                List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().grow(20.0D));
+                if (list.size() == 0) {
+                    this.entity.remove();
+                    for (int k = 0; k < 20; ++k) {
+                        double d2 = entity.world.rand.nextGaussian() * 0.02D;
+                        double d0 = entity.world.rand.nextGaussian() * 0.02D;
+                        double d1 = entity.world.rand.nextGaussian() * 0.02D;
+                        entity.world.addParticle(ParticleTypes.POOF, entity.posX + (double) (entity.world.rand.nextFloat() * entity.getWidth() * 2.0F) - (double) entity.getWidth(), entity.posY + (double) (entity.world.rand.nextFloat() * entity.getHeight()), entity.posZ + (double) (entity.world.rand.nextFloat() * entity.getWidth() * 2.0F) - (double) entity.getWidth(), d2, d0, d1);
+                    }
+                }
+            }
         });
-        this.goalSelector.addGoal(4, new RangedAttackGoal(this, 0.75D, 80, 14.5F));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.75D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
@@ -92,8 +113,25 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     }
 
     @Override
+    protected SoundEvent getAmbientSound() {
+
+        return SoundEvents.ENTITY_VINDICATOR_AMBIENT;
+
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_VINDICATOR_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_VINDICATOR_HURT;
+    }
+
+    @Override
     public SoundEvent getRaidLossSound() {
-        return null;
+        return SoundEvents.ENTITY_VINDICATOR_CELEBRATE;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {

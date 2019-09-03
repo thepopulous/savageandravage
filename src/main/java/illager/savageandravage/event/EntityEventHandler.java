@@ -6,6 +6,7 @@ import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
 import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
+import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.entity.EntityType;
@@ -72,6 +73,30 @@ public class EntityEventHandler {
                 world.addEntity(patrollerentity);
                 pillager.remove();
             }*/
+
+            if (!pillager.isRaidActive() && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+                BlockPos pos = pillager.getPosition();
+
+                pillager.remove();
+
+                ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
+
+                scavenger.setLeader(true);
+                scavenger.resetPatrolTarget();
+
+                scavenger.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                world.addEntity(scavenger);
+
+                for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
+                    DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
+
+                    defenderEntity.setLeader(false);
+                    defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                    defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                    world.addEntity(defenderEntity);
+                }
+            }
 
             if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(8) == 0) {
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {

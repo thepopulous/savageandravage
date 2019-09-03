@@ -2,7 +2,7 @@ package illager.savageandravage.client.render;
 
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.client.model.DefenderModel;
-import illager.savageandravage.client.render.layer.HeldItemGuardLayer;
+import illager.savageandravage.client.render.layer.HeldCrossItemLayer;
 import illager.savageandravage.entity.illager.DefenderEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -28,7 +28,7 @@ public class DefenderRender<T extends DefenderEntity> extends MobRenderer<T, Def
 
 			}
 		});
-		this.addLayer(new HeldItemGuardLayer(this) {
+        this.addLayer(new HeldCrossItemLayer(this) {
             public void render(DefenderEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 				if (!entitylivingbaseIn.isAggressive()) {
 					super.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
