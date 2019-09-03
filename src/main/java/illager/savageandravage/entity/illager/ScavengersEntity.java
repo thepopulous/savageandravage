@@ -49,7 +49,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new UseItemGoal<>(this, new ItemStack(SavageItems.SINISTERHORN), SoundEvents.ENTITY_VINDICATOR_CELEBRATE, (p_213736_1_) -> {
             List<AbstractIllagerEntity> list = world.getEntitiesWithinAABB(AbstractIllagerEntity.class, getBoundingBox().grow(22.0D));
-            return list.size() >= 1 && this.world.rand.nextInt(50) == 0;
+            return list.size() >= 1 && this.world.rand.nextInt(240) == 0;
         }));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(3, new AvoidEntityGoal(this, PlayerEntity.class, 22.0F, 0.82D, 1.0D) {
