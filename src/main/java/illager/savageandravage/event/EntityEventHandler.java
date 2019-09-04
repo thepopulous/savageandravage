@@ -1,5 +1,6 @@
 package illager.savageandravage.event;
 
+import illager.savageandravage.entity.FriendlyRavagerEntity;
 import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.SkeletonVillagerEntity;
 import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
@@ -19,6 +20,7 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -29,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -49,6 +52,16 @@ public class EntityEventHandler {
             ChickenEntity chicken = (ChickenEntity) event.getEntity();
             chicken.goalSelector.addGoal(1, new FollowHeldHatPlayer(chicken, 1.0D, 2.5F, 7.0F));
         }
+
+       /* if (event.getEntity() instanceof IronGolemEntity) {
+            IronGolemEntity ironGolem = (IronGolemEntity) event.getEntity();
+            ironGolem.targetSelector.removeGoal(new NearestAttackableTargetGoal<>(ironGolem, MobEntity.class, 5, false, false, (p_213619_0_) -> {
+                return p_213619_0_ instanceof IMob && !(p_213619_0_ instanceof CreeperEntity);
+            }));
+            ironGolem.targetSelector.addGoal(3,new NearestAttackableTargetGoal<>(ironGolem, MobEntity.class, 5, false, false, (p_213619_0_) -> {
+                return p_213619_0_ instanceof IMob && !(p_213619_0_ instanceof CreeperEntity);
+            }));
+        }*/
 
         if (event.getEntity() instanceof AbstractIllagerEntity && !(event.getEntity() instanceof EvokerEntity)) {
 
@@ -125,6 +138,15 @@ public class EntityEventHandler {
             world.addEntity(skeletonVillager);
 
             skeleton.remove();
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityTarget(LivingSetAttackTargetEvent event) {
+        LivingEntity target = event.getTarget();
+        if (event.getEntityLiving() instanceof IronGolemEntity && target instanceof FriendlyRavagerEntity) {
+
+            ((IronGolemEntity) event.getEntityLiving()).setAttackTarget(null);
         }
     }
 
