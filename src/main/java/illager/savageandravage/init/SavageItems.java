@@ -30,12 +30,14 @@ public class SavageItems {
     public static final Item CREEPER_SPORES = new CreeperSporeItem((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRY_FARMER_HAT = new PoultryFarmerHatItem(SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.TOOLS));
     public static final Item SINISTERHORN = new SinisterHornItem((new Item.Properties()).group(ItemGroup.COMBAT).maxStackSize(1));
+    public static final Item BEASTBREW = new BeastBrewItem((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16));
 
     public static final Item GRIEFER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.GRIEFER_ILLAGER, 9804699, 0x403e43, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRYFARMER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SAVAGELING_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SAVAGELING, 9804699, 9804690, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SKELETONVILLAGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SKELETONVILLAGER, 12698049, 4802889, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SCAVENGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SCAVENGER, 9804699, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item FRIENDLYRAVAGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.FRIENDLYRAVAGER, 12698049, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -63,11 +65,13 @@ public class SavageItems {
         register(registry, CREEPER_SPORES, "creeper_spores");
         register(registry, POULTRY_FARMER_HAT, "poultry_farmer_hat");
         register(registry, SINISTERHORN, "sinister_horn");
+        register(registry, BEASTBREW, "brew_of_the_beast");
         register(registry, GRIEFER_SPAWNEGG, "griefer_spawnegg");
         register(registry, POULTRYFARMER_SPAWNEGG, "poultryfarmer_spawnegg");
         register(registry, SCAVENGER_SPAWNEGG, "scavenger_spawnegg");
         register(registry, SAVAGELING_SPAWNEGG, "savageling_spawnegg");
         register(registry, SKELETONVILLAGER_SPAWNEGG, "skeletonvillager_spawnegg");
+        register(registry, FRIENDLYRAVAGER_SPAWNEGG, "friendlyravager_spawnegg");
     }
 
 }

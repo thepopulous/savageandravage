@@ -1,6 +1,7 @@
 package illager.savageandravage.init;
 
 import illager.savageandravage.entity.CreepieEntity;
+import illager.savageandravage.entity.FriendlyRavagerEntity;
 import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.SkeletonVillagerEntity;
 import illager.savageandravage.entity.illager.DefenderEntity;
@@ -29,6 +30,7 @@ public class SavageEntityRegistry {
     public static final EntityType<SavagelingEntity> SAVAGELING = EntityType.Builder.create(SavagelingEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 0.75F).build(prefix("savageling"));
     public static final EntityType<SkeletonVillagerEntity> SKELETONVILLAGER = EntityType.Builder.create(SkeletonVillagerEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("skeleton_villager"));
     public static final EntityType<ScavengersEntity> SCAVENGER = EntityType.Builder.create(ScavengersEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("scavenger"));
+    public static final EntityType<FriendlyRavagerEntity> FRIENDLYRAVAGER = EntityType.Builder.create(FriendlyRavagerEntity:: new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(1.95F,2.2F).build(prefix("friendly_ravager"));
 
 
     private static String prefix(String path) {
@@ -46,6 +48,7 @@ public class SavageEntityRegistry {
         event.getRegistry().register(SAVAGELING.setRegistryName("savageling"));
         event.getRegistry().register(SKELETONVILLAGER.setRegistryName("skeleton_villager"));
         event.getRegistry().register(SCAVENGER.setRegistryName("scavenger"));
+        event.getRegistry().register(FRIENDLYRAVAGER.setRegistryName("friendly_ravager"));
     }
 
     public static void addEntitySpawn() {
