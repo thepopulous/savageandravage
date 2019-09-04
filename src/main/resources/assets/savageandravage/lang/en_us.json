@@ -1,7 +1,7 @@
 {
   "entity.savageandravage.creepie": "Creepie",
   "entity.savageandravage.griefer_illager": "Griefer Illager",
-  "entity.savageandravage.defender": "Guard Illager",
+  "entity.savageandravage.defender": "Defender",
   "entity.savageandravage.poultry_farmer": "Poultry Farmer",
   "entity.savageandravage.scavenger": "Scavenger",
   "entity.savageandravage.savageling": "Savageling",
@@ -9,7 +9,7 @@
   "entity.savageandravage.friendly_ravager": "Friendly Ravager",
   "item.savageandravage.creeper_spores": "Creeper Spores",
   "item.savageandravage.griefer_spawnegg": "Griefer Spawn Egg",
-  "item.savageandravage.defender_spawn_egg": "Guard Illager Spawn Egg",
+  "item.savageandravage.defender_spawn_egg": "Defender Spawn Egg",
   "item.savageandravage.poultryfarmer_spawnegg": "Poultry Farmer Spawn Egg",
   "item.savageandravage.scavenger_spawnegg": "Scavenger Spawn Egg",
   "item.savageandravage.savageling_spawnegg": "Savageling Spawn Egg",
@@ -19,7 +19,9 @@
   "item.savageandravage.poultry_farmer_hat": "Poultry Farmer Hat",
   "item.savageandravage.sinister_horn": "Sinister Horn",
   "item.savageandravage.brew_of_the_beast": "Brew Of The Beast",
-  "savageandravage:subtitles.guardillager.ambient": "Guard Illager murmurs",
-  "savageandravage:subtitles.guardillager.hurt": "Guard Illager hurts",
-  "savageandravage:subtitles.guardillager.die": "Guard Illager dies"
+  "savageandravage:subtitles.guardillager.ambient": "Defender murmurs",
+  "savageandravage:subtitles.guardillager.hurt": "Defender hurts",
+  "savageandravage:subtitles.guardillager.die": "Defender dies",
+  "effect.savageandravage.tenacity": "Tenacity"
+  
 }

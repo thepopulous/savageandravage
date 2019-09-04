@@ -14,14 +14,14 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 @OnlyIn(Dist.CLIENT)
 public class FriendlyRavagerRender extends MobRenderer<RavagerEntity, RavagerModel> {
-    private static final ResourceLocation Friendly_Ravager = new ResourceLocation(SavageAndRavageCore.MODID, "textures/entity/friendlyravager.png");
+    private static final ResourceLocation FRIENDLYRAVAGER_TEXTURE = new ResourceLocation(SavageAndRavageCore.MODID, "textures/entity/friendlyravager.png");
 
     public FriendlyRavagerRender(EntityRendererManager p_i50958_1_) {
         super(p_i50958_1_, new RavagerModel(), 1.1F);
     }
 
     protected ResourceLocation getEntityTexture(RavagerEntity entity) {
-        return Friendly_Ravager;
+        return FRIENDLYRAVAGER_TEXTURE;
     }
 
     public static class RenderFactory implements IRenderFactory<FriendlyRavagerEntity>
