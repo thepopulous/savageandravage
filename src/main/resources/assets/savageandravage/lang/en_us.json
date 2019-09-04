@@ -21,5 +21,7 @@
   "item.savageandravage.brew_of_the_beast": "Brew Of The Beast",
   "savageandravage:subtitles.guardillager.ambient": "Guard Illager murmurs",
   "savageandravage:subtitles.guardillager.hurt": "Guard Illager hurts",
-  "savageandravage:subtitles.guardillager.die": "Guard Illager dies"
+  "savageandravage:subtitles.guardillager.die": "Guard Illager dies",
+  "effect.savageandravage.tenacity": "Tenacity"
+  
 }
