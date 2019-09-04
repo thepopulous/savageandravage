@@ -2,10 +2,7 @@ package illager.savageandravage.init;
 
 import com.google.common.base.Preconditions;
 import illager.savageandravage.SavageAndRavageCore;
-import illager.savageandravage.item.CreeperSporeItem;
-import illager.savageandravage.item.ItemGuardHelm;
-import illager.savageandravage.item.PoultryFarmerHatItem;
-import illager.savageandravage.item.SinisterHornItem;
+import illager.savageandravage.item.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

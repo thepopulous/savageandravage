@@ -3,6 +3,7 @@ package illager.savageandravage.entity.illager;
 import illager.savageandravage.entity.ai.NearestAttackableTargetExpiringNonRaidGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
+import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -132,6 +134,11 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     @Override
     public SoundEvent getRaidLossSound() {
         return SoundEvents.ENTITY_VINDICATOR_CELEBRATE;
+    }
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return SavageLootTables.SCAVENGER;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {

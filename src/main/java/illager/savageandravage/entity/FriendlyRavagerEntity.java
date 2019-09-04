@@ -1,18 +1,22 @@
 package illager.savageandravage.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -24,9 +28,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class FriendlyRavagerEntity extends RavagerEntity
-{
-    protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute)null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
+public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMount {
+    protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     protected boolean horseJumping;
     protected float jumpPower;
     protected boolean allowStandSliding;
@@ -35,32 +38,31 @@ public class FriendlyRavagerEntity extends RavagerEntity
     public void setHorseJumping(boolean jumping) {
         this.horseJumping = jumping;
     }
+
     public boolean isHorseJumping() {
         return this.horseJumping;
     }
+
     public double getHorseJumpStrength() {
         return this.getAttribute(JUMP_STRENGTH).getValue();
     }
 
     @SuppressWarnings("unchecked")
-    public FriendlyRavagerEntity(EntityType<? extends RavagerEntity> type, World worldIn)
-    {
+    public FriendlyRavagerEntity(EntityType<? extends RavagerEntity> type, World worldIn) {
         super(type, worldIn);
         this.experienceValue = 10;
     }
 
     @Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 1.2d));
+        this.goalSelector.addGoal(1, new WaterAvoidingRandomWalkingGoal(this, 0.45D));
         this.goalSelector.addGoal(2, new LookRandomlyGoal(this));
 
     }
 
     @Override
-    protected void registerAttributes()
-    {
+    protected void registerAttributes() {
         super.registerAttributes();
         this.getAttributes().registerAttribute(JUMP_STRENGTH);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0d);
@@ -137,7 +139,7 @@ public class FriendlyRavagerEntity extends RavagerEntity
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (passenger instanceof MobEntity) {
-            MobEntity mobentity = (MobEntity)passenger;
+            MobEntity mobentity = (MobEntity) passenger;
             this.renderYawOffset = mobentity.renderYawOffset;
         }
 
@@ -147,7 +149,7 @@ public class FriendlyRavagerEntity extends RavagerEntity
     public void travel(Vec3d vector) {
         if (this.isAlive()) {
             if (this.isBeingRidden() && this.canBeSteered()) {
-                LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
+                LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                 this.rotationYaw = livingentity.rotationYaw;
                 this.prevRotationYaw = this.rotationYaw;
                 this.rotationPitch = livingentity.rotationPitch * 0.5F;
@@ -167,10 +169,10 @@ public class FriendlyRavagerEntity extends RavagerEntity
                 }
 
                 if (this.jumpPower > 0.0F && !this.isHorseJumping() && this.onGround) {
-                    double d0 = this.getHorseJumpStrength() * (double)this.jumpPower;
+                    double d0 = this.getHorseJumpStrength() * (double) this.jumpPower;
                     double d1;
                     if (this.isPotionActive(Effects.JUMP_BOOST)) {
-                        d1 = d0 + (double)((float)(this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+                        d1 = d0 + (double) ((float) (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
                     } else {
                         d1 = d0;
                     }
@@ -180,9 +182,9 @@ public class FriendlyRavagerEntity extends RavagerEntity
                     this.setHorseJumping(true);
                     this.isAirBorne = true;
                     if (forward > 0.0F) {
-                        float f2 = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
-                        float f3 = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
-                        this.setMotion(this.getMotion().add((double)(-0.4F * f2 * this.jumpPower), 0.0D, (double)(0.4F * f3 * this.jumpPower)));
+                        float f2 = MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F));
+                        float f3 = MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F));
+                        this.setMotion(this.getMotion().add((double) (-0.4F * f2 * this.jumpPower), 0.0D, (double) (0.4F * f3 * this.jumpPower)));
                     }
 
                     this.jumpPower = 0.0F;
@@ -190,8 +192,8 @@ public class FriendlyRavagerEntity extends RavagerEntity
 
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
                 if (this.canPassengerSteer()) {
-                    this.setAIMoveSpeed((float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
-                    super.travel(new Vec3d((double)strafe, vector.y, (double)forward));
+                    this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.6F);
+                    super.travel(new Vec3d((double) strafe, vector.y, (double) forward));
                 } else if (livingentity instanceof PlayerEntity) {
                     this.setMotion(Vec3d.ZERO);
                 }
@@ -209,23 +211,56 @@ public class FriendlyRavagerEntity extends RavagerEntity
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void setJumpPower(int jumpPowerIn)
-    {
-            if (jumpPowerIn < 0)
-            {
-                jumpPowerIn = 0;
-            } else {
-                this.allowStandSliding = true;
+    public void setJumpPower(int jumpPowerIn) {
+        if (jumpPowerIn < 0) {
+            jumpPowerIn = 0;
+        } else {
+            this.allowStandSliding = true;
+        }
+
+        if (jumpPowerIn >= 90) {
+            this.jumpPower = 1.0F;
+        } else {
+            this.jumpPower = 0.4F + 0.4F * (float) jumpPowerIn / 90.0F;
+        }
+
+    }
+
+    public boolean canJump() {
+        return true;
+    }
+
+    @Override
+    public void handleStartJump(int p_184775_1_) {
+
+    }
+
+    @Override
+    public void handleStopJump() {
+
+    }
+
+    public void fall(float distance, float damageMultiplier) {
+        if (distance > 1.0F) {
+            this.playSound(SoundEvents.ENTITY_RAVAGER_STEP, 0.4F, 1.0F);
+        }
+
+        int i = MathHelper.ceil((distance * 0.5F - 3.0F) * damageMultiplier);
+        if (i > 0) {
+            this.attackEntityFrom(DamageSource.FALL, (float) i);
+            if (this.isBeingRidden()) {
+                for (Entity entity : this.getRecursivePassengers()) {
+                    entity.attackEntityFrom(DamageSource.FALL, (float) i);
+                }
             }
 
-            if (jumpPowerIn >= 90)
-            {
-                this.jumpPower = 1.0F;
-            } else {
-                this.jumpPower = 0.4F + 0.4F * (float)jumpPowerIn / 90.0F;
+            BlockState blockstate = this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.2D - (double) this.prevRotationYaw, this.posZ));
+            if (!blockstate.isAir() && !this.isSilent()) {
+                SoundType soundtype = blockstate.getSoundType();
+                this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
 
         }
-
+    }
 
 }
