@@ -6,10 +6,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.RavagerEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -50,15 +50,20 @@ public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMoun
     @SuppressWarnings("unchecked")
     public FriendlyRavagerEntity(EntityType<? extends RavagerEntity> type, World worldIn) {
         super(type, worldIn);
+        this.stepHeight = 1.0F;
         this.experienceValue = 10;
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new WaterAvoidingRandomWalkingGoal(this, 0.45D));
-        this.goalSelector.addGoal(2, new LookRandomlyGoal(this));
-
+        this.goalSelector.addGoal(1, new FriendlyRavagerEntity.AttackGoal());
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, RavagerEntity.class, 16.0F, 1.0D, 1.2D));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 1D));
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomWalkingGoal(this, 0.45D));
+        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, AbstractRaiderEntity.class, 8.0F));
     }
 
     @Override
@@ -67,11 +72,29 @@ public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMoun
         this.getAttributes().registerAttribute(JUMP_STRENGTH);
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0d);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3d);
+        this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(1.5D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
 
     public static boolean spawnEntity(EntityType<? extends FriendlyRavagerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos pos, Random random) {
         return world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK && world.getLightSubtracted(pos, 0) > 8;
+    }
+
+    /*
+    Attacking properties
+     */
+    class AttackGoal extends MeleeAttackGoal {
+        public AttackGoal() {
+            super(FriendlyRavagerEntity.this, 1.0D, true);
+        }
+
+        protected double getAttackReachSqr(LivingEntity attackTarget) {
+            float f = FriendlyRavagerEntity.this.getWidth() - 0.1F;
+            return (double)(f * 2.0F * f * 2.0F + attackTarget.getWidth());
+        }
     }
 
     /**
@@ -100,11 +123,12 @@ public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMoun
             return super.processInteract(player, hand);
         } else {
             if (this.isChild()) {
-                return super.processInteract(player, hand);
+                    return super.processInteract(player, hand);
             } else {
-                this.mountTo(player);
-                return true;
+                    this.mountTo(player);
+                    return true;
             }
+
         }
     }
 
