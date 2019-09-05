@@ -10,10 +10,7 @@ import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
@@ -25,9 +22,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -165,8 +164,8 @@ public class EntityEventHandler {
             LivingEntity attacker = (LivingEntity) event.getSource().getImmediateSource();
 
             if (attacker.isAlive() && attacker.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-                if (attacker.getEntityData().contains("Tenacity")) {
-                    attacker.getEntityData().putFloat("Tenacity", attacker.getEntityData().getFloat("Tenacity") + event.getAmount());
+                if (attacker.getPersistantData().contains("Tenacity")) {
+                    attacker.getPersistantData().putFloat("Tenacity", attacker.getPersistantData().getFloat("Tenacity") + event.getAmount());
                 }
             }
         }
@@ -177,14 +176,14 @@ public class EntityEventHandler {
         LivingEntity livingEntity = event.getEntityLiving();
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-            if (!livingEntity.getEntityData().contains("Tenacity")) {
-                livingEntity.getEntityData().putFloat("Tenacity", 0);
+            if (!livingEntity.getPersistantData().contains("Tenacity")) {
+                livingEntity.getPersistantData().putFloat("Tenacity", 0);
             }
         }
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null) {
-            if (livingEntity.getEntityData().contains("Tenacity") && livingEntity.getEntityData().getFloat("Tenacity") > 0) {
-                livingEntity.getEntityData().putFloat("Tenacity", 0);
+            if (livingEntity.getPersistantData().contains("Tenacity") && livingEntity.getPersistantData().getFloat("Tenacity") > 0) {
+                livingEntity.getPersistantData().putFloat("Tenacity", 0);
             }
         }
     }
@@ -195,9 +194,9 @@ public class EntityEventHandler {
         PlayerEntity livingEntity = event.getEntityPlayer();
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-            if (livingEntity.getEntityData().contains("Tenacity")) {
+            if (livingEntity.getPersistantData().contains("Tenacity")) {
                 EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY);
-                if (effectinstance1 != null && livingEntity.getEntityData().getFloat("Tenacity") >= 35 + 5 * effectinstance1.getAmplifier()) {
+                if (effectinstance1 != null && livingEntity.getPersistantData().getFloat("Tenacity") >= 35 + 5 * effectinstance1.getAmplifier()) {
                     int i = 1;
                     int i2 = 30;
                     if (effectinstance1 != null) {
@@ -211,10 +210,24 @@ public class EntityEventHandler {
                     i = MathHelper.clamp(i, 0, 7);
 
                     livingEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, i2, i));
-                    livingEntity.getEntityData().putFloat("Tenacity", 0);
+                    livingEntity.getPersistantData().putFloat("Tenacity", 0);
                 }
             }
         }
     }
 
+    @SubscribeEvent
+    public void onEntityInputUpdate(InputUpdateEvent event) {
+        MovementInput movementInput = event.getMovementInput();
+        PlayerEntity entity = event.getPlayer();
+        Entity rideEntity = entity.getRidingEntity();
+
+
+        if (rideEntity instanceof FriendlyRavagerEntity) {
+            if (movementInput.jump) {
+
+
+            }
+        }
+    }
 }

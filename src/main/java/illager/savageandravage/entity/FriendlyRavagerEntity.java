@@ -1,15 +1,17 @@
 package illager.savageandravage.entity;
 
+import illager.savageandravage.SavageAndRavageCore;
+import illager.savageandravage.message.MessageAttackStat;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.RavagerEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -28,7 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMount {
+public class FriendlyRavagerEntity extends RavagerEntity {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     protected boolean horseJumping;
     protected float jumpPower;
@@ -97,10 +99,43 @@ public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMoun
         }
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        if (world.isRemote) {
+            this.updateClientControls();
+        }
+    }
+
+
+    @OnlyIn(Dist.CLIENT)
+    protected void updateClientControls() {
+        Minecraft mc = Minecraft.getInstance();
+
+        if (this.isRidingPlayer(mc.player)) {
+
+            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+                if (this.func_213683_l() == 0) {
+                    attackingStart();
+                }
+
+            }
+        }
+    }
+
+    private void attackingStart() {
+        SavageAndRavageCore.CHANNEL.sendToServer(new MessageAttackStat(this));
+    }
+
+    public boolean isRidingPlayer(PlayerEntity player) {
+        return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity && this.getControllingPassenger().getUniqueID().equals(player.getUniqueID());
+    }
+
     /**
      * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
      * by a player and the player is holding a carrot-on-a-stick
      */
+
 
     @Override
     public boolean canBeSteered() {
@@ -254,15 +289,6 @@ public class FriendlyRavagerEntity extends RavagerEntity implements IJumpingMoun
         return true;
     }
 
-    @Override
-    public void handleStartJump(int p_184775_1_) {
-
-    }
-
-    @Override
-    public void handleStopJump() {
-
-    }
 
     public void fall(float distance, float damageMultiplier) {
         if (distance > 1.0F) {
