@@ -14,39 +14,39 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageAttackStat implements ICustomPacket {
+public class MessageRavagerAttackStat implements ICustomPacket {
     private int entityID;
 
-    public MessageAttackStat() {
+    public MessageRavagerAttackStat() {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public MessageAttackStat(int entityID) {
+    public MessageRavagerAttackStat(int entityID) {
         this.entityID = entityID;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public MessageAttackStat(FriendlyRavagerEntity ravagerEntityIn) {
+    public MessageRavagerAttackStat(FriendlyRavagerEntity ravagerEntityIn) {
         this.entityID = ravagerEntityIn.getEntityId();
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public static MessageAttackStat readPacketData(PacketBuffer buf) {
-        return new MessageAttackStat(buf.readVarInt());
+    public static MessageRavagerAttackStat readPacketData(PacketBuffer buf) {
+        return new MessageRavagerAttackStat(buf.readVarInt());
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public static void writePacketData(MessageAttackStat stat, PacketBuffer buf) {
+    public static void writePacketData(MessageRavagerAttackStat stat, PacketBuffer buf) {
         buf.writeVarInt(stat.entityID);
     }
 
 
     public static class Handler {
-        public static void handle(MessageAttackStat message, Supplier<NetworkEvent.Context> ctx) {
+        public static void handle(MessageRavagerAttackStat message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
 
                 Entity entity = ctx.get().getSender().getServerWorld().getEntityByID(message.entityID);

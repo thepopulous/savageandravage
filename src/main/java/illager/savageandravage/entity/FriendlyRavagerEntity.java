@@ -1,7 +1,7 @@
 package illager.savageandravage.entity;
 
 import illager.savageandravage.SavageAndRavageCore;
-import illager.savageandravage.message.MessageAttackStat;
+import illager.savageandravage.message.MessageRavagerAttackStat;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -124,7 +124,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
     }
 
     private void attackingStart() {
-        SavageAndRavageCore.CHANNEL.sendToServer(new MessageAttackStat(this));
+        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerAttackStat(this));
     }
 
     public boolean isRidingPlayer(PlayerEntity player) {
