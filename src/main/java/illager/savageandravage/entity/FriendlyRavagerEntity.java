@@ -2,6 +2,8 @@ package illager.savageandravage.entity;
 
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.message.MessageRavagerAttackStat;
+import illager.savageandravage.message.MessageRavagerDushStat;
+import illager.savageandravage.message.MessageRavagerStopDushStat;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -15,6 +17,9 @@ import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -32,6 +37,8 @@ import java.util.Random;
 
 public class FriendlyRavagerEntity extends RavagerEntity {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
+    private static final DataParameter<Boolean> BOOST = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
+
     protected boolean horseJumping;
     protected float jumpPower;
     protected boolean allowStandSliding;
@@ -80,6 +87,11 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(BOOST, false);
+    }
 
     public static boolean spawnEntity(EntityType<? extends FriendlyRavagerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos pos, Random random) {
         return world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK && world.getLightSubtracted(pos, 0) > 8;
@@ -120,10 +132,28 @@ public class FriendlyRavagerEntity extends RavagerEntity {
                 }
             }
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
-
+            if (mc.gameSettings.keyBindJump.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
+                dushStart();
+            } else if (this.isBoosting()) {
+                dushFinish();
             }
         }
+    }
+
+    public boolean isBoosting() {
+        return this.getDataManager().get(BOOST);
+    }
+
+    public void setBoosting(boolean boost) {
+        this.getDataManager().set(BOOST, boost);
+    }
+
+    private void dushFinish() {
+        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerStopDushStat(this));
+    }
+
+    private void dushStart() {
+        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerDushStat(this));
     }
 
     private void attackingStart() {
@@ -215,6 +245,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
     @Override
     public void travel(Vec3d vector) {
         if (this.isAlive()) {
+
             if (this.isBeingRidden() && this.canBeSteered()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                 this.rotationYaw = livingentity.rotationYaw;
@@ -259,8 +290,12 @@ public class FriendlyRavagerEntity extends RavagerEntity {
 
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
                 if (this.canPassengerSteer()) {
-                    this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.6F);
-                    super.travel(new Vec3d((double) strafe, vector.y, (double) forward));
+                    if (this.isBoosting()) {
+                        this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 1.75F);
+                    } else {
+                        this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 1.0F);
+                    }
+                    super.travel(new Vec3d((double) strafe, vector.y, getAIMoveSpeed() * forward * 2.0F));
                 } else if (livingentity instanceof PlayerEntity) {
                     this.setMotion(Vec3d.ZERO);
                 }
@@ -276,6 +311,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
             }
         }
     }
+
 
     @OnlyIn(Dist.CLIENT)
     public void setJumpPower(int jumpPowerIn) {

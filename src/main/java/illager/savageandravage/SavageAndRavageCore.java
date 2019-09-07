@@ -4,6 +4,8 @@ import illager.savageandravage.client.IllagerEntityRender;
 import illager.savageandravage.event.EntityEventHandler;
 import illager.savageandravage.init.SavageFeatures;
 import illager.savageandravage.message.MessageRavagerAttackStat;
+import illager.savageandravage.message.MessageRavagerDushStat;
+import illager.savageandravage.message.MessageRavagerStopDushStat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -50,6 +52,9 @@ public class SavageAndRavageCore {
         SavageFeatures.addStructureFeature();
 
         CHANNEL.registerMessage(0, MessageRavagerAttackStat.class, MessageRavagerAttackStat::writePacketData, MessageRavagerAttackStat::readPacketData, MessageRavagerAttackStat.Handler::handle);
+        CHANNEL.registerMessage(1, MessageRavagerDushStat.class, MessageRavagerDushStat::writePacketData, MessageRavagerDushStat::readPacketData, MessageRavagerDushStat.Handler::handle);
+        CHANNEL.registerMessage(2, MessageRavagerStopDushStat.class, MessageRavagerStopDushStat::writePacketData, MessageRavagerStopDushStat::readPacketData, MessageRavagerStopDushStat.Handler::handle);
+
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
