@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
@@ -308,6 +309,23 @@ public class CreepieEntity extends MonsterEntity {
                     p_213625_1_.sendBreakAnimation(hand);
                 });
                 return true;
+            }
+        } else if (itemstack.getItem() == Items.BONE_MEAL) {
+            if (this.world.isRemote) {
+                for (int i = 0; i < 2; i++) {
+                    this.world.addParticle(ParticleTypes.SNEEZE, this.getPosition().getX() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getY() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getZ() + this.world.rand.nextFloat() - 0.5F, 0.0D, 0.0D, 0.0D);
+                }
+            }
+
+            if (this.rand.nextFloat() < 0.05F) {
+                if (!this.world.isRemote) {
+                    CreeperEntity creeperEntity = EntityType.CREEPER.create(this.world);
+                    creeperEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
+
+                    this.world.addEntity(creeperEntity);
+
+                    this.remove();
+                }
             }
         }
 

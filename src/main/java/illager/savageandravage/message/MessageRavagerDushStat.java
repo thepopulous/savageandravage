@@ -59,9 +59,9 @@ public class MessageRavagerDushStat implements ICustomPacket {
 
                     if (friendlyRavager.func_213683_l() == 0) {
                         if (friendlyRavager.isBoosting()) {
-                            for (LivingEntity livingentity : friendlyRavager.world.getEntitiesWithinAABB(LivingEntity.class, friendlyRavager.getBoundingBox().grow(0.5D, 0.0D, 0.5D))) {
+                            for (LivingEntity livingentity : friendlyRavager.world.getEntitiesWithinAABB(LivingEntity.class, friendlyRavager.getBoundingBox().grow(0.75D, 0.0D, 0.75D))) {
                                 if (livingentity != friendlyRavager && (friendlyRavager.getControllingPassenger() == null || friendlyRavager.getControllingPassenger() != null && livingentity != friendlyRavager.getControllingPassenger()) && !friendlyRavager.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity) livingentity).hasMarker()) && friendlyRavager.getDistanceSq(livingentity) < 26.0D) {
-                                    livingentity.attackEntityFrom(DamageSource.causeMobDamage(friendlyRavager), (float) ((int) friendlyRavager.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.5F));
+                                    livingentity.attackEntityFrom(DamageSource.causeMobDamage(friendlyRavager), (float) ((int) friendlyRavager.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.6F));
                                     livingentity.knockBack(friendlyRavager, f1 * 0.7F, (double) MathHelper.sin(friendlyRavager.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(friendlyRavager.rotationYaw * ((float) Math.PI / 180F))));
                                 }
                             }

@@ -103,6 +103,7 @@ public class EntityEventHandler {
                 scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
                 world.addEntity(scavenger);
 
+
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
                     DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
 
