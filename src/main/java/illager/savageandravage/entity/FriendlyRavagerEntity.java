@@ -134,6 +134,11 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity && this.getControllingPassenger().getUniqueID().equals(player.getUniqueID());
     }
 
+    @Override
+    public boolean func_213658_ej() {
+        return false;
+    }
+
     /**
      * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
      * by a player and the player is holding a carrot-on-a-stick
