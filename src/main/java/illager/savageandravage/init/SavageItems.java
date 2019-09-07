@@ -2,14 +2,18 @@ package illager.savageandravage.init;
 
 import com.google.common.base.Preconditions;
 import illager.savageandravage.SavageAndRavageCore;
+import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.item.*;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -69,6 +73,13 @@ public class SavageItems {
         register(registry, SAVAGELING_SPAWNEGG, "savageling_spawnegg");
         register(registry, SKELETONVILLAGER_SPAWNEGG, "skeletonvillager_spawnegg");
         register(registry, FRIENDLYRAVAGER_SPAWNEGG, "friendlyravager_spawnegg");
+
+        DispenserBlock.registerDispenseBehavior(CREEPER_SPORES, new ProjectileDispenseBehavior() {
+            protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                return Util.make(new CreeperSporeEntity(worldIn, position.getX(), position.getY(), position.getZ()), (p_218409_1_) -> {
+                });
+            }
+        });
     }
 
 }

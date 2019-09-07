@@ -68,7 +68,17 @@ public class CreepieEntity extends MonsterEntity {
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new CopyOwnerTargetGoal(this));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, PlayerEntity.class, true) {
+            @Override
+            public boolean shouldExecute() {
+                return getOwner() == null && super.shouldExecute();
+            }
 
+            @Override
+            public boolean shouldContinueExecuting() {
+                return getOwner() == null && super.shouldContinueExecuting();
+            }
+        });
     }
 
     protected void registerAttributes() {
@@ -316,15 +326,18 @@ public class CreepieEntity extends MonsterEntity {
                     this.world.addParticle(ParticleTypes.SNEEZE, this.getPosition().getX() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getY() + this.world.rand.nextFloat() - 0.5F, this.getPosition().getZ() + this.world.rand.nextFloat() - 0.5F, 0.0D, 0.0D, 0.0D);
                 }
             }
+            if (!this.world.isRemote) {
+                itemstack.shrink(1);
 
-            if (this.rand.nextFloat() < 0.05F) {
-                if (!this.world.isRemote) {
+                if (this.rand.nextFloat() < 0.05F) {
+
                     CreeperEntity creeperEntity = EntityType.CREEPER.create(this.world);
                     creeperEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
 
                     this.world.addEntity(creeperEntity);
 
                     this.remove();
+
                 }
             }
         }
