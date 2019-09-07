@@ -114,10 +114,13 @@ public class FriendlyRavagerEntity extends RavagerEntity {
 
         if (this.isRidingPlayer(mc.player)) {
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+            if (mc.gameSettings.keyBindAttack.isKeyDown()) {
                 if (this.func_213683_l() == 0) {
                     attackingStart();
                 }
+            }
+
+            if (mc.gameSettings.keyBindJump.isKeyDown()) {
 
             }
         }

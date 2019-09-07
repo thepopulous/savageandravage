@@ -2,6 +2,7 @@ package illager.savageandravage.item;
 
 import illager.savageandravage.init.SavageEffectRegistry;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,13 +28,22 @@ public class SinisterHornItem extends Item {
 
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
         if (!(entityLiving instanceof PlayerEntity)) {
-            for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(LivingEntity.class, entityLiving.getBoundingBox().grow(10.0D))) {
-                aroundEntity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0));
-                aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
+            if (entityLiving instanceof AbstractIllagerEntity) {
+                for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(AbstractIllagerEntity.class, entityLiving.getBoundingBox().grow(10.0D))) {
+                    aroundEntity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0));
+                    aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
+                }
+
+                worldIn.playSound((PlayerEntity) null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
+            } else {
+                for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(entityLiving.getClass(), entityLiving.getBoundingBox().grow(10.0D))) {
+                    aroundEntity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0));
+                    aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
+                }
+
+                worldIn.playSound((PlayerEntity) null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
+
             }
-
-            worldIn.playSound((PlayerEntity) null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
-
         } else {
             PlayerEntity playerIn = ((PlayerEntity) entityLiving);
 

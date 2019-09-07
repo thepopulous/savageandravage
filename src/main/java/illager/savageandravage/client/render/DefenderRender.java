@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.HeadLayer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,8 +30,8 @@ public class DefenderRender<T extends DefenderEntity> extends MobRenderer<T, Def
 			}
 		});
         this.addLayer(new HeldCrossItemLayer(this) {
-            public void render(DefenderEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-				if (!entitylivingbaseIn.isAggressive()) {
+			public void render(AbstractIllagerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+				if (!((DefenderEntity) entitylivingbaseIn).isAggressive()) {
 					super.render(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
 				}
 

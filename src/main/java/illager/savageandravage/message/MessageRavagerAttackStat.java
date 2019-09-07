@@ -58,7 +58,6 @@ public class MessageRavagerAttackStat implements ICustomPacket {
                         for (LivingEntity livingentity : friendlyRavager.world.getEntitiesWithinAABB(LivingEntity.class, friendlyRavager.getBoundingBox().grow(0.25D, 0.0D, 0.25D).offset(vec3d.x * 1.2D, vec3d.y * 1.0D, vec3d.z * 1.2D))) {
                             if (livingentity != friendlyRavager && (friendlyRavager.getControllingPassenger() == null || friendlyRavager.getControllingPassenger() != null && livingentity != friendlyRavager.getControllingPassenger()) && !friendlyRavager.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity) livingentity).hasMarker()) && friendlyRavager.getDistanceSq(livingentity) < 26.0D) {
                                 friendlyRavager.attackEntityAsMob(livingentity);
-                                return;
                             }
                         }
                         friendlyRavager.world.setEntityState(friendlyRavager, (byte) 4);
