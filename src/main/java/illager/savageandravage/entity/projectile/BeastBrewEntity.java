@@ -79,7 +79,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
             }
         }
 
-        this.playSound(SoundEvents.BLOCK_GRASS_BREAK, 0.8F, 1.0F);
+        this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 0.8F, 1.0F);
         this.world.setEntityState(this, (byte) 3);
         this.remove();
     }

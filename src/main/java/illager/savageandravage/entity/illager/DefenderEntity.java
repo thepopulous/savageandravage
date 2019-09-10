@@ -326,6 +326,14 @@ public class DefenderEntity extends AbstractIllagerEntity {
             return super.attackEntityFrom(source, amount * 0.95F);
         } else {
             if (this.canBlockDamageSource(source)) {
+                Entity entity = source.getImmediateSource();
+                if (entity instanceof LivingEntity) {
+                    if (this.isGuardSelf() && ((LivingEntity) entity).getHeldItemMainhand().canDisableShield(this.activeItemStack, this, ((LivingEntity) entity))) {
+                        this.itemUseTimer = 0;
+                        this.setGuardSelf(false);
+                    }
+                }
+
                 playSound(SoundEvents.ITEM_SHIELD_BLOCK, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
                 return false;
             } else {
