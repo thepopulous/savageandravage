@@ -33,7 +33,6 @@ public class SavageFeatures {
         event.getRegistry().register(POULTRYHOUSE.setRegistryName(SavageAndRavageCore.MODID, "poultry_house"));
         Registry.register(Registry.STRUCTURE_FEATURE, "PoultryHouse".toLowerCase(Locale.ROOT), POULTRYHOUSE);
         Registry.register(Registry.STRUCTURE_PIECE, "PHS".toLowerCase(Locale.ROOT), POULTRYHOUSE_STRUCTURE);
-        Feature.STRUCTURES.put("PoultryHouse".toLowerCase(Locale.ROOT), POULTRYHOUSE);
     }
 
     public static void addStructureFeature() {

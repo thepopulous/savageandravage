@@ -357,4 +357,11 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         }
     }
 
+    public boolean preventDespawn() {
+        return false;
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return false;
+    }
 }

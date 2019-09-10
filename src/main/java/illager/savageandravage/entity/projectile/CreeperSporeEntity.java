@@ -46,7 +46,7 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
         if (id == 3) {
             double d0 = 0.08D;
 
-            for (int i = 0; i < 12; ++i) {
+            for (int i = 0; i < 6; ++i) {
                 this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getItem()), this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
@@ -76,6 +76,8 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
         } else if (result.getType() == RayTraceResult.Type.BLOCK) {
             spawnCreepies();
         }
+        this.world.setEntityState(this, (byte) 3);
+        this.remove();
     }
 
     private void spawnCreepies() {
@@ -113,8 +115,6 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
 
             }
         }
-
-        this.remove();
     }
 
     @Override

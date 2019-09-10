@@ -7,15 +7,21 @@ import illager.savageandravage.message.MessageRavagerAttackStat;
 import illager.savageandravage.message.MessageRavagerDushStat;
 import illager.savageandravage.message.MessageRavagerStopDushStat;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.raid.Raid;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+
+import javax.annotation.Nullable;
 
 @Mod("savageandravage")
 public class SavageAndRavageCore {
@@ -23,6 +29,8 @@ public class SavageAndRavageCore {
 
     public static final String NETWORK_PROTOCOL = "1";
 
+    @Nullable
+    private Raid raid = null;
 
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(SavageAndRavageCore.MODID, "net"))
 
@@ -67,7 +75,15 @@ public class SavageAndRavageCore {
 
     private void processIMC(final InterModProcessEvent event) {
         // some example code to receive and process InterModComms from other mods
+
     }
 
+    @SubscribeEvent
+    public void onServerSetUp(FMLServerStartingEvent event) {
+
+    }
+
+    private void serverStart(FMLServerStartedEvent event) {
+    }
 
 }
