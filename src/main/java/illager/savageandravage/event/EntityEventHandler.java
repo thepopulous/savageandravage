@@ -104,7 +104,7 @@ public class EntityEventHandler {
                 world.addEntity(scavenger);
 
 
-                for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
+                for (int i = 0; i <= 1 + world.rand.nextInt(1); i++) {
                     DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
 
                     defenderEntity.setLeader(false);
