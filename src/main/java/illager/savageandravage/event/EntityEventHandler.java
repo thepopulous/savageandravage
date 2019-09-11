@@ -69,6 +69,8 @@ public class EntityEventHandler {
 
             AbstractIllagerEntity pillager = (AbstractIllagerEntity) event.getEntity();
 
+            BlockPos pos = pillager.getPosition();
+
             /*if (pillager.isLeader() && pillager.getRaid() == null) {
                 PatrollerEntity patrollerentity = SavageEntityRegistry.SCAVENGERS.create(world);
 
@@ -90,8 +92,6 @@ public class EntityEventHandler {
             }*/
 
             if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
-                BlockPos pos = pillager.getPosition();
-
                 pillager.remove();
 
                 ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
@@ -118,14 +118,14 @@ public class EntityEventHandler {
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
                     DefenderEntity guardilalger = SavageEntityRegistry.DEFENDER.create(world);
 
-                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pillager.getPosition(), false);
+                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pos, false);
                 }
                 pillager.remove();
             } else if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
                 for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
                     GrieferIllagerEntity griferEntity = SavageEntityRegistry.GRIEFER_ILLAGER.create(world);
 
-                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pillager.getPosition(), false);
+                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pos, false);
                 }
                 pillager.remove();
             }
@@ -134,13 +134,15 @@ public class EntityEventHandler {
         if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D) {
             SkeletonEntity skeleton = (SkeletonEntity) event.getEntity();
 
-            SkeletonVillagerEntity skeletonVillager = SavageEntityRegistry.SKELETONVILLAGER.create(world);
-
-            skeletonVillager.setLocationAndAngles(skeleton.posX, skeleton.posY, skeleton.posZ, 0.0F, 0.0F);
-            skeletonVillager.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(skeleton)), SpawnReason.NATURAL, (ILivingEntityData) null, (CompoundNBT) null);
-            world.addEntity(skeletonVillager);
+            BlockPos pos = skeleton.getPosition();
 
             skeleton.remove();
+
+            SkeletonVillagerEntity skeletonVillager = SavageEntityRegistry.SKELETONVILLAGER.create(world);
+
+            skeletonVillager.setLocationAndAngles(pos.getX(), (double) pos.getY(), (double) pos.getZ(), 0.0F, 0.0F);
+            skeletonVillager.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(pos)), SpawnReason.NATURAL, (ILivingEntityData) null, (CompoundNBT) null);
+            world.addEntity(skeletonVillager);
         }
     }
 

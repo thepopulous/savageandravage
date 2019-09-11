@@ -8,6 +8,7 @@
   "entity.savageandravage.savageling": "Savageling",
   "entity.savageandravage.skeleton_villager": "Skeleton Villager",
   "entity.savageandravage.friendly_ravager": "Friendly Ravager",
+  "entity.savageandravage.hyena": "Hyena",
   "item.savageandravage.creeper_spores": "Creeper Spores",
   "item.savageandravage.griefer_spawnegg": "Griefer Spawn Egg",
   "item.savageandravage.defender_spawn_egg": "Defender Spawn Egg",
@@ -16,6 +17,7 @@
   "item.savageandravage.savageling_spawnegg": "Savageling Spawn Egg",
   "item.savageandravage.skeletonvillager_spawnegg": "Skeleton Villager Spawn Egg",
   "item.savageandravage.friendlyravager_spawnegg": "Friendly Ravager Spawn Egg",
+  "item.savageandravage.hyena_spawnegg": "Hyena Spawn Egg",
   "item.savageandravage.guard_helm": "Guard's Helm",
   "item.savageandravage.poultry_farmer_hat": "Poultry Farmer Hat",
   "item.savageandravage.sinister_horn": "Sinister Horn",
@@ -23,6 +25,9 @@
   "savageandravage:subtitles.guardillager.ambient": "Defender murmurs",
   "savageandravage:subtitles.guardillager.hurt": "Defender hurts",
   "savageandravage:subtitles.guardillager.die": "Defender dies",
+  "savageandravage:subtitles.hyena.ambient": "hyena bark",
+  "savageandravage:subtitles.hyena.hurt": "hyena hurted",
+  "savageandravage:subtitles.hyena.death": "hyena dead",
   "effect.savageandravage.tenacity": "Tenacity"
   
 }

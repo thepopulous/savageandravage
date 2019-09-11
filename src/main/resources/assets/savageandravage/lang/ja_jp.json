@@ -7,6 +7,7 @@
   "entity.savageandravage.scavenger": "スカベンジャー",
   "entity.savageandravage.savageling": "サヴァジェリング",
   "entity.savageandravage.skeleton_villager": "スケルトン村人",
+  "entity.savageandravage.hyena": "ハイエナ",
   "item.savageandravage.defender_spawn_egg": "守護者のIllagerのスポーンエッグ",
   "item.savageandravage.guard_helm": "守護者のIllagerのヘルメット",
   "item.savageandravage.creeper_spores": "クリーパーの粉",
@@ -17,7 +18,11 @@
   "item.savageandravage.savageling_spawnegg": "サヴァジェリングのスポーンエッグ",
   "item.savageandravage.poultryfarmer_spawnegg": "鶏農家のIllagerのスポーンエッグ",
   "item.savageandravage.skeletonvillager_spawnegg": "スケルトン村人のスポーンエッグ",
+  "item.savageandravage.hyena_spawnegg": "ハイエナのスポーンエッグ",
   "savageandravage:subtitles.guardillager.ambient": "守護者のIllagerがつぶやく",
   "savageandravage:subtitles.guardillager.hurt": "守護者のIllagerがダメージを受ける",
-  "savageandravage:subtitles.guardillager.die": "守護者のIllagerが倒れる"
+  "savageandravage:subtitles.guardillager.die": "守護者のIllagerが倒れる",
+  "savageandravage:subtitles.hyena.ambient": "ハイエナが鳴く",
+  "savageandravage:subtitles.hyena.hurt": "ハイエナがダメージを受ける",
+  "savageandravage:subtitles.hyena.death": "ハイエナが倒れる"
 }

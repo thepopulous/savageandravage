@@ -20,6 +20,9 @@ public class SavageSoundsRegister {
     public static final SoundEvent GUARDILLAGER_HURT = create("mob.guardillager.hurt");
     public static final SoundEvent GUARDILLAGER_DIE = create("mob.guardillager.die");
     public static final SoundEvent GUARDILLAGER_STEP = create("mob.guardillager.step");
+    public static final SoundEvent HYENA_AMBIENT = create("mob.hyena.ambient");
+    public static final SoundEvent HYENA_HURT = create("mob.hyena.hurt");
+    public static final SoundEvent HYENA_DEATH = create("mob.hyena.death");
 
 
     private static SoundEvent create(String name) {

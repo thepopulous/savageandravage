@@ -46,5 +46,31 @@
       "savageandravage:mob/guardillager/guardillager_step6"
     ],
     "subtitle": "savageandravage:subtitles.guardillager.step"
+  },
+  "mob.hyena.ambient": {
+    "category": "neutral",
+    "sounds": [
+      "savageandravage:mob/hyena/hyena_say_1",
+      "savageandravage:mob/hyena/hyena_say_2",
+      "savageandravage:mob/hyena/hyena_say_3",
+      "savageandravage:mob/hyena/hyena_say_4"
+    ],
+    "subtitle": "savageandravage.subtitle.mob.hyena_say"
+  },
+  "mob.hyena.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "savageandravage:mob/hyena/hyena_hit_1",
+      "savageandravage:mob/hyena/hyena_hit_2"
+    ],
+    "subtitle": "savageandravage.subtitle.mob.hyena_hit"
+  },
+  "mob.hyena.death": {
+    "category": "neutral",
+    "sounds": [
+      "savageandravage:mob/hyena/hyena_death_1",
+      "savageandravage:mob/hyena/hyena_death_2"
+    ],
+    "subtitle": "savageandravage.subtitle.mob.hyena_death"
   }
 }

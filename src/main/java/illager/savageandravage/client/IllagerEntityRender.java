@@ -1,10 +1,7 @@
 package illager.savageandravage.client;
 
 import illager.savageandravage.client.render.*;
-import illager.savageandravage.entity.CreepieEntity;
-import illager.savageandravage.entity.FriendlyRavagerEntity;
-import illager.savageandravage.entity.SavagelingEntity;
-import illager.savageandravage.entity.SkeletonVillagerEntity;
+import illager.savageandravage.entity.*;
 import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
@@ -33,6 +30,6 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(ScavengersEntity.class, ScavengersRender::new);
         RenderingRegistry.registerEntityRenderingHandler(FriendlyRavagerEntity.class, FriendlyRavagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(BeastBrewEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
-
+        RenderingRegistry.registerEntityRenderingHandler(HyenaEntity.class, HyenaRender::new);
     }
 }

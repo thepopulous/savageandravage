@@ -39,6 +39,7 @@ public class SavageItems {
     public static final Item SKELETONVILLAGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SKELETONVILLAGER, 12698049, 4802889, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SCAVENGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.SCAVENGER, 9804699, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item FRIENDLYRAVAGER_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.FRIENDLYRAVAGER, 12698049, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item HYENA_SPAWNEGG = new SpawnEggItem(SavageEntityRegistry.HYENA, 0x4f453d, 0x64453d, (new Item.Properties()).group(ItemGroup.MISC));
 
 
     public static List<Item> getItems() {
@@ -73,6 +74,7 @@ public class SavageItems {
         register(registry, SAVAGELING_SPAWNEGG, "savageling_spawnegg");
         register(registry, SKELETONVILLAGER_SPAWNEGG, "skeletonvillager_spawnegg");
         register(registry, FRIENDLYRAVAGER_SPAWNEGG, "friendlyravager_spawnegg");
+        register(registry, HYENA_SPAWNEGG, "hyena_spawnegg");
 
         DispenserBlock.registerDispenseBehavior(CREEPER_SPORES, new ProjectileDispenseBehavior() {
             protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
