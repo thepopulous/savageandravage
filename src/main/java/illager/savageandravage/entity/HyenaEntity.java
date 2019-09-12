@@ -496,7 +496,7 @@ public class HyenaEntity extends TameableEntity {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
-            if (entity == getOwner() && entity instanceof PlayerEntity) {
+            if (!this.hasCustomName() && entity == getOwner() && entity instanceof PlayerEntity) {
                 this.setTamed(false);
                 this.setOwnerId(null);
             }

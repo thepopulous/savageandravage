@@ -29,7 +29,9 @@ public class HyenaBegGoal extends Goal {
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute() {
-        this.player = this.world.getClosestPlayer(this.field_220688_f, this.hyena);
+        if (this.hyena.isTamed()) {
+            this.player = this.world.getClosestPlayer(this.field_220688_f, this.hyena);
+        }
         return this.player == null ? false : this.shouldLookingPlayer(this.player);
     }
 
