@@ -170,8 +170,8 @@ public class EntityEventHandler {
             LivingEntity attacker = (LivingEntity) event.getSource().getImmediateSource();
 
             if (attacker.isAlive() && attacker.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-                if (attacker.getPersistantData().contains("Tenacity")) {
-                    attacker.getPersistantData().putFloat("Tenacity", attacker.getPersistantData().getFloat("Tenacity") + event.getAmount());
+                if (attacker.getPersistentData().contains("Tenacity")) {
+                    attacker.getPersistentData().putFloat("Tenacity", attacker.getPersistentData().getFloat("Tenacity") + event.getAmount());
                 }
             }
         }
@@ -182,14 +182,14 @@ public class EntityEventHandler {
         LivingEntity livingEntity = event.getEntityLiving();
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-            if (!livingEntity.getPersistantData().contains("Tenacity")) {
-                livingEntity.getPersistantData().putFloat("Tenacity", 0);
+            if (!livingEntity.getPersistentData().contains("Tenacity")) {
+                livingEntity.getPersistentData().putFloat("Tenacity", 0);
             }
         }
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null) {
-            if (livingEntity.getPersistantData().contains("Tenacity") && livingEntity.getPersistantData().getFloat("Tenacity") > 0) {
-                livingEntity.getPersistantData().putFloat("Tenacity", 0);
+            if (livingEntity.getPersistentData().contains("Tenacity") && livingEntity.getPersistentData().getFloat("Tenacity") > 0) {
+                livingEntity.getPersistentData().putFloat("Tenacity", 0);
             }
         }
     }
@@ -200,9 +200,9 @@ public class EntityEventHandler {
         PlayerEntity livingEntity = event.getEntityPlayer();
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
-            if (livingEntity.getPersistantData().contains("Tenacity")) {
+            if (livingEntity.getPersistentData().contains("Tenacity")) {
                 EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY);
-                if (effectinstance1 != null && livingEntity.getPersistantData().getFloat("Tenacity") >= 35 + 5 * effectinstance1.getAmplifier()) {
+                if (effectinstance1 != null && livingEntity.getPersistentData().getFloat("Tenacity") >= 35 + 5 * effectinstance1.getAmplifier()) {
                     int i = 1;
                     int i2 = 30;
                     if (effectinstance1 != null) {
@@ -216,7 +216,7 @@ public class EntityEventHandler {
                     i = MathHelper.clamp(i, 0, 7);
 
                     livingEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, i2, i));
-                    livingEntity.getPersistantData().putFloat("Tenacity", 0);
+                    livingEntity.getPersistentData().putFloat("Tenacity", 0);
                 }
             }
         }
