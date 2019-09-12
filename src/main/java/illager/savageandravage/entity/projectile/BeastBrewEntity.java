@@ -73,9 +73,11 @@ public class BeastBrewEntity extends ProjectileItemEntity {
             }
 
             if (entity instanceof VillagerEntity) {
-                spawnRavager();
+                if (!this.world.isRemote) {
+                    spawnRavager();
 
-                entity.remove();
+                    entity.remove();
+                }
             }
         }
 
@@ -85,14 +87,10 @@ public class BeastBrewEntity extends ProjectileItemEntity {
     }
 
     private void spawnRavager() {
-        if (!this.world.isRemote) {
+        FriendlyRavagerEntity creepieEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
+        creepieEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
 
-            FriendlyRavagerEntity creepieEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
-            creepieEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
-
-            this.world.addEntity(creepieEntity);
-
-        }
+        this.world.addEntity(creepieEntity);
     }
 
     @Override

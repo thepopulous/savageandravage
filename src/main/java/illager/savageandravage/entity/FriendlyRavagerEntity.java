@@ -16,7 +16,9 @@ import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SaddleItem;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -38,6 +40,7 @@ import java.util.Random;
 public class FriendlyRavagerEntity extends RavagerEntity {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final DataParameter<Boolean> BOOST = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
 
     protected boolean horseJumping;
     protected float jumpPower;
@@ -91,6 +94,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(BOOST, false);
+        this.dataManager.register(SADDLED, false);
     }
 
     public static boolean spawnEntity(EntityType<? extends FriendlyRavagerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos pos, Random random) {
@@ -148,6 +152,14 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         this.getDataManager().set(BOOST, boost);
     }
 
+    public boolean isSaddled() {
+        return this.getDataManager().get(SADDLED);
+    }
+
+    public void setSaddled(boolean boost) {
+        this.getDataManager().set(SADDLED, boost);
+    }
+
     private void dushFinish() {
         SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerStopDushStat(this));
     }
@@ -177,7 +189,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
 
     @Override
     public boolean canBeSteered() {
-        return this.getControllingPassenger() instanceof LivingEntity;
+        return isSaddled() && this.getControllingPassenger() instanceof LivingEntity;
     }
 
     protected void mountTo(PlayerEntity player) {
@@ -194,6 +206,11 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         boolean flag = !itemstack.isEmpty();
         if (flag && itemstack.getItem() instanceof SpawnEggItem) {
             return super.processInteract(player, hand);
+        } else if (flag && !isSaddled() && itemstack.getItem() instanceof SaddleItem) {
+            this.playSound(SoundEvents.ENTITY_HORSE_SADDLE, 1.0F, 0.75F);
+            this.setSaddled(true);
+
+            return true;
         } else {
             if (this.isChild()) {
                     return super.processInteract(player, hand);
@@ -203,6 +220,19 @@ public class FriendlyRavagerEntity extends RavagerEntity {
             }
 
         }
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+
+        compound.putBoolean("Saddled", isSaddled());
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setSaddled(compound.getBoolean("Saddled"));
     }
 
     /**
