@@ -1,6 +1,9 @@
 package illager.savageandravage.entity;
 
+import illager.savageandravage.entity.ai.FollowTamedHyenaGoal;
+import illager.savageandravage.entity.ai.FollowWildLeaderGoal;
 import illager.savageandravage.entity.ai.HyenaBegGoal;
+import illager.savageandravage.entity.ai.OwnerHyenaHurtByTargetGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageSoundsRegister;
 import net.minecraft.block.BlockState;
@@ -90,12 +93,14 @@ public class HyenaEntity extends TameableEntity {
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(6, new FollowTamedHyenaGoal(this, 1.3D));
+        this.goalSelector.addGoal(6, new FollowWildLeaderGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new HyenaBegGoal(this, 8.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHyenaHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, field_213441_bD));
@@ -489,6 +494,11 @@ public class HyenaEntity extends TameableEntity {
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof ArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
+            }
+
+            if (entity == getOwner() && entity instanceof PlayerEntity) {
+                this.setTamed(false);
+                this.setOwnerId(null);
             }
 
             return super.attackEntityFrom(source, amount);

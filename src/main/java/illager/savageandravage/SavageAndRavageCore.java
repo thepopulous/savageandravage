@@ -2,6 +2,7 @@ package illager.savageandravage;
 
 import illager.savageandravage.client.IllagerEntityRender;
 import illager.savageandravage.event.EntityEventHandler;
+import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageFeatures;
 import illager.savageandravage.message.MessageRavagerAttackStat;
 import illager.savageandravage.message.MessageRavagerDushStat;
@@ -58,6 +59,8 @@ public class SavageAndRavageCore {
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
 
         SavageFeatures.addStructureFeature();
+
+        SavageEntityRegistry.addEntitySpawn();
 
         CHANNEL.registerMessage(0, MessageRavagerAttackStat.class, MessageRavagerAttackStat::writePacketData, MessageRavagerAttackStat::readPacketData, MessageRavagerAttackStat.Handler::handle);
         CHANNEL.registerMessage(1, MessageRavagerDushStat.class, MessageRavagerDushStat::writePacketData, MessageRavagerDushStat::readPacketData, MessageRavagerDushStat.Handler::handle);

@@ -10,6 +10,8 @@ import illager.savageandravage.entity.projectile.CreeperSporeEntity;
 import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -54,5 +56,9 @@ public class SavageEntityRegistry {
     }
 
     public static void addEntitySpawn() {
+        Biomes.SAVANNA.getSpawns(EntityClassification.CREATURE).add(new Biome.SpawnListEntry(HYENA, 5, 3, 5));
+        Biomes.SAVANNA_PLATEAU.getSpawns(EntityClassification.CREATURE).add(new Biome.SpawnListEntry(HYENA, 6, 4, 6));
+        Biomes.SHATTERED_SAVANNA.getSpawns(EntityClassification.CREATURE).add(new Biome.SpawnListEntry(HYENA, 5, 3, 5));
+        Biomes.SHATTERED_SAVANNA_PLATEAU.getSpawns(EntityClassification.CREATURE).add(new Biome.SpawnListEntry(HYENA, 6, 4, 6));
     }
 }
