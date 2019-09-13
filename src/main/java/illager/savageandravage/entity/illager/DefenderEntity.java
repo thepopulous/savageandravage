@@ -36,6 +36,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -453,6 +455,8 @@ public class DefenderEntity extends AbstractIllagerEntity {
         ItemStack shield = new ItemStack(Items.SHIELD, 1);
 
         applyBanner(banner, shield);
+
+        shield.setDisplayName((new TranslationTextComponent("block.savageandravage.ominous_shield")).applyTextStyle(TextFormatting.GOLD));
 
         return shield;
     }
