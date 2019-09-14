@@ -44,7 +44,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class FriendlyRavagerEntity extends AbstractRaiderEntity {
+public class FriendlyRavagerEntity extends CreatureEntity {
     private static final Predicate<Entity> field_213690_b = (p_213685_0_) -> {
         return p_213685_0_.isAlive() && !(p_213685_0_ instanceof FriendlyRavagerEntity);
     };
@@ -320,12 +320,6 @@ public class FriendlyRavagerEntity extends AbstractRaiderEntity {
         return !worldIn.containsAnyLiquid(this.getBoundingBox());
     }
 
-    public void func_213660_a(int p_213660_1_, boolean p_213660_2_) {
-    }
-
-    public boolean canBeLeader() {
-        return false;
-    }
 
 
     @Override
@@ -389,10 +383,6 @@ public class FriendlyRavagerEntity extends AbstractRaiderEntity {
         return this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity && this.getControllingPassenger().getUniqueID().equals(player.getUniqueID());
     }
 
-    @Override
-    public boolean func_213658_ej() {
-        return false;
-    }
 
     /**
      * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
@@ -578,11 +568,6 @@ public class FriendlyRavagerEntity extends AbstractRaiderEntity {
 
     }
 
-    public boolean canJump() {
-        return true;
-    }
-
-
     public void fall(float distance, float damageMultiplier) {
         if (distance > 1.0F) {
             this.playSound(SoundEvents.ENTITY_RAVAGER_STEP, 0.4F, 1.0F);
@@ -610,10 +595,6 @@ public class FriendlyRavagerEntity extends AbstractRaiderEntity {
         return false;
     }
 
-    @Override
-    public SoundEvent getRaidLossSound() {
-        return null;
-    }
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         return false;

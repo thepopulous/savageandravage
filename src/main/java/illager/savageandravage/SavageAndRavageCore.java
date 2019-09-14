@@ -65,7 +65,6 @@ public class SavageAndRavageCore {
         CHANNEL.registerMessage(0, MessageRavagerAttackStat.class, MessageRavagerAttackStat::writePacketData, MessageRavagerAttackStat::readPacketData, MessageRavagerAttackStat.Handler::handle);
         CHANNEL.registerMessage(1, MessageRavagerDushStat.class, MessageRavagerDushStat::writePacketData, MessageRavagerDushStat::readPacketData, MessageRavagerDushStat.Handler::handle);
         CHANNEL.registerMessage(2, MessageRavagerStopDushStat.class, MessageRavagerStopDushStat::writePacketData, MessageRavagerStopDushStat::readPacketData, MessageRavagerStopDushStat.Handler::handle);
-
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
