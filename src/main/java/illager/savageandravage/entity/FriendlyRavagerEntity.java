@@ -4,14 +4,17 @@ import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.message.MessageRavagerAttackStat;
 import illager.savageandravage.message.MessageRavagerDushStat;
 import illager.savageandravage.message.MessageRavagerStopDushStat;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,22 +25,30 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Random;
+import java.util.function.Predicate;
 
-public class FriendlyRavagerEntity extends RavagerEntity {
+public class FriendlyRavagerEntity extends AbstractRaiderEntity {
+    private static final Predicate<Entity> field_213690_b = (p_213685_0_) -> {
+        return p_213685_0_.isAlive() && !(p_213685_0_ instanceof FriendlyRavagerEntity);
+    };
+
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final DataParameter<Boolean> BOOST = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
@@ -46,6 +57,10 @@ public class FriendlyRavagerEntity extends RavagerEntity {
     protected float jumpPower;
     protected boolean allowStandSliding;
     protected int gallopTime;
+    private int attackTick;
+    private int stunTick;
+    private int roarTick;
+
 
     public void setHorseJumping(boolean jumping) {
         this.horseJumping = jumping;
@@ -60,7 +75,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
     }
 
     @SuppressWarnings("unchecked")
-    public FriendlyRavagerEntity(EntityType<? extends RavagerEntity> type, World worldIn) {
+    public FriendlyRavagerEntity(EntityType<? extends FriendlyRavagerEntity> type, World worldIn) {
         super(type, worldIn);
         this.stepHeight = 1.0F;
         this.experienceValue = 10;
@@ -76,6 +91,15 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, AbstractRaiderEntity.class, 8.0F));
+    }
+
+    protected void func_213385_F() {
+        boolean flag = !(this.getControllingPassenger() instanceof MobEntity) || this.getControllingPassenger().getType().isContained(EntityTypeTags.RAIDERS);
+        boolean flag1 = !(this.getRidingEntity() instanceof BoatEntity);
+        this.goalSelector.setFlag(Goal.Flag.MOVE, flag);
+        this.goalSelector.setFlag(Goal.Flag.JUMP, flag && flag1);
+        this.goalSelector.setFlag(Goal.Flag.LOOK, flag);
+        this.goalSelector.setFlag(Goal.Flag.TARGET, flag);
     }
 
     @Override
@@ -97,8 +121,16 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         this.dataManager.register(SADDLED, false);
     }
 
-    public static boolean spawnEntity(EntityType<? extends FriendlyRavagerEntity> entity, IWorld world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK && world.getLightSubtracted(pos, 0) > 8;
+
+    public int getHorizontalFaceSpeed() {
+        return 45;
+    }
+
+    /**
+     * Returns the Y offset from the entity's position for any entity riding this one.
+     */
+    public double getMountedYOffset() {
+        return 2.1D;
     }
 
     /*
@@ -114,6 +146,187 @@ public class FriendlyRavagerEntity extends RavagerEntity {
             return (double)(f * 2.0F * f * 2.0F + attackTarget.getWidth());
         }
     }
+
+    public void livingTick() {
+        super.livingTick();
+        if (this.isAlive()) {
+            if (this.isMovementBlocked()) {
+                this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
+            } else {
+                double d0 = this.getAttackTarget() != null ? 0.35D : 0.3D;
+                double d1 = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
+                this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(MathHelper.lerp(0.1D, d1, d0));
+            }
+
+            if (this.collidedHorizontally && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
+                boolean flag = false;
+                AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(0.2D);
+
+                if (this.isBoosting()) {
+                    for (BlockPos blockpos : BlockPos.getAllInBoxMutable(MathHelper.floor(axisalignedbb.minX), MathHelper.floor(axisalignedbb.minY), MathHelper.floor(axisalignedbb.minZ), MathHelper.floor(axisalignedbb.maxX), MathHelper.floor(axisalignedbb.maxY), MathHelper.floor(axisalignedbb.maxZ))) {
+                        BlockState blockstate = this.world.getBlockState(blockpos);
+                        Block block = blockstate.getBlock();
+                        if (block instanceof LeavesBlock) {
+                            flag = this.world.destroyBlock(blockpos, true) || flag;
+                        }
+                    }
+                }
+
+                if (!flag && this.onGround) {
+                    this.jump();
+                }
+            }
+
+            if (this.roarTick > 0) {
+                --this.roarTick;
+                if (this.roarTick == 10) {
+                    this.roar();
+                }
+            }
+
+            if (this.attackTick > 0) {
+                --this.attackTick;
+            }
+
+            if (this.stunTick > 0) {
+                --this.stunTick;
+                this.func_213682_eh();
+                if (this.stunTick == 0) {
+                    this.playSound(SoundEvents.ENTITY_RAVAGER_ROAR, 1.0F, 1.0F);
+                    this.roarTick = 20;
+                }
+            }
+
+        }
+    }
+
+    private void func_213682_eh() {
+        if (this.rand.nextInt(6) == 0) {
+            double d0 = this.posX - (double) this.getWidth() * Math.sin((double) (this.renderYawOffset * ((float) Math.PI / 180F))) + (this.rand.nextDouble() * 0.6D - 0.3D);
+            double d1 = this.posY + (double) this.getHeight() - 0.3D;
+            double d2 = this.posZ + (double) this.getWidth() * Math.cos((double) (this.renderYawOffset * ((float) Math.PI / 180F))) + (this.rand.nextDouble() * 0.6D - 0.3D);
+            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, 0.4980392156862745D, 0.5137254901960784D, 0.5725490196078431D);
+        }
+
+    }
+
+    /**
+     * returns true if the entity provided in the argument can be seen. (Raytrace)
+     */
+    public boolean canEntityBeSeen(Entity entityIn) {
+        return this.stunTick <= 0 && this.roarTick <= 0 ? super.canEntityBeSeen(entityIn) : false;
+    }
+
+    protected void func_213371_e(LivingEntity p_213371_1_) {
+        if (this.roarTick == 0) {
+            if (this.rand.nextDouble() < 0.5D) {
+                this.stunTick = 40;
+                this.playSound(SoundEvents.ENTITY_RAVAGER_STUNNED, 1.0F, 1.0F);
+                this.world.setEntityState(this, (byte) 39);
+                p_213371_1_.applyEntityCollision(this);
+            } else {
+                this.launch(p_213371_1_);
+            }
+
+            p_213371_1_.velocityChanged = true;
+        }
+
+    }
+
+    private void roar() {
+        if (this.isAlive()) {
+            for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(4.0D), field_213690_b)) {
+                if (!(entity instanceof AbstractIllagerEntity)) {
+                    entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6.0F);
+                }
+
+                this.launch(entity);
+            }
+
+            Vec3d vec3d = this.getBoundingBox().getCenter();
+
+            for (int i = 0; i < 40; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.2D;
+                double d1 = this.rand.nextGaussian() * 0.2D;
+                double d2 = this.rand.nextGaussian() * 0.2D;
+                this.world.addParticle(ParticleTypes.POOF, vec3d.x, vec3d.y, vec3d.z, d0, d1, d2);
+            }
+        }
+
+    }
+
+    private void launch(Entity p_213688_1_) {
+        double d0 = p_213688_1_.posX - this.posX;
+        double d1 = p_213688_1_.posZ - this.posZ;
+        double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+        p_213688_1_.addVelocity(d0 / d2 * 4.0D, 0.2D, d1 / d2 * 4.0D);
+    }
+
+    /**
+     * Handler for {@link World#setEntityState}
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 4) {
+            this.attackTick = 10;
+            this.playSound(SoundEvents.ENTITY_RAVAGER_ATTACK, 1.0F, 1.0F);
+        } else if (id == 39) {
+            this.stunTick = 40;
+        }
+
+        super.handleStatusUpdate(id);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int func_213683_l() {
+        return this.attackTick;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int func_213684_dX() {
+        return this.stunTick;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int func_213687_eg() {
+        return this.roarTick;
+    }
+
+    public boolean attackEntityAsMob(Entity entityIn) {
+        this.attackTick = 10;
+        this.world.setEntityState(this, (byte) 4);
+        this.playSound(SoundEvents.ENTITY_RAVAGER_ATTACK, 1.0F, 1.0F);
+        return super.attackEntityAsMob(entityIn);
+    }
+
+    @Nullable
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.ENTITY_RAVAGER_AMBIENT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_RAVAGER_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_RAVAGER_DEATH;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
+        this.playSound(SoundEvents.ENTITY_RAVAGER_STEP, 0.15F, 1.0F);
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return !worldIn.containsAnyLiquid(this.getBoundingBox());
+    }
+
+    public void func_213660_a(int p_213660_1_, boolean p_213660_2_) {
+    }
+
+    public boolean canBeLeader() {
+        return false;
+    }
+
 
     @Override
     public void tick() {
@@ -227,12 +440,18 @@ public class FriendlyRavagerEntity extends RavagerEntity {
         super.writeAdditional(compound);
 
         compound.putBoolean("Saddled", isSaddled());
+        compound.putInt("AttackTick", this.attackTick);
+        compound.putInt("StunTick", this.stunTick);
+        compound.putInt("RoarTick", this.roarTick);
     }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
+        this.attackTick = compound.getInt("AttackTick");
+        this.stunTick = compound.getInt("StunTick");
+        this.roarTick = compound.getInt("RoarTick");
     }
 
     /**
@@ -250,7 +469,7 @@ public class FriendlyRavagerEntity extends RavagerEntity {
 
     @Override
     protected boolean isMovementBlocked() {
-        return super.isMovementBlocked() && this.isBeingRidden();
+        return super.isMovementBlocked() && this.isBeingRidden() || this.attackTick > 0 || this.stunTick > 0 || this.roarTick > 0;
     }
 
     /**
@@ -389,6 +608,11 @@ public class FriendlyRavagerEntity extends RavagerEntity {
 
     public boolean preventDespawn() {
         return false;
+    }
+
+    @Override
+    public SoundEvent getRaidLossSound() {
+        return null;
     }
 
     public boolean canDespawn(double distanceToClosestPlayer) {
