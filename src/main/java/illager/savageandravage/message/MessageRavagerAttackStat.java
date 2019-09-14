@@ -7,25 +7,20 @@ import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.ICustomPacket;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageRavagerAttackStat implements ICustomPacket {
+public class MessageRavagerAttackStat {
     private int entityID;
 
     public MessageRavagerAttackStat() {
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerAttackStat(int entityID) {
         this.entityID = entityID;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerAttackStat(FriendlyRavagerEntity ravagerEntityIn) {
         this.entityID = ravagerEntityIn.getEntityId();
     }
@@ -37,11 +32,8 @@ public class MessageRavagerAttackStat implements ICustomPacket {
         return new MessageRavagerAttackStat(buf.readVarInt());
     }
 
-    /**
-     * Writes the raw packet data to the data stream.
-     */
-    public static void writePacketData(MessageRavagerAttackStat stat, PacketBuffer buf) {
-        buf.writeVarInt(stat.entityID);
+    public void writePacketData(PacketBuffer buffer) {
+        buffer.writeVarInt(this.entityID);
     }
 
 

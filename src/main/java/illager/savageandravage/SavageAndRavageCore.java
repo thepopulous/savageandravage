@@ -4,10 +4,7 @@ import illager.savageandravage.client.IllagerEntityRender;
 import illager.savageandravage.event.EntityEventHandler;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageFeatures;
-import illager.savageandravage.message.MessageRavagerAttackStat;
-import illager.savageandravage.message.MessageRavagerDushStat;
-import illager.savageandravage.message.MessageRavagerStopDushStat;
-import net.minecraft.util.ResourceLocation;
+import illager.savageandravage.message.SavagePacketHandler;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,8 +16,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import javax.annotation.Nullable;
 
@@ -28,17 +23,10 @@ import javax.annotation.Nullable;
 public class SavageAndRavageCore {
     public static final String MODID = "savageandravage";
 
-    public static final String NETWORK_PROTOCOL = "1";
-
     @Nullable
     private Raid raid = null;
 
-    public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(SavageAndRavageCore.MODID, "net"))
 
-            .networkProtocolVersion(() -> NETWORK_PROTOCOL)
-            .clientAcceptedVersions(NETWORK_PROTOCOL::equals)
-            .serverAcceptedVersions(NETWORK_PROTOCOL::equals)
-            .simpleChannel();
 
     public SavageAndRavageCore() {
         // Register the setup method for modloading
@@ -55,16 +43,13 @@ public class SavageAndRavageCore {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        SavagePacketHandler.register();
         // some preinit code
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
 
         SavageFeatures.addStructureFeature();
 
         SavageEntityRegistry.addEntitySpawn();
-
-        CHANNEL.registerMessage(0, MessageRavagerAttackStat.class, MessageRavagerAttackStat::writePacketData, MessageRavagerAttackStat::readPacketData, MessageRavagerAttackStat.Handler::handle);
-        CHANNEL.registerMessage(1, MessageRavagerDushStat.class, MessageRavagerDushStat::writePacketData, MessageRavagerDushStat::readPacketData, MessageRavagerDushStat.Handler::handle);
-        CHANNEL.registerMessage(2, MessageRavagerStopDushStat.class, MessageRavagerStopDushStat::writePacketData, MessageRavagerStopDushStat::readPacketData, MessageRavagerStopDushStat.Handler::handle);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

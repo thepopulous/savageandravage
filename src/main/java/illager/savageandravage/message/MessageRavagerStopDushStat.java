@@ -3,25 +3,20 @@ package illager.savageandravage.message;
 import illager.savageandravage.entity.FriendlyRavagerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.ICustomPacket;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageRavagerStopDushStat implements ICustomPacket {
+public class MessageRavagerStopDushStat {
     private int entityID;
 
     public MessageRavagerStopDushStat() {
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerStopDushStat(int entityID) {
         this.entityID = entityID;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerStopDushStat(FriendlyRavagerEntity ravagerEntityIn) {
         this.entityID = ravagerEntityIn.getEntityId();
     }
@@ -36,8 +31,8 @@ public class MessageRavagerStopDushStat implements ICustomPacket {
     /**
      * Writes the raw packet data to the data stream.
      */
-    public static void writePacketData(MessageRavagerStopDushStat stat, PacketBuffer buf) {
-        buf.writeVarInt(stat.entityID);
+    public void writePacketData(PacketBuffer buffer) {
+        buffer.writeVarInt(this.entityID);
     }
 
 

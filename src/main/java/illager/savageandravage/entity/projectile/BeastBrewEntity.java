@@ -7,13 +7,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.merchant.villager.VillagerData;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
+import net.minecraft.entity.villager.IVillagerDataHolder;
+import net.minecraft.entity.villager.IVillagerType;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -74,7 +78,10 @@ public class BeastBrewEntity extends ProjectileItemEntity {
 
             if (entity instanceof VillagerEntity) {
                 if (!this.world.isRemote) {
-                    spawnRavager();
+                    VillagerData villagerdata = ((IVillagerDataHolder) entity).getVillagerData();
+                    IVillagerType ivillagertype = villagerdata.getType();
+
+                    spawnRavager(entity.getPosition(), villagerdata.getType() == IVillagerType.SNOW);
 
                     entity.remove();
                 }
@@ -86,11 +93,12 @@ public class BeastBrewEntity extends ProjectileItemEntity {
         this.remove();
     }
 
-    private void spawnRavager() {
-        FriendlyRavagerEntity creepieEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
-        creepieEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
+    private void spawnRavager(BlockPos pos, boolean snowType) {
+        FriendlyRavagerEntity ravagerEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
+        ravagerEntity.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+        ravagerEntity.setSnowType(snowType);
 
-        this.world.addEntity(creepieEntity);
+        this.world.addEntity(ravagerEntity);
     }
 
     @Override

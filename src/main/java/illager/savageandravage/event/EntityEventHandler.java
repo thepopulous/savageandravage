@@ -1,6 +1,5 @@
 package illager.savageandravage.event;
 
-import illager.savageandravage.entity.FriendlyRavagerEntity;
 import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.entity.SkeletonVillagerEntity;
 import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
@@ -20,7 +19,6 @@ import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -31,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -143,15 +140,6 @@ public class EntityEventHandler {
             skeletonVillager.setLocationAndAngles(pos.getX(), (double) pos.getY(), (double) pos.getZ(), 0.0F, 0.0F);
             skeletonVillager.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(pos)), SpawnReason.NATURAL, (ILivingEntityData) null, (CompoundNBT) null);
             world.addEntity(skeletonVillager);
-        }
-    }
-
-    @SubscribeEvent
-    public void onEntityTarget(LivingSetAttackTargetEvent event) {
-        LivingEntity target = event.getTarget();
-        if (event.getEntityLiving() instanceof IronGolemEntity && target instanceof FriendlyRavagerEntity) {
-
-            ((IronGolemEntity) event.getEntityLiving()).setAttackTarget(null);
         }
     }
 

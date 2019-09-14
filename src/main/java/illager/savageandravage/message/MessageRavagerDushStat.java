@@ -9,25 +9,20 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.ICustomPacket;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageRavagerDushStat implements ICustomPacket {
+public class MessageRavagerDushStat {
     private int entityID;
 
     public MessageRavagerDushStat() {
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerDushStat(int entityID) {
         this.entityID = entityID;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public MessageRavagerDushStat(FriendlyRavagerEntity ravagerEntityIn) {
         this.entityID = ravagerEntityIn.getEntityId();
     }
@@ -39,11 +34,8 @@ public class MessageRavagerDushStat implements ICustomPacket {
         return new MessageRavagerDushStat(buf.readVarInt());
     }
 
-    /**
-     * Writes the raw packet data to the data stream.
-     */
-    public static void writePacketData(MessageRavagerDushStat stat, PacketBuffer buf) {
-        buf.writeVarInt(stat.entityID);
+    public void writePacketData(PacketBuffer buffer) {
+        buffer.writeVarInt(this.entityID);
     }
 
 

@@ -1,9 +1,9 @@
 package illager.savageandravage.entity;
 
-import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.message.MessageRavagerAttackStat;
 import illager.savageandravage.message.MessageRavagerDushStat;
 import illager.savageandravage.message.MessageRavagerStopDushStat;
+import illager.savageandravage.message.SavagePacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
@@ -52,6 +52,8 @@ public class FriendlyRavagerEntity extends CreatureEntity {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final DataParameter<Boolean> BOOST = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SNOWTYPE = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
+
 
     protected boolean horseJumping;
     protected float jumpPower;
@@ -109,7 +111,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0d);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3d);
         this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
         this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(1.5D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
@@ -119,6 +121,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         super.registerData();
         this.dataManager.register(BOOST, false);
         this.dataManager.register(SADDLED, false);
+        this.dataManager.register(SNOWTYPE, false);
     }
 
 
@@ -363,20 +366,29 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         return this.getDataManager().get(SADDLED);
     }
 
-    public void setSaddled(boolean boost) {
-        this.getDataManager().set(SADDLED, boost);
+    public void setSaddled(boolean saddled) {
+        this.getDataManager().set(SADDLED, saddled);
     }
 
+    public boolean isSnowType() {
+        return this.getDataManager().get(SNOWTYPE);
+    }
+
+    public void setSnowType(boolean snow) {
+        this.getDataManager().set(SNOWTYPE, snow);
+    }
+
+
     private void dushFinish() {
-        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerStopDushStat(this));
+        SavagePacketHandler.CHANNEL.sendToServer(new MessageRavagerStopDushStat(this));
     }
 
     private void dushStart() {
-        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerDushStat(this));
+        SavagePacketHandler.CHANNEL.sendToServer(new MessageRavagerDushStat(this));
     }
 
     private void attackingStart() {
-        SavageAndRavageCore.CHANNEL.sendToServer(new MessageRavagerAttackStat(this));
+        SavagePacketHandler.CHANNEL.sendToServer(new MessageRavagerAttackStat(this));
     }
 
     public boolean isRidingPlayer(PlayerEntity player) {
@@ -430,6 +442,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         super.writeAdditional(compound);
 
         compound.putBoolean("Saddled", isSaddled());
+        compound.putBoolean("SnowType", isSnowType());
         compound.putInt("AttackTick", this.attackTick);
         compound.putInt("StunTick", this.stunTick);
         compound.putInt("RoarTick", this.roarTick);
@@ -439,6 +452,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
+        this.setSnowType(compound.getBoolean("SnowType"));
         this.attackTick = compound.getInt("AttackTick");
         this.stunTick = compound.getInt("StunTick");
         this.roarTick = compound.getInt("RoarTick");
