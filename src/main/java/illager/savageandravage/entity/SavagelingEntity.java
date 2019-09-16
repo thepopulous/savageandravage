@@ -72,8 +72,24 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
 
     public void tick() {
         super.tick();
+
+        this.oFlap = this.wingRotation;
+        this.oFlapSpeed = this.destPos;
+        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = MathHelper.clamp(this.destPos, 0.0F, 1.0F);
+        if (!this.onGround && this.wingRotDelta < 1.0F) {
+            this.wingRotDelta = 1.0F;
+        }
+
+        this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
+        Vec3d vec3d = this.getMotion();
+        if (!this.onGround && vec3d.y < 0.0D) {
+            this.setMotion(vec3d.mul(1.0D, 0.6D, 1.0D));
+        }
+
+        this.wingRotation += this.wingRotDelta * 2.0F;
+
         if (!this.world.isRemote && this.isAlive() && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextSneeze <= 0) {
-            Vec3d vec3d = this.getMotion();
             this.world.addParticle(ParticleTypes.SNEEZE, this.posX - (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.sin(this.renderYawOffset * ((float) Math.PI / 180F)), this.posY + (double) this.getEyeHeight() - (double) 0.1F, this.posZ + (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.cos(this.renderYawOffset * ((float) Math.PI / 180F)), vec3d.x, 0.0D, vec3d.z);
             this.playSound(SoundEvents.ENTITY_PANDA_SNEEZE, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.timeUntilNextSneeze = 6000 + world.rand.nextInt(600);

@@ -3,6 +3,7 @@ package illager.savageandravage.entity.illager;
 import com.google.common.collect.Maps;
 import illager.savageandravage.init.SavageLootTables;
 import illager.savageandravage.init.SavageSoundsRegister;
+import illager.savageandravage.utils.MiscUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.enchantment.Enchantment;
@@ -36,8 +37,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -209,7 +208,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
                     this.setDrinkingPotion(false);
                     ItemStack itemstack = this.getHeldItemOffhand();
                     if (this.getGuardLevel() >= 1) {
-                        this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+                        this.setItemStackToSlot(EquipmentSlotType.OFFHAND, MiscUtil.getIllagerShield());
                     } else {
                         this.setItemStackToSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
                     }
@@ -405,7 +404,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
      */
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         if (getGuardLevel() >= 1) {
-            this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+            this.setItemStackToSlot(EquipmentSlotType.OFFHAND, MiscUtil.getIllagerShield());
         }
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_SWORD));
 
@@ -431,7 +430,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
             map.put(Enchantments.SHARPNESS, i);
             EnchantmentHelper.setEnchantments(map, itemstack);
             if (flag2) {
-                ItemStack stack2 = getIllagerShield();
+                ItemStack stack2 = MiscUtil.getIllagerShield();
                 Map<Enchantment, Integer> map2 = Maps.newHashMap();
                 map2.put(Enchantments.UNBREAKING, i);
                 EnchantmentHelper.setEnchantments(map2, stack2);
@@ -439,7 +438,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
                 this.setItemStackToSlot(EquipmentSlotType.OFFHAND, stack2);
                 this.setGuardLevel(3);
             } else {
-                this.setItemStackToSlot(EquipmentSlotType.OFFHAND, getIllagerShield());
+                this.setItemStackToSlot(EquipmentSlotType.OFFHAND, MiscUtil.getIllagerShield());
                 this.setGuardLevel(1 + rand.nextInt(2));
             }
         } else {
@@ -449,26 +448,6 @@ public class DefenderEntity extends AbstractIllagerEntity {
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, itemstack);
     }
 
-    public static ItemStack getIllagerShield() {
-        ItemStack banner = Raid.createIllagerBanner();
-
-        ItemStack shield = new ItemStack(Items.SHIELD, 1);
-
-        applyBanner(banner, shield);
-
-        shield.setDisplayName((new TranslationTextComponent("block.savageandravage.ominous_shield")).applyTextStyle(TextFormatting.GOLD));
-
-        return shield;
-    }
-
-
-    private static void applyBanner(ItemStack banner, ItemStack shield) {
-        CompoundNBT bannerNBT = banner.getChildTag("BlockEntityTag");
-
-        CompoundNBT shieldNBT = bannerNBT == null ? new CompoundNBT() : bannerNBT.copy();
-
-        shield.setTagInfo("BlockEntityTag", shieldNBT);
-    }
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {

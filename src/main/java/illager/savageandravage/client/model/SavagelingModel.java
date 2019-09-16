@@ -1,6 +1,7 @@
 package illager.savageandravage.client.model;//Made with Blockbench
 //Paste this code into your mod.
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.entity.SavagelingEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
@@ -16,7 +17,8 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
     private final RendererModel leg_right;
     private final RendererModel leg_left;
     private final RendererModel jaw;
-
+    private final RendererModel wing_right;
+    private final RendererModel wing_left;
     public SavagelingModel() {
         textureWidth = 40;
         textureHeight = 40;
@@ -29,8 +31,6 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
         body = new RendererModel(this);
         body.setRotationPoint(0.0F, 24.0F, 0.0F);
         body.cubeList.add(new ModelBox(body, 0, 26, -4.0F, -10.0F, -3.0F, 8, 6, 8, 0.0F, false));
-        body.cubeList.add(new ModelBox(body, 18, 8, -5.0F, -10.0F, -2.0F, 1, 5, 6, 0.0F, false));
-        body.cubeList.add(new ModelBox(body, 18, 8, 4.0F, -10.0F, -2.0F, 1, 5, 6, 0.0F, false));
         body.cubeList.add(new ModelBox(body, 13, 19, -3.0F, -8.0F, 5.0F, 6, 0, 5, 0.0F, false));
 
         leg_right = new RendererModel(this);
@@ -47,15 +47,32 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
         jaw.setRotationPoint(0.0F, 17.0F, -2.0F);
         setRotationAngle(jaw, 0.0873F, 0.0F, 0.0F);
         jaw.cubeList.add(new ModelBox(jaw, 0, 19, -3.0F, -1.0F, -6.0F, 6, 2, 5, 0.0F, false));
+
+        wing_right = new RendererModel(this);
+        wing_right.setRotationPoint(-4.0F, 14.0F, 1.0F);
+        wing_right.cubeList.add(new ModelBox(wing_right, 18, 8, -1.0F, 0.0F, -3.0F, 1, 5, 6, 0.0F, false));
+
+        wing_left = new RendererModel(this);
+        wing_left.setRotationPoint(4.0F, 14.0F, 0.0F);
+        wing_left.cubeList.add(new ModelBox(wing_left, 18, 8, 0.0F, 0.0F, -2.0F, 1, 5, 6, 0.0F, false));
     }
 
     @Override
     public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        head.render(f5);
+        if (isChild) {
+            GlStateManager.pushMatrix();
+            GlStateManager.scalef(1.25F, 1.25F, 1.25F);
+            head.render(f5);
+            GlStateManager.popMatrix();
+        } else {
+            head.render(f5);
+        }
         body.render(f5);
         leg_right.render(f5);
         leg_left.render(f5);
         jaw.render(f5);
+        wing_right.render(f5);
+        wing_left.render(f5);
     }
 
     @Override
@@ -68,6 +85,9 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
 
         this.leg_right.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+
+        this.wing_right.rotateAngleZ = ageInTicks;
+        this.wing_left.rotateAngleZ = -ageInTicks;
     }
 
     public void setRotationAngle(RendererModel modelRenderer, float x, float y, float z) {

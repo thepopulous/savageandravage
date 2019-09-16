@@ -1,6 +1,7 @@
 package illager.savageandravage.entity.projectile;
 
 import illager.savageandravage.entity.FriendlyRavagerEntity;
+import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
 import net.minecraft.entity.Entity;
@@ -77,13 +78,24 @@ public class BeastBrewEntity extends ProjectileItemEntity {
             }
 
             if (entity instanceof VillagerEntity) {
-                if (!this.world.isRemote) {
-                    VillagerData villagerdata = ((IVillagerDataHolder) entity).getVillagerData();
-                    IVillagerType ivillagertype = villagerdata.getType();
+                if (((VillagerEntity) entity).isChild()) {
+                    if (!this.world.isRemote) {
+                        SavagelingEntity savagelingEntity = SavageEntityRegistry.SAVAGELING.create(this.world);
+                        savagelingEntity.setLocationAndAngles(entity.getPosition().getX() + 0.5F, entity.getPosition().getY(), entity.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
 
-                    spawnRavager(entity.getPosition(), villagerdata.getType() == IVillagerType.SNOW);
+                        this.world.addEntity(savagelingEntity);
 
-                    entity.remove();
+                        entity.remove();
+                    }
+                } else {
+                    if (!this.world.isRemote) {
+                        VillagerData villagerdata = ((IVillagerDataHolder) entity).getVillagerData();
+                        IVillagerType ivillagertype = villagerdata.getType();
+
+                        spawnRavager(entity.getPosition(), villagerdata.getType() == IVillagerType.SNOW);
+
+                        entity.remove();
+                    }
                 }
             }
         }

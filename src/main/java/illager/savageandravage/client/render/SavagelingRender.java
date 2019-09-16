@@ -7,6 +7,7 @@ import illager.savageandravage.entity.SavagelingEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,6 +23,12 @@ public class SavagelingRender<T extends SavagelingEntity> extends MobRenderer<T,
         float f = entitylivingbaseIn.getRenderScale();
 
         GlStateManager.scalef(f, f, f);
+    }
+
+    protected float handleRotationFloat(SavagelingEntity livingBase, float partialTicks) {
+        float f = MathHelper.lerp(partialTicks, livingBase.oFlap, livingBase.wingRotation);
+        float f1 = MathHelper.lerp(partialTicks, livingBase.oFlapSpeed, livingBase.destPos);
+        return (MathHelper.sin(f) + 1.0F) * f1;
     }
 
     protected ResourceLocation getEntityTexture(SavagelingEntity entity) {

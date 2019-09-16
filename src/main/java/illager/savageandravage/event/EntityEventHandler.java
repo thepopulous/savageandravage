@@ -9,6 +9,7 @@ import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
+import illager.savageandravage.utils.MiscUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
@@ -17,12 +18,15 @@ import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.EvokerEntity;
+import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -88,43 +92,51 @@ public class EntityEventHandler {
                 pillager.remove();
             }*/
 
-            if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
-                pillager.remove();
+            if (world.rand.nextFloat() < 0.01F && pillager instanceof PillagerEntity) {
+                DyeColor dyecolor = DyeColor.values()[pillager.world.rand.nextInt(DyeColor.values().length)];
+                int i = pillager.world.rand.nextInt(3);
 
-                ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
+                ((PillagerEntity) pillager).setHeldItem(Hand.OFF_HAND, MiscUtil.makeFirework(dyecolor, i));
+            } else {
 
-                scavenger.setLeader(true);
-                scavenger.resetPatrolTarget();
+                if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+                    pillager.remove();
 
-                scavenger.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
-                scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
-                world.addEntity(scavenger);
+                    ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
+
+                    scavenger.setLeader(true);
+                    scavenger.resetPatrolTarget();
+
+                    scavenger.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                    scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                    world.addEntity(scavenger);
 
 
-                for (int i = 0; i <= 1 + world.rand.nextInt(1); i++) {
-                    DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
+                    for (int i = 0; i <= 1 + world.rand.nextInt(1); i++) {
+                        DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
 
-                    defenderEntity.setLeader(false);
-                    defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
-                    defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
-                    world.addEntity(defenderEntity);
+                        defenderEntity.setLeader(false);
+                        defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                        defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                        world.addEntity(defenderEntity);
+                    }
                 }
-            }
 
-            if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(8) == 0) {
-                for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
-                    DefenderEntity guardilalger = SavageEntityRegistry.DEFENDER.create(world);
+                if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(8) == 0) {
+                    for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
+                        DefenderEntity guardilalger = SavageEntityRegistry.DEFENDER.create(world);
 
-                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pos, false);
+                        pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pos, false);
+                    }
+                    pillager.remove();
+                } else if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
+                    for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
+                        GrieferIllagerEntity griferEntity = SavageEntityRegistry.GRIEFER_ILLAGER.create(world);
+
+                        pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pos, false);
+                    }
+                    pillager.remove();
                 }
-                pillager.remove();
-            } else if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
-                for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
-                    GrieferIllagerEntity griferEntity = SavageEntityRegistry.GRIEFER_ILLAGER.create(world);
-
-                    pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pos, false);
-                }
-                pillager.remove();
             }
         }
 
