@@ -16,9 +16,18 @@ public class SavagePacketHandler {
             .simpleChannel();
 
     public static void register() {
-        CHANNEL.registerMessage(0, MessageRavagerAttackStat.class, MessageRavagerAttackStat::writePacketData, MessageRavagerAttackStat::readPacketData, MessageRavagerAttackStat.Handler::handle);
-        CHANNEL.registerMessage(1, MessageRavagerDushStat.class, MessageRavagerDushStat::writePacketData, MessageRavagerDushStat::readPacketData, MessageRavagerDushStat.Handler::handle);
-        CHANNEL.registerMessage(2, MessageRavagerStopDushStat.class, MessageRavagerStopDushStat::writePacketData, MessageRavagerStopDushStat::readPacketData, MessageRavagerStopDushStat.Handler::handle);
+        CHANNEL.messageBuilder(MessageRavagerAttackStat.class, 0)
+                .encoder(MessageRavagerAttackStat::writePacketData).decoder(MessageRavagerAttackStat::readPacketData)
+                .consumer(MessageRavagerAttackStat.Handler::handle)
+                .add();
+        CHANNEL.messageBuilder(MessageRavagerDushStat.class, 1)
+                .encoder(MessageRavagerDushStat::writePacketData).decoder(MessageRavagerDushStat::readPacketData)
+                .consumer(MessageRavagerDushStat.Handler::handle)
+                .add();
+        CHANNEL.messageBuilder(MessageRavagerStopDushStat.class, 2)
+                .encoder(MessageRavagerStopDushStat::writePacketData).decoder(MessageRavagerStopDushStat::readPacketData)
+                .consumer(MessageRavagerStopDushStat.Handler::handle)
+                .add();
 
     }
 }
