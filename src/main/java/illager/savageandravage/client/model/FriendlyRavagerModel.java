@@ -60,10 +60,10 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
         this.LeftHorn.addBox(8.0F, -25.0F, -2.75F, 2, 14, 4, 0.0F);
         this.setRotateAngle(LeftHorn, 1.117010721276371F, 0.0F, 0.0F);
         this.Neck = new RendererModel(this, 68, 73);
-        this.Neck.setRotationPoint(0.0F, 0.0F, 16.0F);
+        this.Neck.setRotationPoint(0.0F, 0.0F, -1.5F);
         this.Neck.addBox(-5.0F, -5.0F, -18.0F, 10, 10, 18, 0.0F);
         this.Head = new RendererModel(this, 0, 0);
-        this.Head.setRotationPoint(0.0F, -1.0F, 0.0F);
+        this.Head.setRotationPoint(0.0F, 0.0F, -17.0F);
         this.Head.addBox(-8.0F, -10.0F, -16.0F, 16, 20, 16, 0.0F);
         this.TorsoFront = new RendererModel(this, 0, 55);
         this.TorsoFront.setRotationPoint(0.0F, -2.0F, 1.0F);
@@ -87,13 +87,13 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
         this.Head.addChild(this.RightHorn);
         this.Head.addChild(this.LeftHorn);
         this.Head.addChild(this.Mouth);
-        this.Head.addChild(this.Neck);
+        this.Neck.addChild(this.Head);
         this.TorsoFront.addChild(this.TorsoBack);
     }
 
     public void render(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.Head.render(scale);
+        this.Neck.render(scale);
         this.TorsoFront.render(scale);
         this.RightFrontLeg.render(scale);
         this.RightBackLeg.render(scale);
@@ -126,8 +126,8 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
             float f1 = (1.0F + f) * 0.5F;
             float f2 = f1 * f1 * f1 * 12.0F;
             float f3 = f2 * MathHelper.sin(this.Neck.rotateAngleX);
-            this.Neck.rotationPointZ = -6.5F + f2;
-            this.Neck.rotationPointY = -7.0F - f3;
+            this.Neck.rotationPointZ = 10.5F + f2;
+            this.Neck.rotationPointY = 0.0F - f3;
             float f4 = MathHelper.sin(((float) l - partialTick) / 10.0F * (float) Math.PI * 0.25F);
             this.Mouth.rotateAngleX = ((float) Math.PI / 2F) * f4;
             if (l > 5) {
@@ -139,8 +139,8 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
             float f5 = -1.0F;
             float f6 = -1.0F * MathHelper.sin(this.Neck.rotateAngleX);
             this.Neck.rotationPointX = 0.0F;
-            this.Neck.rotationPointY = -7.0F - f6;
-            this.Neck.rotationPointZ = 5.5F;
+            this.Neck.rotationPointY = 0.0F - f6;
+            this.Neck.rotationPointZ = 17.5F;
             boolean flag = i > 0;
             this.Neck.rotateAngleX = flag ? 0.21991149F : 0.0F;
             this.Mouth.rotateAngleX = (float) Math.PI * (flag ? 0.05F : 0.01F);

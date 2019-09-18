@@ -38,6 +38,7 @@ public class MessageRavagerStopDushStat {
 
     public static class Handler {
         public static void handle(MessageRavagerStopDushStat message, Supplier<NetworkEvent.Context> ctx) {
+            NetworkEvent.Context context = ctx.get();
             ctx.get().enqueueWork(() -> {
 
                 Entity entity = ctx.get().getSender().getServerWorld().getEntityByID(message.entityID);
@@ -48,6 +49,7 @@ public class MessageRavagerStopDushStat {
 
                 }
             });
+            context.setPacketHandled(true);
         }
     }
 }

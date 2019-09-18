@@ -39,6 +39,7 @@ public class MessageRavagerAttackStat {
 
     public static class Handler {
         public static void handle(MessageRavagerAttackStat message, Supplier<NetworkEvent.Context> ctx) {
+            NetworkEvent.Context context = ctx.get();
             ctx.get().enqueueWork(() -> {
 
                 Entity entity = ctx.get().getSender().getServerWorld().getEntityByID(message.entityID);
@@ -57,6 +58,7 @@ public class MessageRavagerAttackStat {
                     }
                 }
             });
+            context.setPacketHandled(true);
         }
     }
 }
