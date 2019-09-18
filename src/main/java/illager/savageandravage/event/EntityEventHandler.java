@@ -9,6 +9,7 @@ import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
+import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.utils.MiscUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -16,14 +17,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.monster.AbstractIllagerEntity;
-import net.minecraft.entity.monster.EvokerEntity;
-import net.minecraft.entity.monster.PillagerEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
 import net.minecraft.item.DyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Hand;
@@ -31,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -190,6 +190,17 @@ public class EntityEventHandler {
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null) {
             if (livingEntity.getPersistentData().contains("Tenacity") && livingEntity.getPersistentData().getFloat("Tenacity") > 0) {
                 livingEntity.getPersistentData().putFloat("Tenacity", 0);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityDrop(LivingDropsEvent event) {
+        LivingEntity livingEntity = event.getEntityLiving();
+        if (livingEntity instanceof CreeperEntity) {
+
+            if (event.getSource().isExplosion()) {
+                livingEntity.entityDropItem(new ItemStack(SavageItems.CREEPER_SPORES, 1 + livingEntity.world.rand.nextInt(11)));
             }
         }
     }

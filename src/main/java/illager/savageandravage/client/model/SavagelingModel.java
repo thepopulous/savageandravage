@@ -61,16 +61,17 @@ public class SavagelingModel<T extends SavagelingEntity> extends EntityModel<T> 
     public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
         if (isChild) {
             GlStateManager.pushMatrix();
-            GlStateManager.scalef(1.25F, 1.25F, 1.25F);
+            GlStateManager.scalef(1.5F, 1.5F, 1.5F);
             head.render(f5);
+            jaw.render(f5);
             GlStateManager.popMatrix();
         } else {
             head.render(f5);
+            jaw.render(f5);
         }
         body.render(f5);
         leg_right.render(f5);
         leg_left.render(f5);
-        jaw.render(f5);
         wing_right.render(f5);
         wing_left.render(f5);
     }

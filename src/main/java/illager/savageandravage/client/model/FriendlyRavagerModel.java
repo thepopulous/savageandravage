@@ -87,13 +87,13 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
         this.Head.addChild(this.RightHorn);
         this.Head.addChild(this.LeftHorn);
         this.Head.addChild(this.Mouth);
+        this.Head.addChild(this.Neck);
         this.TorsoFront.addChild(this.TorsoBack);
     }
 
     public void render(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.Head.render(scale);
-        this.Neck.render(scale);
         this.TorsoFront.render(scale);
         this.RightFrontLeg.render(scale);
         this.RightBackLeg.render(scale);
