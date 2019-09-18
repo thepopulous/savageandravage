@@ -9,82 +9,109 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
-    private final RendererModel field_217168_a;
-    private final RendererModel field_217169_b;
-    private final RendererModel field_217170_f;
-    private final RendererModel field_217171_g;
-    private final RendererModel field_217172_h;
-    private final RendererModel field_217173_i;
-    private final RendererModel field_217174_j;
-    private final RendererModel field_217175_k;
+    public RendererModel Head;
+    public RendererModel RightFrontLeg;
+    public RendererModel LeftFrontLeg;
+    public RendererModel RightBackLeg;
+    public RendererModel LeftBackLeg;
+    public RendererModel TorsoFront;
+    public RendererModel Neck;
+    public RendererModel Mouth;
+    public RendererModel Nose;
+    public RendererModel RightHorn;
+    public RendererModel LeftHorn;
+    public RendererModel Hat;
+    public RendererModel TorsoBack;
+    public RendererModel RightCloth;
+    public RendererModel LeftCloth;
 
     public FriendlyRavagerModel() {
         this.textureWidth = 128;
         this.textureHeight = 128;
-        int i = 16;
-        float f = 0.0F;
-        this.field_217175_k = new RendererModel(this);
-        this.field_217175_k.setRotationPoint(0.0F, -7.0F, -1.5F);
-        this.field_217175_k.setTextureOffset(68, 73).addBox(-5.0F, -1.0F, -18.0F, 10, 10, 18, 0.0F);
-        this.field_217168_a = new RendererModel(this);
-        this.field_217168_a.setRotationPoint(0.0F, 16.0F, -17.0F);
-        this.field_217168_a.setTextureOffset(0, 0).addBox(-8.0F, -20.0F, -14.0F, 16, 20, 16, 0.0F);
-        this.field_217168_a.setTextureOffset(0, 0).addBox(-2.0F, -6.0F, -18.0F, 4, 8, 4, 0.0F);
-        RendererModel renderermodel = new RendererModel(this);
-        renderermodel.setRotationPoint(-10.0F, -14.0F, -8.0F);
-        renderermodel.setTextureOffset(74, 55).addBox(0.0F, -14.0F, -2.0F, 2, 14, 4, 0.0F);
-        renderermodel.rotateAngleX = 1.0995574F;
-        this.field_217168_a.addChild(renderermodel);
-        RendererModel renderermodel1 = new RendererModel(this);
-        renderermodel1.mirror = true;
-        renderermodel1.setRotationPoint(8.0F, -14.0F, -8.0F);
-        renderermodel1.setTextureOffset(74, 55).addBox(0.0F, -14.0F, -2.0F, 2, 14, 4, 0.0F);
-        renderermodel1.rotateAngleX = 1.0995574F;
-        this.field_217168_a.addChild(renderermodel1);
-        this.field_217169_b = new RendererModel(this);
-        this.field_217169_b.setRotationPoint(0.0F, -2.0F, 2.0F);
-        this.field_217169_b.setTextureOffset(0, 36).addBox(-8.0F, 0.0F, -16.0F, 16, 3, 16, 0.0F);
-        this.field_217168_a.addChild(this.field_217169_b);
-        this.field_217175_k.addChild(this.field_217168_a);
-        this.field_217170_f = new RendererModel(this);
-        this.field_217170_f.setTextureOffset(0, 55).addBox(-7.0F, -10.0F, -7.0F, 14, 16, 20, 0.0F);
-        this.field_217170_f.setTextureOffset(0, 91).addBox(-6.0F, 6.0F, -7.0F, 12, 13, 18, 0.0F);
-        this.field_217170_f.setRotationPoint(0.0F, 1.0F, 2.0F);
-        this.field_217171_g = new RendererModel(this, 96, 0);
-        this.field_217171_g.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.field_217171_g.setRotationPoint(-8.0F, -13.0F, 18.0F);
-        this.field_217172_h = new RendererModel(this, 96, 0);
-        this.field_217172_h.mirror = true;
-        this.field_217172_h.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.field_217172_h.setRotationPoint(8.0F, -13.0F, 18.0F);
-        this.field_217173_i = new RendererModel(this, 64, 0);
-        this.field_217173_i.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.field_217173_i.setRotationPoint(-8.0F, -13.0F, -5.0F);
-        this.field_217174_j = new RendererModel(this, 64, 0);
-        this.field_217174_j.mirror = true;
-        this.field_217174_j.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.field_217174_j.setRotationPoint(8.0F, -13.0F, -5.0F);
+        this.LeftCloth = new RendererModel(this, 0, 85);
+        this.LeftCloth.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.LeftCloth.addBox(6.0F, 6.0F, -16.0F, 0, 18, 6, 0.0F);
+        this.Nose = new RendererModel(this, 0, 0);
+        this.Nose.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.Nose.addBox(-2.0F, 4.0F, -20.0F, 4, 8, 4, 0.0F);
+        this.RightBackLeg = new RendererModel(this, 96, 0);
+        this.RightBackLeg.setRotationPoint(-8.0F, -13.0F, 27.0F);
+        this.RightBackLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
+        this.RightCloth = new RendererModel(this, 0, 50);
+        this.RightCloth.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.RightCloth.addBox(-6.0F, 6.0F, -16.0F, 0, 18, 6, 0.0F);
+        this.RightFrontLeg = new RendererModel(this, 64, 0);
+        this.RightFrontLeg.setRotationPoint(-8.0F, -13.0F, 4.0F);
+        this.RightFrontLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
+        this.Hat = new RendererModel(this, 104, 45);
+        this.Hat.setRotationPoint(-5.0F, -8.5F, -5.0F);
+        this.Hat.addBox(-4.0F, -4.0F, -4.0F, 6, 4, 6, 0.0F);
+        this.setRotateAngle(Hat, 0.0F, 0.0F, -0.7853981633974483F);
+        this.LeftFrontLeg = new RendererModel(this, 64, 0);
+        this.LeftFrontLeg.mirror = true;
+        this.LeftFrontLeg.setRotationPoint(8.0F, -13.0F, 4.0F);
+        this.LeftFrontLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
+        this.RightHorn = new RendererModel(this, 74, 55);
+        this.RightHorn.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.RightHorn.addBox(-10.0F, -25.0F, -2.75F, 2, 14, 4, 0.0F);
+        this.setRotateAngle(RightHorn, 1.117010721276371F, 0.0F, 0.0F);
+        this.LeftHorn = new RendererModel(this, 74, 55);
+        this.LeftHorn.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.LeftHorn.addBox(8.0F, -25.0F, -2.75F, 2, 14, 4, 0.0F);
+        this.setRotateAngle(LeftHorn, 1.117010721276371F, 0.0F, 0.0F);
+        this.Neck = new RendererModel(this, 68, 73);
+        this.Neck.setRotationPoint(0.0F, 0.0F, 16.0F);
+        this.Neck.addBox(-5.0F, -5.0F, -18.0F, 10, 10, 18, 0.0F);
+        this.Head = new RendererModel(this, 0, 0);
+        this.Head.setRotationPoint(0.0F, -1.0F, 0.0F);
+        this.Head.addBox(-8.0F, -10.0F, -16.0F, 16, 20, 16, 0.0F);
+        this.TorsoFront = new RendererModel(this, 0, 55);
+        this.TorsoFront.setRotationPoint(0.0F, -2.0F, 1.0F);
+        this.TorsoFront.addBox(-7.0F, 0.0F, -10.0F, 14, 16, 20, 0.0F);
+        this.setRotateAngle(TorsoFront, 1.5707963267948966F, 0.0F, 0.0F);
+        this.LeftBackLeg = new RendererModel(this, 96, 0);
+        this.LeftBackLeg.mirror = true;
+        this.LeftBackLeg.setRotationPoint(8.0F, -13.0F, 27.0F);
+        this.LeftBackLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
+        this.Mouth = new RendererModel(this, 0, 36);
+        this.Mouth.setRotationPoint(0.0F, 8.0F, 0.0F);
+        this.Mouth.addBox(-8.0F, 0.0F, -16.0F, 16, 3, 16, 0.0F);
+        this.setRotateAngle(Mouth, 0.030543261909900768F, 0.0F, 0.0F);
+        this.TorsoBack = new RendererModel(this, 0, 91);
+        this.TorsoBack.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.TorsoBack.addBox(-6.0F, 16.0F, -10.0F, 12, 13, 18, 0.0F);
+        this.TorsoFront.addChild(this.LeftCloth);
+        this.Head.addChild(this.Nose);
+        this.TorsoFront.addChild(this.RightCloth);
+        this.Head.addChild(this.Hat);
+        this.Head.addChild(this.RightHorn);
+        this.Head.addChild(this.LeftHorn);
+        this.Head.addChild(this.Mouth);
+        this.TorsoFront.addChild(this.TorsoBack);
     }
 
     public void render(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.field_217175_k.render(scale);
-        this.field_217170_f.render(scale);
-        this.field_217171_g.render(scale);
-        this.field_217172_h.render(scale);
-        this.field_217173_i.render(scale);
-        this.field_217174_j.render(scale);
+        this.Head.render(scale);
+        this.Neck.render(scale);
+        this.TorsoFront.render(scale);
+        this.RightFrontLeg.render(scale);
+        this.RightBackLeg.render(scale);
+        this.LeftFrontLeg.render(scale);
+        this.LeftBackLeg.render(scale);
     }
 
     public void setRotationAngles(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        this.field_217168_a.rotateAngleX = headPitch * ((float) Math.PI / 180F);
-        this.field_217168_a.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
+        this.Head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
+        this.Head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
+        /*
         this.field_217170_f.rotateAngleX = ((float) Math.PI / 2F);
+        */
         float f = 0.4F * limbSwingAmount;
-        this.field_217171_g.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * f;
-        this.field_217172_h.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * f;
-        this.field_217173_i.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * f;
-        this.field_217174_j.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * f;
+        this.RightFrontLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * f;
+        this.LeftFrontLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * f;
+        this.RightBackLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * f;
+        this.LeftBackLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * f;
     }
 
     public void setLivingAnimations(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
@@ -98,31 +125,31 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
             float f = this.func_217167_a((float) l - partialTick, 10.0F);
             float f1 = (1.0F + f) * 0.5F;
             float f2 = f1 * f1 * f1 * 12.0F;
-            float f3 = f2 * MathHelper.sin(this.field_217175_k.rotateAngleX);
-            this.field_217175_k.rotationPointZ = -6.5F + f2;
-            this.field_217175_k.rotationPointY = -7.0F - f3;
+            float f3 = f2 * MathHelper.sin(this.Neck.rotateAngleX);
+            this.Neck.rotationPointZ = -6.5F + f2;
+            this.Neck.rotationPointY = -7.0F - f3;
             float f4 = MathHelper.sin(((float) l - partialTick) / 10.0F * (float) Math.PI * 0.25F);
-            this.field_217169_b.rotateAngleX = ((float) Math.PI / 2F) * f4;
+            this.Mouth.rotateAngleX = ((float) Math.PI / 2F) * f4;
             if (l > 5) {
-                this.field_217169_b.rotateAngleX = MathHelper.sin(((float) (-4 + l) - partialTick) / 4.0F) * (float) Math.PI * 0.4F;
+                this.Mouth.rotateAngleX = MathHelper.sin(((float) (-4 + l) - partialTick) / 4.0F) * (float) Math.PI * 0.4F;
             } else {
-                this.field_217169_b.rotateAngleX = 0.15707964F * MathHelper.sin((float) Math.PI * ((float) l - partialTick) / 10.0F);
+                this.Mouth.rotateAngleX = 0.15707964F * MathHelper.sin((float) Math.PI * ((float) l - partialTick) / 10.0F);
             }
         } else {
             float f5 = -1.0F;
-            float f6 = -1.0F * MathHelper.sin(this.field_217175_k.rotateAngleX);
-            this.field_217175_k.rotationPointX = 0.0F;
-            this.field_217175_k.rotationPointY = -7.0F - f6;
-            this.field_217175_k.rotationPointZ = 5.5F;
+            float f6 = -1.0F * MathHelper.sin(this.Neck.rotateAngleX);
+            this.Neck.rotationPointX = 0.0F;
+            this.Neck.rotationPointY = -7.0F - f6;
+            this.Neck.rotationPointZ = 5.5F;
             boolean flag = i > 0;
-            this.field_217175_k.rotateAngleX = flag ? 0.21991149F : 0.0F;
-            this.field_217169_b.rotateAngleX = (float) Math.PI * (flag ? 0.05F : 0.01F);
+            this.Neck.rotateAngleX = flag ? 0.21991149F : 0.0F;
+            this.Mouth.rotateAngleX = (float) Math.PI * (flag ? 0.05F : 0.01F);
             if (flag) {
                 double d0 = (double) i / 40.0D;
-                this.field_217175_k.rotationPointX = (float) Math.sin(d0 * 10.0D) * 3.0F;
+                this.Neck.rotationPointX = (float) Math.sin(d0 * 10.0D) * 3.0F;
             } else if (j > 0) {
                 float f7 = MathHelper.sin(((float) (20 - j) - partialTick) / 20.0F * (float) Math.PI * 0.25F);
-                this.field_217169_b.rotateAngleX = ((float) Math.PI / 2F) * f7;
+                this.Mouth.rotateAngleX = ((float) Math.PI / 2F) * f7;
             }
         }
 
@@ -130,5 +157,11 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
 
     private float func_217167_a(float p_217167_1_, float p_217167_2_) {
         return (Math.abs(p_217167_1_ % p_217167_2_ - p_217167_2_ * 0.5F) - p_217167_2_ * 0.25F) / (p_217167_2_ * 0.25F);
+    }
+
+    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
     }
 }
