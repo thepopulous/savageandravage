@@ -1,5 +1,6 @@
 package illager.savageandravage.entity.projectile;
 
+import illager.savageandravage.client.particles.SavageParticles;
 import illager.savageandravage.entity.FriendlyRavagerEntity;
 import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
@@ -53,8 +54,12 @@ public class BeastBrewEntity extends ProjectileItemEntity {
         if (id == 3) {
             double d0 = 0.08D;
 
-            for (int i = 0; i < 12; ++i) {
-                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getItem()), this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+            for (int i = 0; i < 3; ++i) {
+                SavageParticles.BREWGLASS.spawn(world, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+            }
+
+            for (int i = 0; i < 10; ++i) {
+                SavageParticles.BREWSPLASH.spawn(world, this.posX + rand.nextInt(4) - rand.nextInt(4), this.posY, this.posZ + rand.nextInt(4) - rand.nextInt(4), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
     }

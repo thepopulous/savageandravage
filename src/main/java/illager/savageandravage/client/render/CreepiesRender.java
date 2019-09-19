@@ -21,7 +21,7 @@ public class CreepiesRender extends MobRenderer<CreepieEntity, CreepiesModel<Cre
     }
 
     protected void preRenderCallback(CreepieEntity entitylivingbaseIn, float partialTickTime) {
-        float f4 = 0.3F + entitylivingbaseIn.getGrowSize() * 0.05F;
+        float f4 = 0.6F;
 
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
         float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;

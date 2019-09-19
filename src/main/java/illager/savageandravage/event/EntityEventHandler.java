@@ -116,9 +116,20 @@ public class EntityEventHandler {
                         DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
 
                         defenderEntity.setLeader(false);
+                        defenderEntity.resetPatrolTarget();
                         defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
                         defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
                         world.addEntity(defenderEntity);
+                    }
+
+                    for (int i = 0; i <= 3 + world.rand.nextInt(4); i++) {
+                        PillagerEntity pillager2 = EntityType.PILLAGER.create(world);
+
+                        pillager2.setLeader(false);
+                        pillager2.resetPatrolTarget();
+                        pillager2.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                        pillager2.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                        world.addEntity(pillager2);
                     }
                 }
 

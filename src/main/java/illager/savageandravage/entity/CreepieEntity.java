@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class CreepieEntity extends MonsterEntity {
-    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
@@ -105,7 +104,6 @@ public class CreepieEntity extends MonsterEntity {
 
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(SIZE, 0);
         this.dataManager.register(STATE, -1);
         this.dataManager.register(POWERED, false);
         this.dataManager.register(IGNITED, false);
@@ -124,7 +122,6 @@ public class CreepieEntity extends MonsterEntity {
         compound.putShort("Fuse", (short) this.fuseTime);
         compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
         compound.putBoolean("ignited", this.hasIgnited());
-        compound.putInt("GrowSize", this.getGrowSize());
     }
 
     @Override
@@ -145,16 +142,8 @@ public class CreepieEntity extends MonsterEntity {
             this.ignite();
         }
 
-        this.setGrowSize(compound.getInt("GrowSize"), false, false);
     }
 
-    public void notifyDataManagerChange(DataParameter<?> key) {
-        if (SIZE.equals(key)) {
-            this.recalculateSize();
-        }
-
-        super.notifyDataManagerChange(key);
-    }
 
     public void setOwner(@Nullable LivingEntity ownerIn) {
         this.owner = ownerIn;
@@ -174,7 +163,7 @@ public class CreepieEntity extends MonsterEntity {
     }
 
     protected float getSoundVolume() {
-        return 0.5F + 0.25F * (float) this.getGrowSize();
+        return 0.5F;
     }
 
     /**
@@ -191,11 +180,6 @@ public class CreepieEntity extends MonsterEntity {
             if (i > 0 && this.timeSinceIgnited == 0) {
                 this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, this.getSoundVolume(), 0.5F);
             }
-            if (getGrowSize() < 6) {
-                if (this.rand.nextInt(140) == 0) {
-                    grow();
-                }
-            }
             this.timeSinceIgnited += i;
             if (this.timeSinceIgnited < 0) {
                 this.timeSinceIgnited = 0;
@@ -211,34 +195,9 @@ public class CreepieEntity extends MonsterEntity {
     }
 
     public float getRenderScale() {
-        return 0.3F + (this.getGrowSize() * 0.05F);
+        return 0.6F;
     }
 
-    private void grow() {
-        this.setGrowSize(this.getGrowSize() + 1, false, true);
-    }
-
-    public void setGrowSize(int growSize, boolean resetHealth, boolean heal) {
-        this.setPosition(this.posX, this.posY, this.posZ);
-        this.recalculateSize();
-
-        if (this.getGrowSize() < 20) {
-            this.dataManager.set(SIZE, growSize);
-        }
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D + getGrowSize() * 1.0F);
-
-        if (heal) {
-            this.heal(1.0F);
-        }
-
-        if (resetHealth) {
-            this.setHealth(this.getMaxHealth());
-        }
-    }
-
-    public int getGrowSize() {
-        return this.dataManager.get(SIZE);
-    }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_CREEPER_HURT;
@@ -250,7 +209,6 @@ public class CreepieEntity extends MonsterEntity {
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setGrowSize(getGrowSize(), true, false);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -363,10 +321,10 @@ public class CreepieEntity extends MonsterEntity {
         Collection<EffectInstance> collection = this.getActivePotionEffects();
         if (!collection.isEmpty()) {
             AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, this.posX, this.posY, this.posZ);
-            areaeffectcloudentity.setRadius(0.8F * getGrowSize());
+            areaeffectcloudentity.setRadius(1.5F);
             areaeffectcloudentity.setRadiusOnUse(-0.2F);
             areaeffectcloudentity.setWaitTime(60);
-            areaeffectcloudentity.setDuration(20 * getGrowSize());
+            areaeffectcloudentity.setDuration(60);
             areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
 
             for (EffectInstance effectinstance : collection) {
