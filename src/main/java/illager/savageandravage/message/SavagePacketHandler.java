@@ -6,10 +6,9 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class SavagePacketHandler {
-    public static final String NETWORK_PROTOCOL = Integer.toString(2);
+    public static final String NETWORK_PROTOCOL = "2";
 
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(SavageAndRavageCore.MODID, "net"))
-
             .networkProtocolVersion(() -> NETWORK_PROTOCOL)
             .clientAcceptedVersions(NETWORK_PROTOCOL::equals)
             .serverAcceptedVersions(NETWORK_PROTOCOL::equals)

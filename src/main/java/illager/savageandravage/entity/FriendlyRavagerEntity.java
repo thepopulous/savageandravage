@@ -605,10 +605,6 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         }
     }
 
-    public boolean preventDespawn() {
-        return false;
-    }
-
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         return false;
