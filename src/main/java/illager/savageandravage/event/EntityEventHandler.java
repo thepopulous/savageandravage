@@ -199,8 +199,8 @@ public class EntityEventHandler {
         }
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null) {
-            if (livingEntity.getPersistentData().contains("Tenacity") && livingEntity.getPersistentData().getFloat("Tenacity") > 0) {
-                livingEntity.getPersistentData().putFloat("Tenacity", 0);
+            if (livingEntity.getPersistentData().contains("Tenacity")) {
+                livingEntity.getPersistentData().remove("Tenacity");
             }
         }
     }
