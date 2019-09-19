@@ -1,5 +1,6 @@
 package illager.savageandravage.entity.ai;
 
+import illager.savageandravage.entity.illager.DefenderEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -28,7 +29,7 @@ public class FollowPlayerAndIllagerGoal extends Goal {
     public FollowPlayerAndIllagerGoal(MobEntity p_i47417_1_, double p_i47417_2_, float p_i47417_4_, float p_i47417_5_) {
         this.entity = p_i47417_1_;
         this.followPredicate = (p_210291_1_) -> {
-            return p_210291_1_ != null && p_i47417_1_.getClass() != p_210291_1_.getClass() && (p_210291_1_ instanceof AbstractIllagerEntity || p_210291_1_ instanceof PlayerEntity);
+            return p_210291_1_ != null && p_i47417_1_.getClass() != p_210291_1_.getClass() && (p_210291_1_ instanceof AbstractIllagerEntity && !(p_210291_1_ instanceof DefenderEntity) || p_210291_1_ instanceof PlayerEntity);
         };
         this.speedModifier = p_i47417_2_;
         this.navigation = p_i47417_1_.getNavigator();

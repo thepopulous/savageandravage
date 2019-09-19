@@ -16,8 +16,6 @@ import net.minecraft.entity.villager.IVillagerDataHolder;
 import net.minecraft.entity.villager.IVillagerType;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -59,7 +57,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
             }
 
             for (int i = 0; i < 10; ++i) {
-                SavageParticles.BREWSPLASH.spawn(world, this.posX + rand.nextInt(4) - rand.nextInt(4), this.posY, this.posZ + rand.nextInt(4) - rand.nextInt(4), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+                SavageParticles.BREWSPLASH.spawn(world, this.posX + rand.nextInt(3) - rand.nextInt(3), this.posY, this.posZ + rand.nextInt(3) - rand.nextInt(3), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
     }

@@ -191,4 +191,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
         this.chickenJockey = jockey;
     }
 
+    @Override
+    public void fall(float p_180430_1_, float p_180430_2_) {
+    }
 }
