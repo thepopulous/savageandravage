@@ -1,5 +1,6 @@
 package illager.savageandravage.item;
 
+import illager.savageandravage.client.particles.SavageParticles;
 import illager.savageandravage.init.SavageEffectRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
@@ -60,6 +61,14 @@ public class SinisterHornItem extends Item {
             playerIn.addStat(Stats.ITEM_USED.get(this));
         }
 
+        double d3 = random.nextGaussian() * 0.02D;
+        double d4 = random.nextGaussian() * 0.02D;
+        double d5 = random.nextGaussian() * 0.02D;
+
+        for (int i = 0; i < 10; ++i) {
+            SavageParticles.SINISTERNOTE.spawn(worldIn, entityLiving.getPosition().getX() + random.nextInt(3) - random.nextInt(3), entityLiving.getPosition().getY(), entityLiving.getPosition().getZ() + random.nextInt(3) - random.nextInt(3), d3, d4, d5);
+        }
+        SavageParticles.SINISTERSOUND.spawn(worldIn, entityLiving.getPosition().getX(), entityLiving.getPosition().getY() + entityLiving.getEyeHeight(), entityLiving.getPosition().getZ(), 0.0D, 0.0D, 0.0D);
 
         return stack;
     }

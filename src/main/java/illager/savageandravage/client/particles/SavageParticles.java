@@ -9,7 +9,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public enum SavageParticles {
     BREWGLASS,
-    BREWSPLASH;
+    BREWSPLASH,
+    SINISTERNOTE,
+    SINISTERSOUND;
 
     SavageParticles() {
     }
@@ -26,6 +28,10 @@ public enum SavageParticles {
                 return new BrewGlassParticle.Factory();
             case BREWSPLASH:
                 return new BrewSplashParticle.Factory();
+            case SINISTERNOTE:
+                return new SinisterNoteParticle.Factory();
+            case SINISTERSOUND:
+                return new SinisterSoundParticle.Factory();
         }
         return new BrewGlassParticle.Factory();
     }
