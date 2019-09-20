@@ -49,7 +49,9 @@ public class SinisterHornItem extends Item {
             PlayerEntity playerIn = ((PlayerEntity) entityLiving);
 
             if (!playerIn.abilities.isCreativeMode && worldIn.rand.nextFloat() < 0.25F) {
-                stack.shrink(1);
+                stack.damageItem(1, entityLiving, (p_213625_1_) -> {
+                    p_213625_1_.sendBreakAnimation(Hand.MAIN_HAND);
+                });
             }
 
             worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
