@@ -46,7 +46,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
             return list.size() >= 1 && this.world.rand.nextInt(240) == 0;
         }, true));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(3, new AvoidEntityGoal(this, PlayerEntity.class, 24.0F, 0.82D, 1.0D) {
+        this.goalSelector.addGoal(3, new AvoidEntityGoal(this, PlayerEntity.class, 28.0F, 0.82D, 1.0D) {
 
             @Override
             public boolean shouldExecute() {
@@ -58,7 +58,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
             public void tick() {
                 super.tick();
 
-                List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().grow(22.0D));
+                List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().grow(25.0D));
                 if (list.size() == 0) {
                     for (int k = 0; k < 20; ++k) {
                         double d2 = entity.world.rand.nextGaussian() * 0.02D;
