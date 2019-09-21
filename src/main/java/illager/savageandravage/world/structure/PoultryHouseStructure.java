@@ -1,6 +1,7 @@
 package illager.savageandravage.world.structure;
 
 import com.mojang.datafixers.Dynamic;
+import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.init.SavageFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
@@ -68,7 +69,7 @@ public class PoultryHouseStructure extends Structure<NoFeatureConfig> {
     }
 
     public String getStructureName() {
-        return "PoultryHouse";
+        return SavageAndRavageCore.MODID + ":poultryhouse";
     }
 
     public int getSize() {

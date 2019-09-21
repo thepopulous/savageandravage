@@ -3,7 +3,6 @@ package illager.savageandravage.init;
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.world.structure.PoultryHousePieces;
 import illager.savageandravage.world.structure.PoultryHouseStructure;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -18,8 +17,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Locale;
-
 import static illager.savageandravage.SavageAndRavageCore.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -31,8 +28,6 @@ public class SavageFeatures {
     @SubscribeEvent
     public static void registerStructure(RegistryEvent.Register<Feature<?>> event) {
         event.getRegistry().register(POULTRYHOUSE.setRegistryName(SavageAndRavageCore.MODID, "poultry_house"));
-        Registry.register(Registry.STRUCTURE_FEATURE, "PoultryHouse".toLowerCase(Locale.ROOT), POULTRYHOUSE);
-        Registry.register(Registry.STRUCTURE_PIECE, "PHS".toLowerCase(Locale.ROOT), POULTRYHOUSE_STRUCTURE);
     }
 
     public static void addStructureFeature() {
@@ -42,6 +37,10 @@ public class SavageFeatures {
 
                 biome.addStructure(SavageFeatures.POULTRYHOUSE, IFeatureConfig.NO_FEATURE_CONFIG);
             }
+            if (biome.hasStructure(Feature.PILLAGER_OUTPOST)) {
+                Feature.PILLAGER_OUTPOST.getSpawnList().add(new Biome.SpawnListEntry(SavageEntityRegistry.DEFENDER, 1, 1, 1));
+            }
+
         }));
     }
 }
