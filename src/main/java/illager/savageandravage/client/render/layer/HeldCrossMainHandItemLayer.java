@@ -2,6 +2,7 @@ package illager.savageandravage.client.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import illager.savageandravage.client.model.IHasCrossArm;
+import illager.savageandravage.init.SavageItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.client.Minecraft;
@@ -18,30 +19,50 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class HeldCrossItemLayer<T extends AbstractIllagerEntity, M extends EntityModel<T> & IHasCrossArm> extends LayerRenderer<T, M> {
-    public HeldCrossItemLayer(IEntityRenderer<T, M> p_i50934_1_) {
+public class HeldCrossMainHandItemLayer<T extends AbstractIllagerEntity, M extends EntityModel<T> & IHasCrossArm> extends LayerRenderer<T, M> {
+    public HeldCrossMainHandItemLayer(IEntityRenderer<T, M> p_i50934_1_) {
         super(p_i50934_1_);
     }
 
     public void render(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        ItemStack itemstack = entitylivingbaseIn.getHeldItemOffhand();
+        ItemStack itemstack = entitylivingbaseIn.getHeldItemMainhand();
         AbstractIllagerEntity.ArmPose abstractillager$illagerarmpose = ((AbstractIllagerEntity) entitylivingbaseIn).getArmPose();
+
+        Item item = itemstack.getItem();
+        Minecraft minecraft = Minecraft.getInstance();
+
         if (!(itemstack.getItem() instanceof ShieldItem)) {
             if (!itemstack.isEmpty()) {
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-                GlStateManager.pushMatrix();
-                if (this.getEntityModel().isChild) {
-                    GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                    GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
-                    float f = 0.5F;
-                    GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-                }
+                if (itemstack.getItem() == SavageItems.SINISTERHORN) {
+                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                    GlStateManager.pushMatrix();
+                    if (this.getEntityModel().isChild) {
+                        GlStateManager.translatef(0.0F, 0.625F, 0.0F);
+                        GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                        float f = 0.5F;
+                        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                    }
+                    GlStateManager.rotatef(40.0F, 0.0F, 0.0F, -1.0F);
+                    GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
 
-                this.getEntityModel().crossHand().postRender(0.0625F);
-                GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
-                Item item = itemstack.getItem();
-                Minecraft minecraft = Minecraft.getInstance();
-		    if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == BlockRenderType.ENTITYBLOCK_ANIMATED) {
+                    this.getEntityModel().crossHand().postRender(0.0625F);
+                    GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
+
+                } else {
+                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                    GlStateManager.pushMatrix();
+                    if (this.getEntityModel().isChild) {
+                        GlStateManager.translatef(0.0F, 0.625F, 0.0F);
+                        GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                        float f = 0.5F;
+                        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                    }
+
+                    this.getEntityModel().crossHand().postRender(0.0625F);
+                    GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
+
+                }
+                if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == BlockRenderType.ENTITYBLOCK_ANIMATED) {
                     GlStateManager.translatef(0.0F, -0.2875F, -0.46F);
                     GlStateManager.rotatef(30.0F, 1.0F, 0.0F, 0.0F);
                     GlStateManager.rotatef(-5.0F, 0.0F, 1.0F, 0.0F);
@@ -64,7 +85,7 @@ public class HeldCrossItemLayer<T extends AbstractIllagerEntity, M extends Entit
 
                 GlStateManager.rotatef(-15.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotatef(40.0F, 0.0F, 0.0F, 1.0F);
-                minecraft.getFirstPersonRenderer().renderItem(entitylivingbaseIn, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+                minecraft.getItemRenderer().renderItem(itemstack, entitylivingbaseIn, ItemCameraTransforms.TransformType.GROUND, false);
                 GlStateManager.popMatrix();
             }
         }

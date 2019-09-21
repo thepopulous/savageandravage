@@ -7,14 +7,11 @@ import illager.savageandravage.init.SavageFeatures;
 import illager.savageandravage.message.SavagePacketHandler;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
@@ -63,14 +60,6 @@ public class SavageAndRavageCore {
     private void processIMC(final InterModProcessEvent event) {
         // some example code to receive and process InterModComms from other mods
 
-    }
-
-    @SubscribeEvent
-    public void onServerSetUp(FMLServerStartingEvent event) {
-
-    }
-
-    private void serverStart(FMLServerStartedEvent event) {
     }
 
 }

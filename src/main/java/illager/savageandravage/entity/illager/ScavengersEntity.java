@@ -1,7 +1,6 @@
 package illager.savageandravage.entity.illager;
 
-import illager.savageandravage.entity.ai.NearestAttackableTargetExpiringNonRaidGoal;
-import illager.savageandravage.init.SavageEntityRegistry;
+import illager.savageandravage.entity.ai.UseItemOnLeftHandGoal;
 import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
@@ -29,11 +28,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAttackMob {
-    private NearestAttackableTargetExpiringNonRaidGoal<AbstractRaiderEntity> field_213694_bC;
-    private ToggleableNearestAttackableTargetGoal<PlayerEntity> field_213695_bD;
 
     public ScavengersEntity(EntityType<? extends ScavengersEntity> type, World worldIn) {
         super(type, worldIn);
@@ -44,15 +40,11 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.field_213694_bC = new NearestAttackableTargetExpiringNonRaidGoal<>(this, AbstractRaiderEntity.class, true, (p_213693_1_) -> {
-            return p_213693_1_ != null && p_213693_1_.getType() != SavageEntityRegistry.SCAVENGER;
-        });
-        this.field_213695_bD = new ToggleableNearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (Predicate<LivingEntity>) null);
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new UseItemGoal<>(this, new ItemStack(SavageItems.SINISTERHORN), SoundEvents.ENTITY_VINDICATOR_CELEBRATE, (p_213736_1_) -> {
+        this.goalSelector.addGoal(1, new UseItemOnLeftHandGoal<>(this, new ItemStack(SavageItems.SINISTERHORN), SoundEvents.ENTITY_VINDICATOR_CELEBRATE, (p_213736_1_) -> {
             List<AbstractIllagerEntity> list = world.getEntitiesWithinAABB(AbstractIllagerEntity.class, getBoundingBox().grow(22.0D));
             return list.size() >= 1 && this.world.rand.nextInt(240) == 0;
-        }));
+        }, true));
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(3, new AvoidEntityGoal(this, PlayerEntity.class, 24.0F, 0.82D, 1.0D) {
 
@@ -83,8 +75,6 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
-        this.targetSelector.addGoal(2, this.field_213694_bC);
-        this.targetSelector.addGoal(3, this.field_213695_bD);
         this.targetSelector.addGoal(4, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(4, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, false)).setUnseenMemoryTicks(300));
     }
@@ -105,14 +95,6 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
 
     public void livingTick() {
         super.livingTick();
-        if (!this.world.isRemote && this.isAlive()) {
-            this.field_213694_bC.func_220780_j();
-            if (this.field_213694_bC.func_220781_h() <= 0) {
-                this.field_213695_bD.func_220783_a(true);
-            } else {
-                this.field_213695_bD.func_220783_a(false);
-            }
-        }
     }
 
     @Override
