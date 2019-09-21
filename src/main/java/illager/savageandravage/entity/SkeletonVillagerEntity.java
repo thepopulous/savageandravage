@@ -2,6 +2,7 @@ package illager.savageandravage.entity;
 
 import illager.savageandravage.api.entity.ArmPose;
 import illager.savageandravage.api.entity.IEntityArm;
+import illager.savageandravage.init.SavageLootTables;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.*;
@@ -17,6 +18,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -123,6 +125,11 @@ public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements IC
         Vector3f vector3f = this.func_213673_a(new Vec3d(d0, d3, d1), p_213670_4_);
         p_213670_3_.shoot((double) vector3f.getX(), (double) vector3f.getY(), (double) vector3f.getZ(), 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ITEM_CROSSBOW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    }
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return SavageLootTables.SKELETON_VILLAGER;
     }
 
     private Vector3f func_213673_a(Vec3d p_213673_1_, float p_213673_2_) {
