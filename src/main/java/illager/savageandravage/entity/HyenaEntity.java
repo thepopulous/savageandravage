@@ -14,6 +14,7 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.DyeColor;
@@ -50,7 +51,7 @@ public class HyenaEntity extends TameableEntity {
 
     public static final Predicate<LivingEntity> field_213441_bD = (p_213440_0_) -> {
         EntityType<?> entitytype = p_213440_0_.getType();
-        return entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT || entitytype == EntityType.FOX || entitytype == EntityType.WOLF;
+        return !(p_213440_0_ instanceof HorseEntity) || !(p_213440_0_ instanceof TameableEntity) || entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT || entitytype == EntityType.FOX || entitytype == EntityType.WOLF;
     };
 
     private float headRotationCourse;
