@@ -1,3 +1,8 @@
+def mcVersion = "1.14.4"
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 1
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -18,7 +23,11 @@ tasks.withType(Jar) {
     compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-version = '1.14.4-0.1.1.2'
+def versionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null)
+    versionBuild = System.getenv("BUILD_NUMBER")
+	
+version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
 group = 'illager.savageandravage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'savageandravage'
 
