@@ -100,6 +100,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
                         entity.remove();
                     }
                 }
+                this.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 2.0F, 1.0F);
             }
         }
 
