@@ -27,6 +27,10 @@ public class SavagePacketHandler {
                 .encoder(MessageRavagerStopDushStat::writePacketData).decoder(MessageRavagerStopDushStat::readPacketData)
                 .consumer(MessageRavagerStopDushStat.Handler::handle)
                 .add();
+        CHANNEL.messageBuilder(MessageScavengerProp.class, 3)
+                .encoder(MessageScavengerProp::writePacketData).decoder(MessageScavengerProp::readPacketData)
+                .consumer(MessageScavengerProp.Handler::handle)
+                .add();
 
     }
 }

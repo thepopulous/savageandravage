@@ -3,6 +3,8 @@ package illager.savageandravage.entity.illager;
 import illager.savageandravage.entity.ai.UseItemOnLeftHandGoal;
 import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.init.SavageLootTables;
+import illager.savageandravage.message.MessageScavengerProp;
+import illager.savageandravage.message.SavagePacketHandler;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -13,7 +15,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.Potion;
@@ -23,9 +24,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 
@@ -60,14 +63,8 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
 
                 List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().grow(25.0D));
                 if (list.size() == 0) {
-                    for (int k = 0; k < 20; ++k) {
-                        double d2 = entity.world.rand.nextGaussian() * 0.02D;
-                        double d0 = entity.world.rand.nextGaussian() * 0.02D;
-                        double d1 = entity.world.rand.nextGaussian() * 0.02D;
-                        entity.world.addParticle(ParticleTypes.POOF, entity.posX + (double) (entity.world.rand.nextFloat() * entity.getWidth() * 2.0F) - (double) entity.getWidth(), entity.posY + (double) (entity.world.rand.nextFloat() * entity.getHeight()), entity.posZ + (double) (entity.world.rand.nextFloat() * entity.getWidth() * 2.0F) - (double) entity.getWidth(), d2, d0, d1);
-                    }
 
-                    this.entity.remove();
+                    addDespawnAndParticle();
                 }
             }
         });
@@ -77,6 +74,12 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, AbstractRaiderEntity.class)).setCallsForHelp());
         this.targetSelector.addGoal(4, (new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, false)).setUnseenMemoryTicks(300));
         this.targetSelector.addGoal(4, (new NearestAttackableTargetGoal<>(this, IronGolemEntity.class, false)).setUnseenMemoryTicks(300));
+    }
+
+    private void addDespawnAndParticle() {
+        SavagePacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(new BlockPos(this.posX, this.posY, this.posZ))), new MessageScavengerProp(this.posX, this.posY, this.posZ));
+
+        this.remove();
     }
 
     protected void registerAttributes() {
