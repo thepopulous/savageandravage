@@ -81,7 +81,7 @@ public class PoultryHouseStructure extends Structure<NoFeatureConfig> {
     }
 
     protected int getSeedModifier() {
-        return 16387314;
+        return 12397314;
     }
 
     protected int getBiomeFeatureDistance(ChunkGenerator<?> chunkGenerator) {

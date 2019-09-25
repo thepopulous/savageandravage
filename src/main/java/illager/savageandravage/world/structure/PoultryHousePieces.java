@@ -7,7 +7,6 @@ import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageFeatures;
 import illager.savageandravage.init.SavageLootTables;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -45,7 +44,7 @@ public class PoultryHousePieces {
 
     private static final ResourceLocation bigpoutry_farm = new ResourceLocation(SavageAndRavageCore.MODID, "poultry_house/illager_farmer_crops");
 
-    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, new BlockPos(19, 0, 13), poultry_house_savageling, new BlockPos(21, -5, 16), poultry_house_savanna, new BlockPos(19, 0, 13), poultry_house_savageling_savanna, new BlockPos(21, -5, 16), bigpoutry_farm, new BlockPos(11, 0, 10));
+    private static final Map<ResourceLocation, BlockPos> structurePos = ImmutableMap.of(poultry_house, BlockPos.ZERO, poultry_house_savageling, new BlockPos(0, -5, 0), poultry_house_savanna, BlockPos.ZERO, poultry_house_savageling_savanna, new BlockPos(0, -5, 0), bigpoutry_farm, new BlockPos(-4, 0, 14));
 
     public static void addStructure(TemplateManager p_207617_0_, BlockPos p_207617_1_, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_, Biome biome) {
         if (biome.getCategory() == Biome.Category.SAVANNA) {
@@ -156,14 +155,6 @@ public class PoultryHousePieces {
             BlockPos blockpos2 = this.templatePosition;
             this.templatePosition = this.templatePosition.add(0, i - 90 - 1, 0);
             boolean flag = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
-
-            if (this.field_207615_d.equals(PoultryHousePieces.bigpoutry_farm)) {
-                BlockPos blockpos3 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(18, 0, 0)));
-                BlockState blockstate = worldIn.getBlockState(blockpos3.down());
-                if (!blockstate.isAir()) {
-                    worldIn.setBlockState(blockpos3, Blocks.DIRT.getDefaultState(), 3);
-                }
-            }
 
             this.templatePosition = blockpos2;
             return flag;

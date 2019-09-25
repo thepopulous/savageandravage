@@ -32,9 +32,9 @@ public class SavageFeatures {
 
     public static void addStructureFeature() {
         ForgeRegistries.BIOMES.getValues().stream().forEach((biome -> {
-            if (biome.getCategory() == Biome.Category.SAVANNA || biome.getCategory() == Biome.Category.PLAINS) {
-                biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(SavageFeatures.POULTRYHOUSE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+            biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(SavageFeatures.POULTRYHOUSE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 
+            if (biome.getCategory() == Biome.Category.SAVANNA || biome.getCategory() == Biome.Category.PLAINS) {
                 biome.addStructure(SavageFeatures.POULTRYHOUSE, IFeatureConfig.NO_FEATURE_CONFIG);
             }
             if (biome.hasStructure(Feature.PILLAGER_OUTPOST)) {
