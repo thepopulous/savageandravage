@@ -64,6 +64,22 @@ public class ScavengersModel<T extends ScavengersEntity> extends EntityModel<T> 
         this.leg_right.rotateAngleY = 0.0F;
         this.leg_left.rotateAngleY = 0.0F;
 
+        if (this.isSitting) {
+            this.leg_right.rotateAngleX = -1.4137167F;
+            this.leg_right.rotateAngleY = ((float) Math.PI / 10F);
+            this.leg_right.rotateAngleZ = 0.07853982F;
+            this.leg_left.rotateAngleX = -1.4137167F;
+            this.leg_left.rotateAngleY = (-(float) Math.PI / 10F);
+            this.leg_left.rotateAngleZ = -0.07853982F;
+        } else {
+            this.leg_right.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+            this.leg_right.rotateAngleY = 0.0F;
+            this.leg_right.rotateAngleZ = 0.0F;
+            this.leg_left.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+            this.leg_left.rotateAngleY = 0.0F;
+            this.leg_left.rotateAngleZ = 0.0F;
+
+        }
     }
 
     public RendererModel func_205072_a() {
