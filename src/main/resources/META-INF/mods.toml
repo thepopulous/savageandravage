@@ -22,11 +22,7 @@ credits="Team Illager" #optional
 # A text field displayed in the mod UI
 authors="bagu_chan,MCVinnyq,Farcr,Five" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description='''
-
-Be careful when a raid happens, as there is dangerous new foes coming around!
-
-'''
+description="Be careful when a raid happens - there are dangerous new foes around!"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.savageandravage]] #optional
     # the modid of the dependency
