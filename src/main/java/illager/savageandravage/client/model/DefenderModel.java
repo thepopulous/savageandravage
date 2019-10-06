@@ -117,6 +117,24 @@ public class DefenderModel<T extends DefenderEntity> extends EntityModel<T> impl
         this.LeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
         this.RightLeg.rotateAngleY = 0.0F;
         this.LeftLeg.rotateAngleY = 0.0F;
+
+        if (this.isSitting) {
+            this.RightLeg.rotateAngleX = -1.4137167F;
+            this.RightLeg.rotateAngleY = ((float) Math.PI / 10F);
+            this.RightLeg.rotateAngleZ = 0.07853982F;
+            this.LeftLeg.rotateAngleX = -1.4137167F;
+            this.LeftLeg.rotateAngleY = (-(float) Math.PI / 10F);
+            this.LeftLeg.rotateAngleZ = -0.07853982F;
+        } else {
+            this.RightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+            this.RightLeg.rotateAngleY = 0.0F;
+            this.RightLeg.rotateAngleZ = 0.0F;
+            this.LeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+            this.LeftLeg.rotateAngleY = 0.0F;
+            this.LeftLeg.rotateAngleZ = 0.0F;
+
+        }
+
         DefenderEntity guard = (DefenderEntity) entityIn;
 	    AbstractIllagerEntity.ArmPose armPose = guard.getArmPose();
 	    if (armPose == AbstractIllagerEntity.ArmPose.ATTACKING) {
