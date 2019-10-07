@@ -8,7 +8,6 @@ import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.illager.ScavengersEntity;
 import illager.savageandravage.entity.projectile.BeastBrewEntity;
 import illager.savageandravage.entity.projectile.CreeperSporeEntity;
-import illager.savageandravage.entity.projectile.FakeThrownRiderEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,7 +22,6 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(CreepieEntity.class, CreepiesRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GrieferIllagerEntity.class, GrieferIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(CreeperSporeEntity.class, EmptyRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(FakeThrownRiderEntity.class, EmptyRender::new);
         RenderingRegistry.registerEntityRenderingHandler(PoultryFarmerIllagerEntity.class, PoultryFarmerIllagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(SavagelingEntity.class, SavagelingRender::new);
         RenderingRegistry.registerEntityRenderingHandler(SkeletonVillagerEntity.class, SkeletonVillagerRender::new);
