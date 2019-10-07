@@ -25,5 +25,7 @@
   "savageandravage:subtitles.hyena.ambient": "ハイエナが鳴く",
   "savageandravage:subtitles.hyena.hurt": "ハイエナがダメージを受ける",
   "savageandravage:subtitles.hyena.death": "ハイエナが倒れる",
+  "effect.savageandravage.tenacity": "Tenacity",
+  "effect.savageandravage.bad_omen": "不吉の予感",
   "block.savageandravage.ominous_shield": "不吉なシールド"
 }

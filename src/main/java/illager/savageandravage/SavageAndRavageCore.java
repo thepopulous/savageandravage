@@ -5,17 +5,18 @@ import illager.savageandravage.event.EntityEventHandler;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageFeatures;
 import illager.savageandravage.message.SavagePacketHandler;
-import net.minecraft.world.raid.Raid;
+import illager.savageandravage.world.RevampRaid;
+import illager.savageandravage.world.RevampRaidManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 import javax.annotation.Nullable;
 
@@ -23,12 +24,13 @@ import javax.annotation.Nullable;
 public class SavageAndRavageCore {
     public static final String MODID = "savageandravage";
 
+    public static SavageAndRavageCore instance;
+
     @Nullable
-    private Raid raid = null;
-
-
+    public RevampRaidManager revampRaid = null;
 
     public SavageAndRavageCore() {
+        instance = this;
 
         /*ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         //ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
@@ -64,6 +66,30 @@ public class SavageAndRavageCore {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         IllagerEntityRender.entityRender();
+
+
+    }
+
+    @SubscribeEvent
+    public void onWorldTick(TickEvent.WorldTickEvent event) {
+        if (this.revampRaid != null) {
+            this.revampRaid.tick();
+        } else {
+            this.revampRaid = new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+        }
+    }
+
+    @Nullable
+    public RevampRaid findRaid(BlockPos pos) {
+        if (this.revampRaid != null) {
+            return this.revampRaid.findRaid(pos, 9216);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean hasRaid(BlockPos pos) {
+        return this.findRaid(pos) != null;
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
