@@ -181,7 +181,7 @@ public class EntityEventHandler {
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
 
-        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 4 == 0) {
+        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 2 == 0) {
             EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.BADOMEN);
             int i = 1;
             if (effectinstance1 != null) {
