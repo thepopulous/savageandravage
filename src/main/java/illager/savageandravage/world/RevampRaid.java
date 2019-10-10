@@ -322,7 +322,7 @@ public class RevampRaid extends Raid {
                 this.markDirty();
             } else if (this.func_221319_a()) {
                 ++this.field_221361_y;
-                if (this.field_221361_y >= 600) {
+                if (this.field_221361_y >= 1200) {
                     this.stop();
                     return;
                 }
@@ -670,6 +670,30 @@ public class RevampRaid extends Raid {
                     i = 2;
                 }
                 break;
+            case GRIEFER:
+                if (wave == 7 || wave == 9) {
+                    i = 4;
+                } else if (wave == 3) {
+                    i = 2;
+                } else if (wave == 8) {
+                    i = 5;
+                } else if (wave == 1) {
+                    i = 0;
+                } else {
+                    i = 1;
+                }
+                break;
+            case POULTRY_FARMER:
+                if (wave == 6 || wave == 7) {
+                    i = 2;
+                } else if (wave == 8) {
+                    i = 5;
+                } else if (wave == 9) {
+                    i = 4;
+                } else {
+                    i = 0;
+                }
+                break;
             case EVOKER:
                 if (wave == 7 || wave == 9) {
                     i = 2;
@@ -678,12 +702,16 @@ public class RevampRaid extends Raid {
                 }
                 break;
             case VINDICATOR:
-                if (flag) {
-                    i = p_221335_2_.nextInt(2);
-                } else if (flag1) {
-                    i = 1;
-                } else {
+                if (wave == 7 || wave == 9) {
                     i = 2;
+                } else if (wave == 8) {
+                    i = 3;
+                } else if (wave == 6) {
+                    i = 6;
+                } else if (wave == 3 || wave == 5) {
+                    i = 2;
+                } else if (wave <= 2 || wave == 4) {
+                    i = 0;
                 }
                 break;
             case WITCH:
@@ -796,6 +824,8 @@ public class RevampRaid extends Raid {
     static enum WaveMember {
         PILLAGER(EntityType.PILLAGER, new int[]{3, 3, 4, 6, 6, 6, 3, 3, 0}),
         DEFENDER(SavageEntityRegistry.DEFENDER, new int[]{0, 1, 1, 2, 2, 6, 3, 3, 0}),
+        GRIEFER(SavageEntityRegistry.GRIEFER_ILLAGER, new int[]{0, 0, 0, 1, 2, 0, 1, 1, 2}),
+        POULTRY_FARMER(SavageEntityRegistry.POULTRY_FARMER, new int[]{0, 0, 0, 0, 0, 0, 1, 1, 2}),
         EVOKER(EntityType.EVOKER, new int[]{0, 0, 0, 0, 1, 1, 1, 1, 2}),
         VINDICATOR(EntityType.VINDICATOR, new int[]{0, 0, 1, 0, 1, 0, 1, 1, 2}),
         WITCH(EntityType.WITCH, new int[]{0, 0, 0, 3, 0, 1, 2, 2, 2}),

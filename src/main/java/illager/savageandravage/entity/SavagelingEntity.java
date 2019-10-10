@@ -1,5 +1,6 @@
 package illager.savageandravage.entity;
 
+import illager.savageandravage.api.IRaidSuppoter;
 import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
 import illager.savageandravage.entity.ai.FollowPlayerAndIllagerGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
@@ -28,7 +29,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 
-public class SavagelingEntity extends AnimalEntity implements IMob {
+public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppoter {
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.CHICKEN);
     public float wingRotation;
     public float destPos;
@@ -195,5 +196,10 @@ public class SavagelingEntity extends AnimalEntity implements IMob {
 
     @Override
     public void fall(float p_180430_1_, float p_180430_2_) {
+    }
+
+    @Override
+    public boolean isEnemy() {
+        return true;
     }
 }

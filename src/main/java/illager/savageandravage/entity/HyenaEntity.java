@@ -1,5 +1,6 @@
 package illager.savageandravage.entity;
 
+import illager.savageandravage.api.IRaidSuppoter;
 import illager.savageandravage.entity.ai.FollowTamedHyenaGoal;
 import illager.savageandravage.entity.ai.FollowWildLeaderGoal;
 import illager.savageandravage.entity.ai.HyenaBegGoal;
@@ -9,6 +10,7 @@ import illager.savageandravage.init.SavageSoundsRegister;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -43,7 +45,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class HyenaEntity extends TameableEntity {
+public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
     private static final DataParameter<Boolean> LEADER = EntityDataManager.<Boolean>createKey(HyenaEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BEGGING = EntityDataManager.createKey(HyenaEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> DATA_HEALTH_ID = EntityDataManager.<Float>createKey(HyenaEntity.class, DataSerializers.FLOAT);
@@ -597,6 +599,10 @@ public class HyenaEntity extends TameableEntity {
         return !this.isAngry() && super.canBeLeashedTo(player);
     }
 
+    @Override
+    public boolean isEnemy() {
+        return getOwner() != null && getOwner() instanceof AbstractRaiderEntity;
+    }
 
     @Nullable
     @Override
