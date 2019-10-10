@@ -72,7 +72,7 @@ public class RevampRaid extends Raid {
         this.id = p_i50144_1_;
         this.world = p_i50144_2_;
         this.active = true;
-        this.preRaidTicks = 300;
+        this.preRaidTicks = 900;
         this.bossInfo.setPercent(0.0F);
         this.center = p_i50144_3_;
         this.numGroups = this.getWaves(p_i50144_2_.getDifficulty());
@@ -146,7 +146,7 @@ public class RevampRaid extends Raid {
     private Predicate<ServerPlayerEntity> getParticipantsPredicate() {
         return (p_221302_1_) -> {
             BlockPos blockpos = new BlockPos(p_221302_1_);
-            return p_221302_1_.isAlive() && this.world.findRaid(blockpos) == this;
+            return p_221302_1_.isAlive() && SavageAndRavageCore.instance.findRaid(blockpos) == this;
         };
     }
 
@@ -231,7 +231,7 @@ public class RevampRaid extends Raid {
                 if (i == 0 && this.func_221289_z()) {
                     if (this.preRaidTicks <= 0) {
                         if (this.preRaidTicks == 0 && this.groupsSpawned > 0) {
-                            this.preRaidTicks = 300;
+                            this.preRaidTicks = 900;
                             this.bossInfo.setName(RAID);
                             return;
                         }
@@ -253,12 +253,12 @@ public class RevampRaid extends Raid {
                             this.field_221362_z = this.func_221313_d(j);
                         }
 
-                        if (this.preRaidTicks == 300 || this.preRaidTicks % 20 == 0) {
+                        if (this.preRaidTicks == 900 || this.preRaidTicks % 20 == 0) {
                             this.updateBossInfoVisibility();
                         }
 
                         --this.preRaidTicks;
-                        this.bossInfo.setPercent(MathHelper.clamp((float) (300 - this.preRaidTicks) / 300.0F, 0.0F, 1.0F));
+                        this.bossInfo.setPercent(MathHelper.clamp((float) (900 - this.preRaidTicks) / 900.0F, 0.0F, 1.0F));
                     }
                 }
 
