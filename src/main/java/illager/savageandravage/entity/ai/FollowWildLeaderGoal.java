@@ -19,7 +19,7 @@ public class FollowWildLeaderGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.owner.isTamed()) {
+        if (this.owner.isTamed() || this.owner.isRaiding()) {
             return false;
         } else if (!this.owner.isAlive()) {
             return false;

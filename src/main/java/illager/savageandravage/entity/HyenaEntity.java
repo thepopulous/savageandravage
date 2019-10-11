@@ -1,19 +1,16 @@
 package illager.savageandravage.entity;
 
 import illager.savageandravage.api.IRaidSuppoter;
-import illager.savageandravage.entity.ai.FollowTamedHyenaGoal;
-import illager.savageandravage.entity.ai.FollowWildLeaderGoal;
-import illager.savageandravage.entity.ai.HyenaBegGoal;
-import illager.savageandravage.entity.ai.OwnerHyenaHurtByTargetGoal;
+import illager.savageandravage.entity.ai.*;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageSoundsRegister;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.PatrollerEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
@@ -28,10 +25,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -50,6 +44,8 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
     private static final DataParameter<Boolean> BEGGING = EntityDataManager.createKey(HyenaEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> DATA_HEALTH_ID = EntityDataManager.<Float>createKey(HyenaEntity.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.createKey(HyenaEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> RAID = EntityDataManager.createKey(HyenaEntity.class, DataSerializers.BOOLEAN);
+
 
     public static final Predicate<LivingEntity> field_213441_bD = (p_213440_0_) -> {
         EntityType<?> entitytype = p_213440_0_.getType();
@@ -96,8 +92,14 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
-        this.goalSelector.addGoal(6, new FollowTamedHyenaGoal(this, 1.3D));
-        this.goalSelector.addGoal(6, new FollowWildLeaderGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new FollowIllagerGoal(this, 1.2D, 2.5F, 15.0F) {
+            @Override
+            public boolean shouldExecute() {
+                return !isTamed() && isRaiding() && super.shouldExecute();
+            }
+        });
+        this.goalSelector.addGoal(6, new FollowTamedHyenaGoal(this, 1.2D));
+        this.goalSelector.addGoal(6, new FollowWildLeaderGoal(this, 1.05D));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new HyenaBegGoal(this, 8.0F));
@@ -106,7 +108,13 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.targetSelector.addGoal(1, new OwnerHyenaHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, field_213441_bD));
+        this.targetSelector.addGoal(4, new NonTamedTargetGoal(this, AnimalEntity.class, false, field_213441_bD) {
+            @Override
+            public boolean shouldExecute() {
+                return !isRaiding() && super.shouldExecute();
+            }
+        });
+        this.targetSelector.addGoal(4, new HyenaRaidingTargetGoal(this, VillagerEntity.class, false, EntityPredicates.IS_LIVING_ALIVE));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
     }
 
@@ -119,6 +127,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.dataManager.register(DATA_HEALTH_ID, Float.valueOf(this.getHealth()));
         this.dataManager.register(BEGGING, false);
         this.dataManager.register(LEADER, Boolean.valueOf(false));
+        this.dataManager.register(RAID, Boolean.valueOf(false));
         this.dataManager.register(COLLAR_COLOR, DyeColor.RED.getId());
     }
 
@@ -150,6 +159,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Leader", this.isLeader());
+        compound.putBoolean("Raiding", this.isRaiding());
         compound.putByte("CollarColor", (byte) this.getCollarColor().getId());
     }
 
@@ -158,6 +168,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         super.readAdditional(compound);
 
         this.setLeader(compound.getBoolean("Leader"));
+        this.setRaiding(compound.getBoolean("Raiding"));
         if (compound.contains("CollarColor", 99)) {
             this.setCollarColor(DyeColor.byId(compound.getInt("CollarColor")));
         }
@@ -220,6 +231,14 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
 
     public void setLeader(boolean leader) {
         this.dataManager.set(LEADER, leader);
+    }
+
+    public boolean isRaiding() {
+        return ((Boolean) this.dataManager.get(RAID)).booleanValue();
+    }
+
+    public void setRaiding(boolean leader) {
+        this.dataManager.set(RAID, leader);
     }
 
     public void setLeaderHyena(HyenaEntity leader) {
@@ -375,7 +394,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
                 this.navigator.clearPath();
                 this.setAttackTarget((LivingEntity) null);
             }
-        } else if (itemstack.getItem() == Items.BONE && !this.isAngry()) {
+        } else if (itemstack.getItem() == Items.BONE && !this.isAngry() && !this.isRaiding()) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
@@ -607,13 +626,17 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
 
     @Override
     public void initRaidSpawn(int wave) {
-        for (PatrollerEntity patrollerentity : this.world.getEntitiesWithinAABB(PatrollerEntity.class, this.getBoundingBox().grow(16.0D), (p_220838_0_) -> {
-            return p_220838_0_.isLeader() && this.getOwner() == null;
-        })) {
-            if (this.getOwner() == null) {
-                this.setTamed(true);
-                this.setOwnerId(patrollerentity.getUniqueID());
-            }
+        this.setRaiding(true);
+    }
+
+    @Override
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (super.isOnSameTeam(entityIn)) {
+            return true;
+        } else if (this.isRaiding() && entityIn instanceof LivingEntity && ((LivingEntity) entityIn).getCreatureAttribute() == CreatureAttribute.ILLAGER) {
+            return this.getTeam() == null && entityIn.getTeam() == null;
+        } else {
+            return false;
         }
     }
 

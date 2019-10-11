@@ -443,6 +443,9 @@ public class DefenderEntity extends AbstractIllagerEntity {
             }
         } else {
             this.setGuardLevel(rand.nextInt(1));
+            if (flag2) {
+                this.setItemStackToSlot(EquipmentSlotType.OFFHAND, MiscUtil.getIllagerShield());
+            }
         }
 
         this.setItemStackToSlot(EquipmentSlotType.MAINHAND, itemstack);
