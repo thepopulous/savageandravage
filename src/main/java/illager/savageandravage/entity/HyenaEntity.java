@@ -13,10 +13,10 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.PatrollerEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.DyeColor;
@@ -53,7 +53,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
 
     public static final Predicate<LivingEntity> field_213441_bD = (p_213440_0_) -> {
         EntityType<?> entitytype = p_213440_0_.getType();
-        return !(p_213440_0_ instanceof HorseEntity) || !(p_213440_0_ instanceof TameableEntity) || entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT || entitytype == EntityType.FOX || entitytype == EntityType.WOLF;
+        return !(p_213440_0_ instanceof AbstractHorseEntity) && entitytype != SavageEntityRegistry.HYENA && entitytype != EntityType.PANDA && (!(p_213440_0_ instanceof TameableEntity) || entitytype == EntityType.WOLF || entitytype == EntityType.CAT || entitytype == EntityType.OCELOT);
     };
 
     private float headRotationCourse;
@@ -595,6 +595,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         }
     }
 
+
     public boolean canBeLeashedTo(PlayerEntity player) {
         return !this.isAngry() && super.canBeLeashedTo(player);
     }
@@ -602,6 +603,18 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
     @Override
     public boolean isEnemy() {
         return getOwner() != null && getOwner() instanceof AbstractRaiderEntity;
+    }
+
+    @Override
+    public void initRaidSpawn(int wave) {
+        for (PatrollerEntity patrollerentity : this.world.getEntitiesWithinAABB(PatrollerEntity.class, this.getBoundingBox().grow(16.0D), (p_220838_0_) -> {
+            return p_220838_0_.isLeader() && this.getOwner() == null;
+        })) {
+            if (this.getOwner() == null) {
+                this.setTamed(true);
+                this.setOwnerId(patrollerentity.getUniqueID());
+            }
+        }
     }
 
     @Nullable

@@ -3,6 +3,7 @@ package illager.savageandravage.world;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import illager.savageandravage.SavageAndRavageCore;
+import illager.savageandravage.api.IRaidSuppoter;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -423,7 +424,7 @@ public class RevampRaid extends Raid {
 
         for (PlayerEntity playerentity : this.world.getPlayers()) {
             Vec3d vec3d = new Vec3d(playerentity.posX, playerentity.posY, playerentity.posZ);
-            Vec3d vec3d1 = new Vec3d((double) p_221293_1_.getX(), (double) p_221293_1_.getY(), (double) p_221293_1_.getZ());
+            Vec3d vec3d1 = new Vec3d(p_221293_1_.getX(), p_221293_1_.getY(), p_221293_1_.getZ());
             float f1 = MathHelper.sqrt((vec3d1.x - vec3d.x) * (vec3d1.x - vec3d.x) + (vec3d1.z - vec3d.z) * (vec3d1.z - vec3d.z));
             double d0 = vec3d.x + (double) (13.0F / f1) * (vec3d1.x - vec3d.x);
             double d1 = vec3d.z + (double) (13.0F / f1) * (vec3d1.z - vec3d.z);
@@ -446,32 +447,37 @@ public class RevampRaid extends Raid {
             int k = 0;
 
             for (int l = 0; l < j; ++l) {
-                AbstractRaiderEntity abstractraiderentity = raid$wavemember.type.create(this.world);
-                if (!flag && abstractraiderentity.canBeLeader()) {
-                    abstractraiderentity.setLeader(true);
-                    this.setLeader(i, abstractraiderentity);
-                    flag = true;
-                }
+                MobEntity raidentity = raid$wavemember.type.create(this.world);
+                if (raidentity instanceof AbstractRaiderEntity) {
+                    AbstractRaiderEntity abstractraidentity = (AbstractRaiderEntity) raidentity;
+                    if (!flag && abstractraidentity.canBeLeader()) {
+                        abstractraidentity.setLeader(true);
+                        this.setLeader(i, abstractraidentity);
+                        flag = true;
+                    }
 
-                this.func_221317_a(i, abstractraiderentity, p_221294_1_, false);
-                if (raid$wavemember.type == EntityType.RAVAGER) {
-                    AbstractRaiderEntity abstractraiderentity1 = null;
-                    if (i == this.getWaves(Difficulty.NORMAL)) {
-                        abstractraiderentity1 = EntityType.PILLAGER.create(this.world);
-                    } else if (i >= this.getWaves(Difficulty.HARD)) {
-                        if (k == 0) {
-                            abstractraiderentity1 = EntityType.EVOKER.create(this.world);
-                        } else {
-                            abstractraiderentity1 = EntityType.VINDICATOR.create(this.world);
+                    this.func_221317_a(i, abstractraidentity, p_221294_1_, false);
+                    if (raid$wavemember.type == EntityType.RAVAGER) {
+                        AbstractRaiderEntity abstractraidentity1 = null;
+                        if (i == this.getWaves(Difficulty.NORMAL)) {
+                            abstractraidentity1 = EntityType.PILLAGER.create(this.world);
+                        } else if (i >= this.getWaves(Difficulty.HARD)) {
+                            if (k == 0) {
+                                abstractraidentity1 = EntityType.EVOKER.create(this.world);
+                            } else {
+                                abstractraidentity1 = EntityType.VINDICATOR.create(this.world);
+                            }
+                        }
+
+                        ++k;
+                        if (abstractraidentity1 != null) {
+                            this.func_221317_a(i, abstractraidentity1, p_221294_1_, false);
+                            abstractraidentity1.moveToBlockPosAndAngles(p_221294_1_, 0.0F, 0.0F);
+                            abstractraidentity1.startRiding(abstractraidentity);
                         }
                     }
-
-                    ++k;
-                    if (abstractraiderentity1 != null) {
-                        this.func_221317_a(i, abstractraiderentity1, p_221294_1_, false);
-                        abstractraiderentity1.moveToBlockPosAndAngles(p_221294_1_, 0.0F, 0.0F);
-                        abstractraiderentity1.startRiding(abstractraiderentity);
-                    }
+                } else {
+                    this.spawnSupporter(i, raidentity, p_221294_1_);
                 }
             }
         }
@@ -480,6 +486,17 @@ public class RevampRaid extends Raid {
         ++this.groupsSpawned;
         this.updateBarPercentage();
         this.markDirty();
+    }
+
+    private void spawnSupporter(int wave, MobEntity entity, @Nullable BlockPos p_221317_3_) {
+        entity.setPosition((double) p_221317_3_.getX() + 0.5D, (double) p_221317_3_.getY() + 1.0D, (double) p_221317_3_.getZ() + 0.5D);
+        entity.onInitialSpawn(this.world, this.world.getDifficultyForLocation(p_221317_3_), SpawnReason.EVENT, null, null);
+        entity.onGround = true;
+        if (entity instanceof IRaidSuppoter) {
+            ((IRaidSuppoter) entity).initRaidSpawn(wave);
+        }
+
+        this.world.addEntity(entity);
     }
 
     public void func_221317_a(int wave, AbstractRaiderEntity p_221317_2_, @Nullable BlockPos p_221317_3_, boolean p_221317_4_) {
@@ -491,7 +508,7 @@ public class RevampRaid extends Raid {
             p_221317_2_.func_213653_b(0);
             if (!p_221317_4_ && p_221317_3_ != null) {
                 p_221317_2_.setPosition((double) p_221317_3_.getX() + 0.5D, (double) p_221317_3_.getY() + 1.0D, (double) p_221317_3_.getZ() + 0.5D);
-                p_221317_2_.onInitialSpawn(this.world, this.world.getDifficultyForLocation(p_221317_3_), SpawnReason.EVENT, (ILivingEntityData) null, (CompoundNBT) null);
+                p_221317_2_.onInitialSpawn(this.world, this.world.getDifficultyForLocation(p_221317_3_), SpawnReason.EVENT, null, null);
                 p_221317_2_.func_213660_a(wave, false);
                 p_221317_2_.onGround = true;
                 this.world.addEntity(p_221317_2_);
@@ -534,7 +551,7 @@ public class RevampRaid extends Raid {
                     this.totalHealth -= p_221322_1_.getHealth();
                 }
 
-                p_221322_1_.setRaid((Raid) null);
+                p_221322_1_.setRaid(null);
                 this.updateBarPercentage();
                 this.markDirty();
             }
@@ -640,6 +657,9 @@ public class RevampRaid extends Raid {
         return p_221330_3_ ? p_221330_1_.waveCounts[this.numGroups] : p_221330_1_.waveCounts[p_221330_2_];
     }
 
+    /*
+     * Assign random value according to wave number and entity
+     */
     private int func_221335_a(RevampRaid.WaveMember p_221335_1_, Random p_221335_2_, int wave, DifficultyInstance p_221335_4_, boolean p_221335_5_) {
         Difficulty difficulty = p_221335_4_.getDifficulty();
         boolean flag = difficulty == Difficulty.EASY;
@@ -692,6 +712,19 @@ public class RevampRaid extends Raid {
                     i = 4;
                 } else {
                     i = 0;
+                }
+                break;
+            case HYENA:
+                if (wave == 7 || wave == 8) {
+                    i = 10;
+                } else if (wave == 9) {
+                    i = 9;
+                } else if (wave == 6) {
+                    i = 6;
+                } else if (wave == 3 || wave == 4) {
+                    i = 4;
+                } else {
+                    i = wave + 2;
                 }
                 break;
             case EVOKER:
@@ -798,7 +831,7 @@ public class RevampRaid extends Raid {
         this.heroes.add(p_221311_1_.getUniqueID());
     }
 
-    static enum Status {
+    enum Status {
         ONGOING,
         VICTORY,
         LOSS,
@@ -821,21 +854,22 @@ public class RevampRaid extends Raid {
         }
     }
 
-    static enum WaveMember {
+    public enum WaveMember {
         PILLAGER(EntityType.PILLAGER, new int[]{3, 3, 4, 6, 6, 6, 3, 3, 0}),
         DEFENDER(SavageEntityRegistry.DEFENDER, new int[]{0, 1, 1, 2, 2, 6, 3, 3, 0}),
         GRIEFER(SavageEntityRegistry.GRIEFER_ILLAGER, new int[]{0, 0, 0, 1, 2, 0, 1, 1, 2}),
         POULTRY_FARMER(SavageEntityRegistry.POULTRY_FARMER, new int[]{0, 0, 0, 0, 0, 0, 1, 1, 2}),
+        HYENA(SavageEntityRegistry.HYENA, new int[]{0, 0, 0, 1, 1, 1, 0, 0, 0}),
         EVOKER(EntityType.EVOKER, new int[]{0, 0, 0, 0, 1, 1, 1, 1, 2}),
         VINDICATOR(EntityType.VINDICATOR, new int[]{0, 0, 1, 0, 1, 0, 1, 1, 2}),
         WITCH(EntityType.WITCH, new int[]{0, 0, 0, 3, 0, 1, 2, 2, 2}),
         RAVAGER(EntityType.RAVAGER, new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0});
 
         private static final RevampRaid.WaveMember[] VALUES = values();
-        private final EntityType<? extends AbstractRaiderEntity> type;
+        private final EntityType<? extends MobEntity> type;
         private final int[] waveCounts;
 
-        private WaveMember(EntityType<? extends AbstractRaiderEntity> p_i50602_3_, int[] p_i50602_4_) {
+        WaveMember(EntityType<? extends MobEntity> p_i50602_3_, int[] p_i50602_4_) {
             this.type = p_i50602_3_;
             this.waveCounts = p_i50602_4_;
         }

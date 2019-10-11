@@ -202,4 +202,9 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
     public boolean isEnemy() {
         return true;
     }
+
+    @Override
+    public void initRaidSpawn(int wave) {
+
+    }
 }
