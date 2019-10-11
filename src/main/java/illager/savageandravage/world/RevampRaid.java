@@ -806,9 +806,9 @@ public class RevampRaid extends Raid {
             case EASY:
                 return 4;
             case NORMAL:
-                return 6;
+                return 5;
             case HARD:
-                return 9;
+                return 6;
             default:
                 return 0;
         }
