@@ -342,15 +342,15 @@ public class FriendlyRavagerEntity extends CreatureEntity {
                 }
             }
 
-            if (mc.gameSettings.keyBindSprint.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
+            if ((mc.gameSettings.keyBindSprint.isKeyDown() || mc.gameSettings.keyBindJump.isKeyDown()) && mc.gameSettings.keyBindForward.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
                 dushStart();
             }
-            else if (mc.gameSettings.keyBindJump.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
-                dushStart();
-            }
-            else if (this.isBoosting()) {
+            else if (!mc.gameSettings.keyBindForward.isKeyDown()){
                 dushFinish();
             }
+            /*else if (this.isBoosting() && Entity.func_213296_b(this.getMotion()) < (double) 5.000003E-7F){
+                dushFinish();
+            }*/
         }
     }
 
