@@ -348,7 +348,11 @@ public class FriendlyRavagerEntity extends CreatureEntity {
 
             if (mc.gameSettings.keyBindSprint.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
                 dushStart();
-            } else if (this.isBoosting()) {
+            }
+            else if (mc.gameSettings.keyBindJump.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
+                dushStart();
+            }
+            else if (this.isBoosting()) {
                 dushFinish();
             }
         }
