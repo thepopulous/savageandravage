@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import illager.savageandravage.SavageAndRavageCore;
 import illager.savageandravage.api.IRaidSuppoter;
+import illager.savageandravage.entity.SavagelingEntity;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -456,6 +457,7 @@ public class RevampRaid extends Raid {
                         flag = true;
                     }
 
+                    //spawn Illager Mob
                     this.func_221317_a(i, abstractraidentity, p_221294_1_, false);
                     if (raid$wavemember.type == EntityType.RAVAGER) {
                         AbstractRaiderEntity abstractraidentity1 = null;
@@ -475,8 +477,18 @@ public class RevampRaid extends Raid {
                             abstractraidentity1.moveToBlockPosAndAngles(p_221294_1_, 0.0F, 0.0F);
                             abstractraidentity1.startRiding(abstractraidentity);
                         }
+                    } else if (raid$wavemember.type == SavageEntityRegistry.POULTRY_FARMER) {
+                        for (int d = 0; d < 1 + this.random.nextInt(3); ++d) {
+                            SavagelingEntity savagelingEntity = SavageEntityRegistry.SAVAGELING.create(this.world);
+
+                            savagelingEntity.setPosition((double) p_221294_1_.getX() + 0.5D, (double) p_221294_1_.getY() + 1.0D, (double) p_221294_1_.getZ() + 0.5D);
+                            savagelingEntity.onInitialSpawn(this.world, this.world.getDifficultyForLocation(p_221294_1_), SpawnReason.EVENT, null, null);
+                            savagelingEntity.onGround = true;
+                            this.world.addEntity(savagelingEntity);
+                        }
                     }
                 } else {
+                    //spawn Supporter mob
                     this.spawnSupporter(i, raidentity, p_221294_1_);
                 }
             }
@@ -493,7 +505,7 @@ public class RevampRaid extends Raid {
         entity.onInitialSpawn(this.world, this.world.getDifficultyForLocation(p_221317_3_), SpawnReason.EVENT, null, null);
         entity.onGround = true;
         if (entity instanceof IRaidSuppoter) {
-            ((IRaidSuppoter) entity).initRaidSpawn(wave);
+            ((IRaidSuppoter) entity).initRaidSpawn(wave, this);
         }
 
         this.world.addEntity(entity);

@@ -92,6 +92,10 @@ public class SavageAndRavageCore {
         return this.findRaid(pos) != null;
     }
 
+    public RevampRaidManager getRaids() {
+        return this.revampRaid;
+    }
+
     private void enqueueIMC(final InterModEnqueueEvent event) {
         // some example code to dispatch IMC to another mod
     }

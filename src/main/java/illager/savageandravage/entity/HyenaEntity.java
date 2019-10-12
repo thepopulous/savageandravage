@@ -4,10 +4,10 @@ import illager.savageandravage.api.IRaidSuppoter;
 import illager.savageandravage.entity.ai.*;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageSoundsRegister;
+import illager.savageandravage.world.RevampRaid;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -25,7 +25,10 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -114,7 +117,6 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
                 return !isRaiding() && super.shouldExecute();
             }
         });
-        this.targetSelector.addGoal(4, new HyenaRaidingTargetGoal(this, VillagerEntity.class, false, EntityPredicates.IS_LIVING_ALIVE));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
     }
 
@@ -625,7 +627,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
     }
 
     @Override
-    public void initRaidSpawn(int wave) {
+    public void initRaidSpawn(int wave, RevampRaid raid) {
         this.setRaiding(true);
     }
 

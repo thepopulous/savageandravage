@@ -104,6 +104,10 @@ public class FollowIllagerGoal extends Goal {
                     }
                 }
             }
+
+            if (this.entity.getAttackTarget() == null && this.followingEntity instanceof MobEntity && this.followingEntity.getAttackingEntity() != null) {
+                this.entity.setAttackTarget(((MobEntity) this.followingEntity).getAttackTarget());
+            }
         }
     }
 }

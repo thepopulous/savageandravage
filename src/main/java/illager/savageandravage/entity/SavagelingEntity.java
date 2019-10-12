@@ -4,6 +4,7 @@ import illager.savageandravage.api.IRaidSuppoter;
 import illager.savageandravage.entity.ai.FollowHeldHatPlayer;
 import illager.savageandravage.entity.ai.FollowPlayerAndIllagerGoal;
 import illager.savageandravage.init.SavageEntityRegistry;
+import illager.savageandravage.world.RevampRaid;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -204,7 +205,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
     }
 
     @Override
-    public void initRaidSpawn(int wave) {
+    public void initRaidSpawn(int wave, RevampRaid raid) {
 
     }
 }
