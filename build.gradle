@@ -28,7 +28,7 @@ if (System.getenv("BUILD_NUMBER") != null)
     versionBuild = System.getenv("BUILD_NUMBER")
 
 version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
-group = 'illager.savageandravage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'populousteam.savageandravage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'savageandravage'
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
