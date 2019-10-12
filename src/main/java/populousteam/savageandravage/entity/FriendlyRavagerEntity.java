@@ -620,6 +620,19 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         }
     }
 
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            if (!source.isFireDamage() && !source.isProjectile() && !source.isDamageAbsolute() && !source.isMagicDamage() && !source.isUnblockable()) {
+                if (this.isBoosting()) {
+                    return super.attackEntityFrom(source, amount * 0.75F);
+                }
+            }
+            return super.attackEntityFrom(source, amount);
+        }
+    }
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         return false;

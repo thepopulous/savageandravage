@@ -1,16 +1,13 @@
 package populousteam.savageandravage.entity.projectile;
 
-import populousteam.savageandravage.client.particles.SavageParticles;
-import populousteam.savageandravage.entity.FriendlyRavagerEntity;
-import populousteam.savageandravage.entity.SavagelingEntity;
-import populousteam.savageandravage.init.SavageEntityRegistry;
-import populousteam.savageandravage.init.SavageItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerData;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.entity.villager.IVillagerDataHolder;
 import net.minecraft.entity.villager.IVillagerType;
@@ -25,6 +22,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
+import populousteam.savageandravage.client.particles.SavageParticles;
+import populousteam.savageandravage.entity.FriendlyRavagerEntity;
+import populousteam.savageandravage.entity.SavagelingEntity;
+import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageItems;
 
 @OnlyIn(
         value = Dist.CLIENT,
@@ -101,6 +103,14 @@ public class BeastBrewEntity extends ProjectileItemEntity {
                     }
                 }
                 this.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 2.0F, 1.0F);
+            } else if (entity instanceof AbstractIllagerEntity) {
+                RavagerEntity ravagerEntity = EntityType.RAVAGER.create(this.world);
+                ravagerEntity.setLocationAndAngles(entity.getPosition().getX() + 0.5F, entity.getPosition().getY(), entity.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
+
+
+                this.world.addEntity(ravagerEntity);
+
+                entity.remove();
             }
         }
 
