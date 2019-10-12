@@ -1,9 +1,5 @@
 package populousteam.savageandravage.entity;
 
-import populousteam.savageandravage.message.MessageRavagerAttackStat;
-import populousteam.savageandravage.message.MessageRavagerDushStat;
-import populousteam.savageandravage.message.MessageRavagerStopDushStat;
-import populousteam.savageandravage.message.SavagePacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
@@ -13,6 +9,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
@@ -40,6 +37,10 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.message.MessageRavagerAttackStat;
+import populousteam.savageandravage.message.MessageRavagerDushStat;
+import populousteam.savageandravage.message.MessageRavagerStopDushStat;
+import populousteam.savageandravage.message.SavagePacketHandler;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -329,6 +330,18 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         super.tick();
         if (world.isRemote) {
             this.updateClientControls();
+        }
+        if (!world.isRemote) {
+            if (this.isBoosting()) {
+                float f1 = (float) this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).getValue();
+
+                for (LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(0.75D, 0.0D, 0.75D))) {
+                    if (livingentity != this && (this.getControllingPassenger() == null || this.getControllingPassenger() != null && livingentity != this.getControllingPassenger()) && !this.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity) livingentity).hasMarker()) && this.getDistanceSq(livingentity) < 26.0D) {
+                        livingentity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.6F));
+                        livingentity.knockBack(this, f1 * 0.7F, (double) MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F))));
+                    }
+                }
+            }
         }
     }
 
