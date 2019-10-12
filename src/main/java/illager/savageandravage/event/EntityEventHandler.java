@@ -7,16 +7,16 @@ import illager.savageandravage.entity.illager.DefenderEntity;
 import illager.savageandravage.entity.illager.GrieferIllagerEntity;
 import illager.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import illager.savageandravage.entity.illager.ScavengersEntity;
+import illager.savageandravage.entity.task.RevampVillagerTasks;
 import illager.savageandravage.init.SavageEffectRegistry;
 import illager.savageandravage.init.SavageEntityRegistry;
 import illager.savageandravage.init.SavageItems;
 import illager.savageandravage.utils.MiscUtil;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.brain.schedule.Activity;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +25,7 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -41,14 +42,18 @@ public class EntityEventHandler {
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
-
         if (event.getEntity() instanceof AbstractVillagerEntity) {
             AbstractVillagerEntity villager = (AbstractVillagerEntity) event.getEntity();
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, GrieferIllagerEntity.class, 16.0F, 0.7D, 0.8D));
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, DefenderEntity.class, 16.0F, 0.7D, 0.8D));
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, PoultryFarmerIllagerEntity.class, 16.0F, 0.65D, 0.75D));
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, ScavengersEntity.class, 16.0F, 0.6D, 0.7D));
+        }
 
+        if (event.getEntity() instanceof VillagerEntity) {
+            VillagerEntity villager = (VillagerEntity) event.getEntity();
+            villager.getBrain().registerActivity(Activity.CORE, RevampVillagerTasks.core(villager.getVillagerData().getProfession(), (float) villager.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
+            villager.getBrain().registerActivity(Activity.RAID, RevampVillagerTasks.raid(villager.getVillagerData().getProfession(), (float) villager.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
         }
 
         if (event.getEntity() instanceof ChickenEntity) {
@@ -132,22 +137,6 @@ public class EntityEventHandler {
                         world.addEntity(pillager2);
                     }
                 }
-
-                if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(8) == 0) {
-                    for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
-                        DefenderEntity guardilalger = SavageEntityRegistry.DEFENDER.create(world);
-
-                        pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), guardilalger, pos, false);
-                    }
-                    pillager.remove();
-                } else if (pillager.getRaid() != null && !pillager.isLeader() && world.rand.nextInt(6) == 0) {
-                    for (int i = 0; i < 1 + world.rand.nextInt(1); i++) {
-                        GrieferIllagerEntity griferEntity = SavageEntityRegistry.GRIEFER_ILLAGER.create(world);
-
-                        pillager.getRaid().func_221317_a(pillager.getRaid().getWaves(world.getDifficulty()), griferEntity, pos, false);
-                    }
-                    pillager.remove();
-                }
             }
         }
 
@@ -191,6 +180,23 @@ public class EntityEventHandler {
     @SubscribeEvent
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
+
+        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 2 == 0) {
+            EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.BADOMEN);
+            int i = 1;
+            if (effectinstance1 != null) {
+                i += effectinstance1.getAmplifier();
+                livingEntity.removeActivePotionEffect(SavageEffectRegistry.BADOMEN);
+            } else {
+                --i;
+            }
+
+            i = MathHelper.clamp(i, 0, 5);
+
+            livingEntity.removeActivePotionEffect(Effects.BAD_OMEN);
+            livingEntity.addPotionEffect(new EffectInstance(SavageEffectRegistry.BADOMEN, 120000, i));
+        }
+
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
             if (!livingEntity.getPersistentData().contains("Tenacity")) {
