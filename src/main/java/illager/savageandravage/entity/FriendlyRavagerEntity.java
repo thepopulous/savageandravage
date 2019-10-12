@@ -174,10 +174,6 @@ public class FriendlyRavagerEntity extends CreatureEntity {
                         }
                     }
                 }
-
-                if (!flag && this.onGround) {
-                    this.jump();
-                }
             }
 
             if (this.roarTick > 0) {
