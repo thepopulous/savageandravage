@@ -42,6 +42,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class FriendlyRavagerEntity extends CreatureEntity {
@@ -52,7 +55,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
     protected static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute) null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final DataParameter<Boolean> BOOST = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SNOWTYPE = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> RAVAGERTYPE = EntityDataManager.createKey(FriendlyRavagerEntity.class, DataSerializers.VARINT);
 
 
     protected boolean horseJumping;
@@ -121,7 +124,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         super.registerData();
         this.dataManager.register(BOOST, false);
         this.dataManager.register(SADDLED, false);
-        this.dataManager.register(SNOWTYPE, false);
+        this.dataManager.register(RAVAGERTYPE, RavagerType.BASE.ordinal());
     }
 
 
@@ -370,14 +373,13 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         this.getDataManager().set(SADDLED, saddled);
     }
 
-    public boolean isSnowType() {
-        return this.getDataManager().get(SNOWTYPE);
+    public RavagerType getRavagerType() {
+        return RavagerType.get(this.getDataManager().get(RAVAGERTYPE));
     }
 
-    public void setSnowType(boolean snow) {
-        this.getDataManager().set(SNOWTYPE, snow);
+    public void setRavagerType(RavagerType type) {
+        this.getDataManager().set(RAVAGERTYPE, type.ordinal());
     }
-
 
     private void dushFinish() {
         SavagePacketHandler.CHANNEL.sendToServer(new MessageRavagerStopDushStat(this));
@@ -442,7 +444,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
         super.writeAdditional(compound);
 
         compound.putBoolean("Saddled", isSaddled());
-        compound.putBoolean("SnowType", isSnowType());
+        compound.putInt("RavagerType", getRavagerType().ordinal());
         compound.putInt("AttackTick", this.attackTick);
         compound.putInt("StunTick", this.stunTick);
         compound.putInt("RoarTick", this.roarTick);
@@ -452,7 +454,7 @@ public class FriendlyRavagerEntity extends CreatureEntity {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
-        this.setSnowType(compound.getBoolean("SnowType"));
+        this.setRavagerType(RavagerType.get(compound.getInt("RavagerType")));
         this.attackTick = compound.getInt("AttackTick");
         this.stunTick = compound.getInt("StunTick");
         this.roarTick = compound.getInt("RoarTick");
@@ -608,5 +610,22 @@ public class FriendlyRavagerEntity extends CreatureEntity {
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         return false;
+    }
+
+    public enum RavagerType {
+        BASE,
+        SNOW,
+        DESERT;
+        private static final Map<Integer, RavagerType> lookup = new HashMap<>();
+
+        static {
+            for (RavagerType e : EnumSet.allOf(RavagerType.class)) {
+                lookup.put(e.ordinal(), e);
+            }
+        }
+
+        public static RavagerType get(int intValue) {
+            return lookup.get(intValue);
+        }
     }
 }

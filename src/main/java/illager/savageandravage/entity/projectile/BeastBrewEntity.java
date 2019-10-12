@@ -56,7 +56,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
                 SavageParticles.BREWGLASS.spawn(world, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
 
-            for (int i = 0; i < 10; ++i) {
+            for (int i = 0; i < 5; ++i) {
                 SavageParticles.BREWSPLASH.spawn(world, this.posX + rand.nextInt(3) - rand.nextInt(3), this.posY, this.posZ + rand.nextInt(3) - rand.nextInt(3), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
@@ -95,7 +95,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
                         VillagerData villagerdata = ((IVillagerDataHolder) entity).getVillagerData();
                         IVillagerType ivillagertype = villagerdata.getType();
 
-                        spawnRavager(entity.getPosition(), villagerdata.getType() == IVillagerType.SNOW);
+                        spawnRavager(entity.getPosition(), villagerdata.getType());
 
                         entity.remove();
                     }
@@ -109,10 +109,14 @@ public class BeastBrewEntity extends ProjectileItemEntity {
         this.remove();
     }
 
-    private void spawnRavager(BlockPos pos, boolean snowType) {
+    private void spawnRavager(BlockPos pos, IVillagerType type) {
         FriendlyRavagerEntity ravagerEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
         ravagerEntity.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-        ravagerEntity.setSnowType(snowType);
+        if (type == IVillagerType.SNOW) {
+            ravagerEntity.setRavagerType(FriendlyRavagerEntity.RavagerType.SNOW);
+        } else if (type == IVillagerType.DESERT) {
+            ravagerEntity.setRavagerType(FriendlyRavagerEntity.RavagerType.DESERT);
+        }
 
         this.world.addEntity(ravagerEntity);
     }
