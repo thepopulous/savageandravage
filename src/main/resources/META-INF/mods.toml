@@ -18,9 +18,9 @@ displayName="Savage and Ravage" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="savageandravage.png" #optional
 # A text field displayed in the mod UI
-credits="Team Illager" #optional
+credits="The Populous" #optional
 # A text field displayed in the mod UI
-authors="bagu_chan,MCVinnyq,Farcr,Five" #optional
+authors="Bagu-chan, MCVinnyq, Farcr, Five, JacksonPlayz, Scarecrow, Bailey, Bloo, Hudthn, Gauge, Ian, and Voliant" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description="Be careful when a raid happens - there are dangerous new foes around!"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
