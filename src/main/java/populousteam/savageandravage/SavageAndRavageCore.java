@@ -1,12 +1,5 @@
 package populousteam.savageandravage;
 
-import populousteam.savageandravage.client.IllagerEntityRender;
-import populousteam.savageandravage.event.EntityEventHandler;
-import populousteam.savageandravage.init.SavageEntityRegistry;
-import populousteam.savageandravage.init.SavageFeatures;
-import populousteam.savageandravage.message.SavagePacketHandler;
-import populousteam.savageandravage.world.RevampRaid;
-import populousteam.savageandravage.world.RevampRaidManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -17,6 +10,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import populousteam.savageandravage.client.IllagerEntityRender;
+import populousteam.savageandravage.event.EntityEventHandler;
+import populousteam.savageandravage.event.EntitySpawnEventHandler;
+import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageFeatures;
+import populousteam.savageandravage.message.SavagePacketHandler;
+import populousteam.savageandravage.world.RevampRaid;
+import populousteam.savageandravage.world.RevampRaidManager;
 
 import javax.annotation.Nullable;
 
@@ -58,6 +59,7 @@ public class SavageAndRavageCore {
         // some preinit code
 
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
+        MinecraftForge.EVENT_BUS.register(new EntitySpawnEventHandler());
 
         SavageFeatures.addStructureFeature();
 
