@@ -3,6 +3,7 @@ package populousteam.savageandravage;
 import populousteam.savageandravage.client.IllagerEntityRender;
 import populousteam.savageandravage.event.EntityEventHandler;
 import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageFeatures;
 import populousteam.savageandravage.message.SavagePacketHandler;
 import populousteam.savageandravage.world.RevampRaid;
 import populousteam.savageandravage.world.RevampRaidManager;
@@ -57,6 +58,8 @@ public class SavageAndRavageCore {
         // some preinit code
 
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
+
+        SavageFeatures.addStructureFeature();
 
         SavageEntityRegistry.addEntitySpawn();
     }
