@@ -1,17 +1,5 @@
 package populousteam.savageandravage.event;
 
-import populousteam.savageandravage.entity.SavagelingEntity;
-import populousteam.savageandravage.entity.SkeletonVillagerEntity;
-import populousteam.savageandravage.entity.ai.FollowHeldHatPlayer;
-import populousteam.savageandravage.entity.illager.DefenderEntity;
-import populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
-import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
-import populousteam.savageandravage.entity.illager.ScavengersEntity;
-import populousteam.savageandravage.entity.task.RevampVillagerTasks;
-import populousteam.savageandravage.init.SavageEffectRegistry;
-import populousteam.savageandravage.init.SavageEntityRegistry;
-import populousteam.savageandravage.init.SavageItems;
-import populousteam.savageandravage.utils.MiscUtil;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.schedule.Activity;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
@@ -36,6 +24,18 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import populousteam.savageandravage.entity.SavagelingEntity;
+import populousteam.savageandravage.entity.SkeletonVillagerEntity;
+import populousteam.savageandravage.entity.ai.FollowHeldHatPlayer;
+import populousteam.savageandravage.entity.illager.DefenderEntity;
+import populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
+import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
+import populousteam.savageandravage.entity.illager.ScavengersEntity;
+import populousteam.savageandravage.entity.task.RevampVillagerTasks;
+import populousteam.savageandravage.init.SavageEffectRegistry;
+import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageItems;
+import populousteam.savageandravage.utils.MiscUtil;
 
 public class EntityEventHandler {
     //エンティティのAI関係
@@ -105,7 +105,6 @@ public class EntityEventHandler {
             } else {
 
                 if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
-                    pillager.remove();
 
                     ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
 
@@ -136,6 +135,7 @@ public class EntityEventHandler {
                         pillager2.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
                         world.addEntity(pillager2);
                     }
+                    event.setCanceled(true);
                 }
             }
         }
@@ -145,13 +145,13 @@ public class EntityEventHandler {
 
             BlockPos pos = skeleton.getPosition();
 
-            skeleton.remove();
-
             SkeletonVillagerEntity skeletonVillager = SavageEntityRegistry.SKELETONVILLAGER.create(world);
 
             skeletonVillager.setLocationAndAngles(pos.getX(), (double) pos.getY(), (double) pos.getZ(), 0.0F, 0.0F);
             skeletonVillager.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(pos)), SpawnReason.NATURAL, (ILivingEntityData) null, (CompoundNBT) null);
             world.addEntity(skeletonVillager);
+
+            event.setCanceled(true);
         }
     }
 
