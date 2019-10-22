@@ -1,8 +1,5 @@
 package populousteam.savageandravage.entity.illager;
 
-import populousteam.savageandravage.entity.ai.*;
-import populousteam.savageandravage.entity.path.GroundFencePathNavigator;
-import populousteam.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
@@ -29,6 +26,9 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.entity.ai.*;
+import populousteam.savageandravage.entity.path.GroundFencePathNavigator;
+import populousteam.savageandravage.init.SavageLootTables;
 
 import javax.annotation.Nullable;
 
@@ -66,7 +66,9 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         this.goalSelector.addGoal(4, new MoveToHomeAndAtNightGoal(this, 20.0D, 0.7D));
         this.goalSelector.addGoal(5, new WakeUpGoal(this));
         this.goalSelector.addGoal(6, new GotoBedGoal(this, 0.7D));
-        this.goalSelector.addGoal(7, new CropHarvestGoal(this, 0.7D));
+        this.goalSelector.addGoal(7, new CropHarvestGoal(this, 0.7D) {
+
+        });
         this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 0.7D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtGoal(this, MobEntity.class, 8.0F));

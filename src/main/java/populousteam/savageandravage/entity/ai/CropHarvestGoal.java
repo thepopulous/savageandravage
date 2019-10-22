@@ -1,6 +1,5 @@
 package populousteam.savageandravage.entity.ai;
 
-import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -12,6 +11,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 
 public class CropHarvestGoal extends MoveToBlockGoal {
     private final PoultryFarmerIllagerEntity illager;
@@ -38,11 +38,11 @@ public class CropHarvestGoal extends MoveToBlockGoal {
             this.wantsToHarvest = true;
         }
 
-        return super.shouldExecute();
+        return this.creature.world.isDaytime() && super.shouldExecute();
     }
 
     public boolean shouldContinueExecuting() {
-        return (this.canHarvest || this.canPlant) && super.shouldContinueExecuting();
+        return this.creature.world.isDaytime() && (this.canHarvest || this.canPlant) && super.shouldContinueExecuting();
     }
 
     public void tick() {
