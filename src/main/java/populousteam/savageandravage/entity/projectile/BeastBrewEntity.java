@@ -144,7 +144,9 @@ public class BeastBrewEntity extends ProjectileItemEntity {
         this.setRotation(yaw, pitch);
     }
 
-
+    protected float getGravityVelocity() {
+        return 0.05F;
+    }
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);

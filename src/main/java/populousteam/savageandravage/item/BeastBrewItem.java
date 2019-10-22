@@ -1,12 +1,12 @@
 package populousteam.savageandravage.item;
 
-import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
 
 public class BeastBrewItem extends Item {
     public BeastBrewItem(Properties group){
@@ -21,11 +21,12 @@ public class BeastBrewItem extends Item {
 
         worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isRemote) {
-            BeastBrewEntity sporeentity = new BeastBrewEntity(worldIn, playerIn);
-            sporeentity.func_213884_b(itemstack);
-            sporeentity.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
-            worldIn.addEntity(sporeentity);
+            BeastBrewEntity brewentity = new BeastBrewEntity(worldIn, playerIn);
+            brewentity.func_213884_b(itemstack);
+            brewentity.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, -20.0F, 0.5F, 1.0F);
+            worldIn.addEntity(brewentity);
         }
+
 
         playerIn.addStat(Stats.ITEM_USED.get(this));
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
