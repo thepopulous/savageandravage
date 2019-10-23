@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "savageandravage:items/creeper_spores"
+    "layer0": "savageandravage:item/creeper_spores"
   }
 }

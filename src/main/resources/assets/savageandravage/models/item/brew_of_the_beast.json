@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "savageandravage:items/brew_of_the_beast"
+    "layer0": "savageandravage:item/brew_of_the_beast"
   }
 }
