@@ -1,6 +1,5 @@
 package populousteam.savageandravage.entity.illager;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.VindicatorEntity;
@@ -15,17 +14,13 @@ public class RevampVindicatorEntity extends VindicatorEntity implements IEntityA
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue((double) 0.5F);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue((double) 0.85F);
     }
 
-    @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
-        return super.attackEntityAsMob(entityIn);
-    }
 
     public EntityArmPose getEntityArmPose() {
         if (this.isAggressive()) {
-            return EntityArmPose.ATTACKING;
+            return this.getHealth() < 5 ? EntityArmPose.ANGRY_ATTACK : EntityArmPose.ATTACKING;
         } else {
             return this.func_213656_en() ? EntityArmPose.CELEBRATING : EntityArmPose.CROSSED;
         }

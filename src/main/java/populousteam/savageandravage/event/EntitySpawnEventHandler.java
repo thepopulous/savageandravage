@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class EntitySpawnEventHandler {
     @SubscribeEvent
-    public void onEntityJoin(WorldEvent.PotentialSpawns event) {
+    public void onSpawnList(WorldEvent.PotentialSpawns event) {
         World world = event.getWorld().getWorld();
         BlockPos pos = event.getPos();
 

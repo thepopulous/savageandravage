@@ -46,7 +46,7 @@ public class VindicatorIllagerModel<T extends RevampVindicatorEntity> extends Il
         }
 
         EntityArmPose abstractillagerentity$armpose = entityIn.getEntityArmPose();
-        if (abstractillagerentity$armpose == EntityArmPose.ATTACKING) {
+        if (abstractillagerentity$armpose == EntityArmPose.ANGRY_ATTACK) {
             float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
             this.rightArm.rotateAngleZ = 0.0F;
@@ -54,14 +54,37 @@ public class VindicatorIllagerModel<T extends RevampVindicatorEntity> extends Il
             this.rightArm.rotateAngleY = 0.15707964F;
             this.leftArm.rotateAngleY = -0.15707964F;
             if (entityIn.getPrimaryHand() == HandSide.RIGHT) {
-                this.rightArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
-                this.leftArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.19F) * 0.5F;
+                this.rightArm.rotateAngleX = -2.0849558F;
+                this.leftArm.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.19F) * 0.15F;
                 this.rightArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
                 this.leftArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
             } else {
-                this.rightArm.rotateAngleX = -0.0F + MathHelper.cos(ageInTicks * 0.19F) * 0.5F;
-                this.leftArm.rotateAngleX = -1.8849558F + MathHelper.cos(ageInTicks * 0.09F) * 0.15F;
+                this.rightArm.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.19F) * 0.15F;
+                this.leftArm.rotateAngleX = -2.0849558F;
                 this.rightArm.rotateAngleX += f * 1.2F - f1 * 0.4F;
+                this.leftArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
+            }
+
+            this.rightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+            this.leftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+            this.rightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+            this.leftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+        } else if (abstractillagerentity$armpose == EntityArmPose.ATTACKING) {
+            float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
+            float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
+            this.rightArm.rotateAngleZ = -0.42F;
+            this.leftArm.rotateAngleZ = 0.35F;
+            this.rightArm.rotateAngleY = 0.0F;
+            this.leftArm.rotateAngleY = 0.0F;
+            if (entityIn.getPrimaryHand() == HandSide.RIGHT) {
+                this.rightArm.rotateAngleX = -0.85F + MathHelper.cos(ageInTicks * 0.12F) * 0.15F;
+
+                this.leftArm.rotateAngleX = -0.9F + MathHelper.cos(ageInTicks * 0.09F) * 0.1F;
+
+                this.rightArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
+            } else {
+                this.rightArm.rotateAngleX = -0.75F + MathHelper.cos(ageInTicks * 0.09F) * 0.1F;
+                this.leftArm.rotateAngleX = -0.75F + MathHelper.cos(ageInTicks * 0.12F) * 0.15F;
                 this.leftArm.rotateAngleX += f * 2.2F - f1 * 0.4F;
             }
 

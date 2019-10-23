@@ -64,19 +64,23 @@ public class SavageAndRavageCore {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         IllagerEntityRender.entityRender();
-
-
     }
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
         if (this.revampRaid != null) {
+            if (event.phase == TickEvent.Phase.END && !event.world.isRemote) {
+                this.revampRaid.markDirty();
+            }
             this.revampRaid.tick();
         } else {
-            this.revampRaid = event.world.getServer().getWorld(event.world.dimension.getType()).getSavedData().getOrCreate(() -> {
-                return new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
-            }, RevampRaidManager.func_215172_a(event.world.dimension));
-            new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+            if (event.phase == TickEvent.Phase.START) {
+                this.revampRaid = event.world.getServer().getWorld(event.world.dimension.getType()).getSavedData().getOrCreate(() -> {
+                    return new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+                }, RevampRaidManager.func_215172_a(event.world.dimension));
+                new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+                this.revampRaid.markDirty();
+            }
         }
     }
 
