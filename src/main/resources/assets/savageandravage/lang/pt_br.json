@@ -30,10 +30,10 @@
   "savageandravage:subtitles.hyena.death": "Hiena morre",
   "effect.savageandravage.tenacity": "Tenacidade",
   "effect.savageandravage.bad_omen": "Mau presságio",
-  "block.savageandravage.ominous_shield": " ",
-  "block.savageandravage.gloomy_tiles": " ",
-  "block.savageandravage.gloomy_tile_slab": " ",
-  "block.savageandravage.gloomy_tile_stairs": " ",
-  "block.savageandravage.gloomy_tile_wall": " ",
-  "block.savageandravage.chiseled_gloomy_tiles": " "
+  "block.savageandravage.ominous_shield": "Escudo sinistro",
+  "block.savageandravage.gloomy_tiles": "Azulejos sombrios",
+  "block.savageandravage.gloomy_tile_slab": "Laje de azulejo sombrio",
+  "block.savageandravage.gloomy_tile_stairs": "Escadas de azulejo sombrio",
+  "block.savageandravage.gloomy_tile_wall": "Muro de azulejo sombrio",
+  "block.savageandravage.chiseled_gloomy_tiles": "Azulejos sombrios talhados"
 }
