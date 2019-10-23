@@ -1,18 +1,15 @@
 package populousteam.savageandravage.client;
 
-import populousteam.savageandravage.client.render.*;
-import populousteam.savageandravage.entity.*;
-import populousteam.savageandravage.entity.illager.DefenderEntity;
-import populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
-import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
-import populousteam.savageandravage.entity.illager.ScavengersEntity;
-import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
-import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import populousteam.savageandravage.client.render.*;
+import populousteam.savageandravage.entity.*;
+import populousteam.savageandravage.entity.illager.*;
+import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
+import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class IllagerEntityRender {
@@ -29,5 +26,7 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(FriendlyRavagerEntity.class, FriendlyRavagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(BeastBrewEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(HyenaEntity.class, HyenaRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(RevampVindicatorEntity.class, RevampVindicatorRender::new);
+
     }
 }

@@ -1,11 +1,5 @@
 package populousteam.savageandravage;
 
-import populousteam.savageandravage.client.IllagerEntityRender;
-import populousteam.savageandravage.event.EntityEventHandler;
-import populousteam.savageandravage.init.SavageEntityRegistry;
-import populousteam.savageandravage.message.SavagePacketHandler;
-import populousteam.savageandravage.world.RevampRaid;
-import populousteam.savageandravage.world.RevampRaidManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -16,6 +10,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import populousteam.savageandravage.client.IllagerEntityRender;
+import populousteam.savageandravage.event.EntityEventHandler;
+import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.message.SavagePacketHandler;
+import populousteam.savageandravage.world.RevampRaid;
+import populousteam.savageandravage.world.RevampRaidManager;
 
 import javax.annotation.Nullable;
 
@@ -38,6 +38,8 @@ public class SavageAndRavageCore {
         //Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("savageandravage-client.toml"));*/
         /**Config loading code currently disabled due to unfinishedness*/
 
+        SavagePacketHandler.register();
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -53,7 +55,6 @@ public class SavageAndRavageCore {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        SavagePacketHandler.register();
         // some preinit code
 
         MinecraftForge.EVENT_BUS.register(new EntityEventHandler());
@@ -72,7 +73,10 @@ public class SavageAndRavageCore {
         if (this.revampRaid != null) {
             this.revampRaid.tick();
         } else {
-            this.revampRaid = new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+            this.revampRaid = event.world.getServer().getWorld(event.world.dimension.getType()).getSavedData().getOrCreate(() -> {
+                return new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
+            }, RevampRaidManager.func_215172_a(event.world.dimension));
+            new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
         }
     }
 
@@ -84,6 +88,14 @@ public class SavageAndRavageCore {
             return null;
         }
     }
+
+  /*  public static void addWaveMenber() {
+        EnumUtils.getEnumList(Raid.class).add(EntityType.RAVAGER, new int[]{0, 0, 0, 1, 0, 1, 0, 2})
+    }*/
+
+
+
+
 
     public boolean hasRaid(BlockPos pos) {
         return this.findRaid(pos) != null;

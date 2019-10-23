@@ -181,7 +181,7 @@ public class EntityEventHandler {
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
 
-        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 2 == 0) {
+        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 4 == 0) {
             EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffectRegistry.BADOMEN);
             int i = 1;
             if (effectinstance1 != null) {
@@ -198,13 +198,13 @@ public class EntityEventHandler {
         }
 
 
-        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null) {
+        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) != null && livingEntity.ticksExisted % 5 == 0) {
             if (!livingEntity.getPersistentData().contains("Tenacity")) {
                 livingEntity.getPersistentData().putFloat("Tenacity", 0);
             }
         }
 
-        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null) {
+        if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffectRegistry.TENACITY) == null && livingEntity.ticksExisted % 5 == 0) {
             if (livingEntity.getPersistentData().contains("Tenacity")) {
                 livingEntity.getPersistentData().remove("Tenacity");
             }

@@ -1,11 +1,14 @@
 package populousteam.savageandravage.api.entity;
 
-public enum ArmPose {
+public enum EntityArmPose {
     CROSSED,
     ATTACKING,
     SPELLCASTING,
     BOW_AND_ARROW,
     CROSSBOW_HOLD,
     CROSSBOW_CHARGE,
-    CELEBRATING;
+    CELEBRATING,
+    ANGRY,
+    ANGRY_ATTACK,
+    FLYING;
 }

@@ -1,7 +1,5 @@
 package populousteam.savageandravage.client.model;
 
-import populousteam.savageandravage.api.entity.ArmPose;
-import populousteam.savageandravage.entity.SkeletonVillagerEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
@@ -10,6 +8,8 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.api.entity.EntityArmPose;
+import populousteam.savageandravage.entity.SkeletonVillagerEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends EntityModel<T> implements IHasArm, IHasHead {
@@ -75,7 +75,7 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
         this.Head.render(scale);
 
         this.Body.render(scale);
-        if (entity.getArmPose() == ArmPose.CROSSED) {
+        if (entity.getEntityArmPose() == EntityArmPose.CROSSED) {
             this.MiddleClosedArm.render(scale);
         } else {
             this.LeftArm.render(scale);
@@ -117,8 +117,8 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
             this.LeftLeg.rotateAngleZ = 0.0F;
         }
 
-        ArmPose abstractillagerentity$armpose = entityIn.getArmPose();
-        if (abstractillagerentity$armpose == ArmPose.ATTACKING) {
+        EntityArmPose abstractillagerentity$armpose = entityIn.getEntityArmPose();
+        if (abstractillagerentity$armpose == EntityArmPose.ATTACKING) {
             float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
             this.RightArm.rotateAngleZ = 0.0F;
@@ -133,7 +133,7 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
             this.LeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
             this.RightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
             this.LeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-        } else if (abstractillagerentity$armpose == ArmPose.SPELLCASTING) {
+        } else if (abstractillagerentity$armpose == EntityArmPose.SPELLCASTING) {
             this.RightArm.rotationPointZ = 0.0F;
             this.RightArm.rotationPointX = -5.0F;
             this.LeftArm.rotationPointZ = 0.0F;
@@ -144,25 +144,25 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
             this.LeftArm.rotateAngleZ = -2.3561945F;
             this.RightArm.rotateAngleY = 0.0F;
             this.LeftArm.rotateAngleY = 0.0F;
-        } else if (abstractillagerentity$armpose == ArmPose.BOW_AND_ARROW) {
+        } else if (abstractillagerentity$armpose == EntityArmPose.BOW_AND_ARROW) {
             this.RightArm.rotateAngleY = -0.1F + this.Head.rotateAngleY;
             this.RightArm.rotateAngleX = (-(float) Math.PI / 2F) + this.Head.rotateAngleX;
             this.LeftArm.rotateAngleX = -0.9424779F + this.Head.rotateAngleX;
             this.LeftArm.rotateAngleY = this.Head.rotateAngleY - 0.4F;
             this.LeftArm.rotateAngleZ = ((float) Math.PI / 2F);
-        } else if (abstractillagerentity$armpose == ArmPose.CROSSBOW_HOLD) {
+        } else if (abstractillagerentity$armpose == EntityArmPose.CROSSBOW_HOLD) {
             this.RightArm.rotateAngleY = -0.3F + this.Head.rotateAngleY;
             this.LeftArm.rotateAngleY = 0.6F + this.Head.rotateAngleY;
             this.RightArm.rotateAngleX = (-(float) Math.PI / 2F) + this.Head.rotateAngleX + 0.1F;
             this.LeftArm.rotateAngleX = -1.5F + this.Head.rotateAngleX;
-        } else if (abstractillagerentity$armpose == ArmPose.CROSSBOW_CHARGE) {
+        } else if (abstractillagerentity$armpose == EntityArmPose.CROSSBOW_CHARGE) {
             this.RightArm.rotateAngleY = -0.8F;
             this.RightArm.rotateAngleX = -0.97079635F;
             this.LeftArm.rotateAngleX = -0.97079635F;
             float f2 = MathHelper.clamp(this.field_217145_m, 0.0F, 25.0F);
             this.LeftArm.rotateAngleY = MathHelper.lerp(f2 / 25.0F, 0.4F, 0.85F);
             this.LeftArm.rotateAngleX = MathHelper.lerp(f2 / 25.0F, this.LeftArm.rotateAngleX, (-(float) Math.PI / 2F));
-        } else if (abstractillagerentity$armpose == ArmPose.CELEBRATING) {
+        } else if (abstractillagerentity$armpose == EntityArmPose.CELEBRATING) {
             this.RightArm.rotationPointZ = 0.0F;
             this.RightArm.rotationPointX = -5.0F;
             this.RightArm.rotateAngleX = MathHelper.cos(ageInTicks * 0.6662F) * 0.05F;

@@ -5,5 +5,5 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IEntityArm {
     @OnlyIn(Dist.CLIENT)
-    ArmPose getArmPose();
+    EntityArmPose getEntityArmPose();
 }

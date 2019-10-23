@@ -1,8 +1,5 @@
 package populousteam.savageandravage.entity;
 
-import populousteam.savageandravage.api.entity.ArmPose;
-import populousteam.savageandravage.api.entity.IEntityArm;
-import populousteam.savageandravage.init.SavageLootTables;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.*;
@@ -27,6 +24,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.api.entity.EntityArmPose;
+import populousteam.savageandravage.api.entity.IEntityArm;
+import populousteam.savageandravage.init.SavageLootTables;
 
 public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements ICrossbowUser, IEntityArm {
     private final RangedBowAttackGoal<SkeletonVillagerEntity> aiArrowAttack = new RangedBowAttackGoal<>(this, 1.0D, 20, 16.0F);
@@ -149,15 +149,15 @@ public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements IC
     }
 
     @Override
-    public ArmPose getArmPose() {
+    public EntityArmPose getEntityArmPose() {
         if (this.isCharging()) {
-            return ArmPose.CROSSBOW_CHARGE;
+            return EntityArmPose.CROSSBOW_CHARGE;
         } else if (this.isHolding(Items.CROSSBOW)) {
-            return ArmPose.CROSSBOW_HOLD;
+            return EntityArmPose.CROSSBOW_HOLD;
         } else if (this.isHolding(Items.BOW)) {
-            return this.isAggressive() ? ArmPose.BOW_AND_ARROW : ArmPose.CROSSED;
+            return this.isAggressive() ? EntityArmPose.BOW_AND_ARROW : EntityArmPose.CROSSED;
         } else {
-            return this.isAggressive() ? ArmPose.ATTACKING : ArmPose.CROSSED;
+            return this.isAggressive() ? EntityArmPose.ATTACKING : EntityArmPose.CROSSED;
         }
     }
 }
