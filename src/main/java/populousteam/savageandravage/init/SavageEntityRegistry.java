@@ -9,7 +9,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import populousteam.savageandravage.SavageAndRavageCore;
 import populousteam.savageandravage.entity.*;
-import populousteam.savageandravage.entity.illager.*;
+import populousteam.savageandravage.entity.illager.DefenderEntity;
+import populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
+import populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
+import populousteam.savageandravage.entity.illager.ScavengersEntity;
 import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
 import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
 
@@ -27,8 +30,6 @@ public class SavageEntityRegistry {
     public static final EntityType<FriendlyRavagerEntity> FRIENDLYRAVAGER = EntityType.Builder.create(FriendlyRavagerEntity:: new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(1.95F,2.2F).build(prefix("friendly_ravager"));
     public static final EntityType<BeastBrewEntity> BEAST_BREW = EntityType.Builder.<BeastBrewEntity>create(BeastBrewEntity::new, EntityClassification.MISC).setTrackingRange(100).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).setCustomClientFactory(BeastBrewEntity::new).size(0.3F, 0.3F).build(prefix("beast_brew"));
     public static final EntityType<HyenaEntity> HYENA = EntityType.Builder.create(HyenaEntity::new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.8F, 1.1F).build(prefix("hyena"));
-    public static final EntityType<RevampVindicatorEntity> REVAMP_VINDICATOR = EntityType.Builder.create(RevampVindicatorEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("vindicator"));
-
 
     private static String prefix(String path) {
 		return SavageAndRavageCore.MODID + "." + path;
@@ -47,7 +48,6 @@ public class SavageEntityRegistry {
         event.getRegistry().register(FRIENDLYRAVAGER.setRegistryName("friendly_ravager"));
         event.getRegistry().register(BEAST_BREW.setRegistryName("beast_brew"));
         event.getRegistry().register(HYENA.setRegistryName("hyena"));
-        event.getRegistry().register(REVAMP_VINDICATOR.setRegistryName("vindicator"));
     }
 
     public static void addEntitySpawn() {
