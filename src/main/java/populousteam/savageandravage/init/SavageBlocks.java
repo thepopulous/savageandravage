@@ -18,6 +18,8 @@ public class SavageBlocks {
     public static final Block GLOOMY_TILE_SLAB = new SlabBlock(Block.Properties.from(Blocks.STONE_BRICK_SLAB));
     public static final Block GLOOMY_TILE_STAIRS = new SavageStairsBlock(Blocks.STONE_BRICK_STAIRS.getDefaultState(), Block.Properties.from(Blocks.STONE_BRICK_STAIRS));
     public static final Block GLOOMY_TILE_WALL = new WallBlock(Block.Properties.from(Blocks.STONE_BRICK_WALL));
+    //public static final Block GLOOMY_TILE_VERTICAL_SLAB = new vazkii.quark.building.block.VerticalSlabBlock(Blocks.STONE_BRICKS.getDefaultState(), Block.Properties.from(Blocks.STONE_BRICKS));
+    //TODO: Work out how to properly implement this class as I don't think you can do it from mod jars
     public static final Block CHISELED_GLOOMY_TILES = new Block(Block.Properties.from(Blocks.CHISELED_STONE_BRICKS));
 
     @SubscribeEvent
