@@ -2,11 +2,6 @@ package populousteam.savageandravage.world;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import populousteam.savageandravage.SavageAndRavageCore;
-import populousteam.savageandravage.api.IRaidSuppoter;
-import populousteam.savageandravage.entity.SavagelingEntity;
-import populousteam.savageandravage.init.SavageEffectRegistry;
-import populousteam.savageandravage.init.SavageEntityRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -35,6 +30,11 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
+import populousteam.savageandravage.SavageAndRavageCore;
+import populousteam.savageandravage.api.IRaidSuppoter;
+import populousteam.savageandravage.entity.SavagelingEntity;
+import populousteam.savageandravage.init.SavageEffectRegistry;
+import populousteam.savageandravage.init.SavageEntityRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -875,7 +875,7 @@ public class RevampRaid extends Raid {
         EVOKER(EntityType.EVOKER, new int[]{0, 0, 0, 0, 1, 1, 1, 1, 2}),
         VINDICATOR(EntityType.VINDICATOR, new int[]{0, 0, 1, 0, 1, 0, 1, 1, 2}),
         WITCH(EntityType.WITCH, new int[]{0, 0, 0, 3, 0, 1, 2, 2, 2}),
-        RAVAGER(EntityType.RAVAGER, new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0});
+        RAVAGER(EntityType.RAVAGER, new int[]{0, 0, 0, 1, 0, 0, 0, 0, 0});
 
         private static final RevampRaid.WaveMember[] VALUES = values();
         private final EntityType<? extends MobEntity> type;

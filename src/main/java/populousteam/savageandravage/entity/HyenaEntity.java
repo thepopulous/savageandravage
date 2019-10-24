@@ -1,10 +1,5 @@
 package populousteam.savageandravage.entity;
 
-import populousteam.savageandravage.api.IRaidSuppoter;
-import populousteam.savageandravage.entity.ai.*;
-import populousteam.savageandravage.init.SavageEntityRegistry;
-import populousteam.savageandravage.init.SavageSoundsRegister;
-import populousteam.savageandravage.world.RevampRaid;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -37,6 +32,11 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.api.IRaidSuppoter;
+import populousteam.savageandravage.entity.ai.*;
+import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageSoundsRegister;
+import populousteam.savageandravage.world.RevampRaid;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -138,7 +138,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
 
         if (this.isTamed()) {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(16.0D);
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
         } else {
             this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
         }
