@@ -108,7 +108,7 @@ public class EntityEventHandler {
             }
             else {
 
-                if (pillager.getRaid() == null && pillager.isLeader() /**&& SpawnReason check thingy, fixes patrol from spawn eggs*/ && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+                if (pillager.getRaid() == null && pillager.isLeader() && pillager.hasPatrolTarget() /**Hopefully this works, needs testing*/ && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
                     //TODO: Make this not generate a new patrol once implemented SpawnReason
                     if(SavageConfig.SCAVENGERS_ALWAYS_LEADER.get()) {
                         ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
@@ -134,7 +134,7 @@ public class EntityEventHandler {
                         }
                     }
 
-                    for (int i = 0; i <= 3 + world.rand.nextInt(4); i++) {
+                    /*for (int i = 0; i <= 3 + world.rand.nextInt(4); i++) {
                         PillagerEntity pillager2 = EntityType.PILLAGER.create(world);
 
                         pillager2.setLeader(false);
@@ -142,7 +142,8 @@ public class EntityEventHandler {
                         pillager2.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
                         pillager2.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
                         world.addEntity(pillager2);
-                    }
+                    }*/
+                    //Not needed since patrols don't spawn from eggs anymore
                     event.setCanceled(true);
                 }
             }
