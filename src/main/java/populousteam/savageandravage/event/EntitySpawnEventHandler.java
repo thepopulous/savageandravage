@@ -11,6 +11,7 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.init.SavageEntityRegistry;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class EntitySpawnEventHandler {
         if (event.getType() == EntityClassification.MONSTER) {
             List<PointOfInterest> list = world.getServer().getWorld(DimensionType.OVERWORLD).func_217443_B().func_219146_b(PointOfInterestType.field_221053_a, pos, 64, PointOfInterestManager.Status.IS_OCCUPIED).collect(Collectors.toList());
 
-            if (Feature.VILLAGE.isPositionInStructure(world, pos) && list.isEmpty()) {
+            if (Feature.VILLAGE.isPositionInStructure(world, pos) && list.isEmpty() && SavageConfig.SKELETON_VILLAGERS_ZOMBIE_VILLAGE.get()) {
                 event.getList().add(new Biome.SpawnListEntry(SavageEntityRegistry.SKELETONVILLAGER, 160, 2, 3));
             }
         }

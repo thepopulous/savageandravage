@@ -8,6 +8,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import populousteam.savageandravage.SavageAndRavageCore;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.entity.*;
 import populousteam.savageandravage.entity.illager.DefenderEntity;
 import populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
@@ -27,7 +28,7 @@ public class SavageEntityRegistry {
     public static final EntityType<SavagelingEntity> SAVAGELING = EntityType.Builder.create(SavagelingEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 0.75F).build(prefix("savageling"));
     public static final EntityType<SkeletonVillagerEntity> SKELETONVILLAGER = EntityType.Builder.create(SkeletonVillagerEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("skeleton_villager"));
     public static final EntityType<ScavengersEntity> SCAVENGER = EntityType.Builder.create(ScavengersEntity::new, EntityClassification.MONSTER).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.6F, 1.95F).build(prefix("scavenger"));
-    public static final EntityType<FriendlyRavagerEntity> FRIENDLYRAVAGER = EntityType.Builder.create(FriendlyRavagerEntity:: new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(1.95F,2.2F).build(prefix("friendly_ravager"));
+    public static final EntityType<FriendlyRavagerEntity> FRIENDLY_RAVAGER = EntityType.Builder.create(FriendlyRavagerEntity:: new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(1.95F,2.2F).build(prefix("friendly_ravager"));
     public static final EntityType<BeastBrewEntity> BEAST_BREW = EntityType.Builder.<BeastBrewEntity>create(BeastBrewEntity::new, EntityClassification.MISC).setTrackingRange(100).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).setCustomClientFactory(BeastBrewEntity::new).size(0.3F, 0.3F).build(prefix("beast_brew"));
     public static final EntityType<HyenaEntity> HYENA = EntityType.Builder.create(HyenaEntity::new, EntityClassification.CREATURE).setTrackingRange(80).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).size(0.8F, 1.1F).build(prefix("hyena"));
 
@@ -37,17 +38,39 @@ public class SavageEntityRegistry {
 
     @SubscribeEvent
     public static void registerEntity(RegistryEvent.Register<EntityType<?>> event) {
-        event.getRegistry().register(DEFENDER.setRegistryName("defender"));
-        event.getRegistry().register(CREEPIES.setRegistryName("creepie"));
-        event.getRegistry().register(GRIEFER_ILLAGER.setRegistryName("griefer_illager"));
-        event.getRegistry().register(CREEPER_SPORE.setRegistryName("creeper_spore"));
-        event.getRegistry().register(POULTRY_FARMER.setRegistryName("poultry_farmer"));
-        event.getRegistry().register(SAVAGELING.setRegistryName("savageling"));
-        event.getRegistry().register(SKELETONVILLAGER.setRegistryName("skeleton_villager"));
-        event.getRegistry().register(SCAVENGER.setRegistryName("scavenger"));
-        event.getRegistry().register(FRIENDLYRAVAGER.setRegistryName("friendly_ravager"));
-        event.getRegistry().register(BEAST_BREW.setRegistryName("beast_brew"));
-        event.getRegistry().register(HYENA.setRegistryName("hyena"));
+        if(SavageConfig.DEFENDERS.get()) {
+            event.getRegistry().register(DEFENDER.setRegistryName("defender"));
+        }
+        if(SavageConfig.CREEPIES.get()) {
+            event.getRegistry().register(CREEPIES.setRegistryName("creepie"));
+        }
+        if(SavageConfig.GRIEFERS.get()) {
+            event.getRegistry().register(GRIEFER_ILLAGER.setRegistryName("griefer_illager"));
+        }
+        if(SavageConfig.CREEPER_SPORES.get()){
+            event.getRegistry().register(CREEPER_SPORE.setRegistryName("creeper_spores"));
+        }
+        if(SavageConfig.POULTRY_FARMERS.get()) {
+            event.getRegistry().register(POULTRY_FARMER.setRegistryName("poultry_farmer"));
+        }
+        if(SavageConfig.SAVAGELINGS.get()) {
+            event.getRegistry().register(SAVAGELING.setRegistryName("savageling"));
+        }
+        if(SavageConfig.SKELETON_VILLAGERS.get()) {
+            event.getRegistry().register(SKELETONVILLAGER.setRegistryName("skeleton_villager"));
+        }
+        if(SavageConfig.SCAVENGERS.get()) {
+            event.getRegistry().register(SCAVENGER.setRegistryName("scavenger"));
+        }
+        if(SavageConfig.FRIENDLY_RAVAGERS.get()) {
+            event.getRegistry().register(FRIENDLY_RAVAGER.setRegistryName("friendly_ravager"));
+        }
+        if(SavageConfig.BREW_OF_THE_BEAST.get()) {
+            event.getRegistry().register(BEAST_BREW.setRegistryName("beast_brew"));
+        }
+        if(SavageConfig.HYENAS.get()) {
+            event.getRegistry().register(HYENA.setRegistryName("hyena"));
+        }
     }
 
     public static void addEntitySpawn() {

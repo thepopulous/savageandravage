@@ -22,8 +22,10 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.entity.SavagelingEntity;
 import populousteam.savageandravage.entity.SkeletonVillagerEntity;
 import populousteam.savageandravage.entity.ai.FollowHeldHatPlayer;
@@ -100,30 +102,36 @@ public class EntityEventHandler {
             if (world.rand.nextFloat() < 0.01F && pillager instanceof PillagerEntity) {
                 DyeColor dyecolor = DyeColor.values()[pillager.world.rand.nextInt(DyeColor.values().length)];
                 int i = pillager.world.rand.nextInt(3);
+                if(SavageConfig.PILLAGERS_USE_FIREWORKS.get()) {
+                    ((PillagerEntity) pillager).setHeldItem(Hand.OFF_HAND, MiscUtil.makeFirework(dyecolor, i));
+                }
+            }
+            else {
 
-                ((PillagerEntity) pillager).setHeldItem(Hand.OFF_HAND, MiscUtil.makeFirework(dyecolor, i));
-            } else {
+                if (pillager.getRaid() == null && pillager.isLeader() /**&& SpawnReason check thingy, fixes patrol from spawn eggs*/ && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+                    //TODO: Make this not generate a new patrol once implemented SpawnReason
+                    if(SavageConfig.SCAVENGERS_ALWAYS_LEADER.get()) {
+                        ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
 
-                if (pillager.getRaid() == null && pillager.isLeader() && event.getEntity().getType() != SavageEntityRegistry.SCAVENGER) {
+                        scavenger.setLeader(true);
+                        scavenger.resetPatrolTarget();
 
-                    ScavengersEntity scavenger = SavageEntityRegistry.SCAVENGER.create(world);
+                        scavenger.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                        scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                        world.addEntity(scavenger);
+                    }
 
-                    scavenger.setLeader(true);
-                    scavenger.resetPatrolTarget();
-
-                    scavenger.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
-                    scavenger.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
-                    world.addEntity(scavenger);
-
-
-                    for (int i = 0; i <= 1 + world.rand.nextInt(1); i++) {
-                        DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
-
-                        defenderEntity.setLeader(false);
-                        defenderEntity.resetPatrolTarget();
-                        defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
-                        defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
-                        world.addEntity(defenderEntity);
+                    if(SavageConfig.DEFENDERS_IN_PATROLS.get()) {
+                        for (int i = 0; i <= 1 + world.rand.nextInt(1); i++) {
+                            DefenderEntity defenderEntity = SavageEntityRegistry.DEFENDER.create(world);
+                            if (SavageConfig.SCAVENGERS_ALWAYS_LEADER.get()) {
+                                defenderEntity.setLeader(false);
+                            }
+                            defenderEntity.resetPatrolTarget();
+                            defenderEntity.setPosition((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+                            defenderEntity.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.PATROL, (ILivingEntityData) null, (CompoundNBT) null);
+                            world.addEntity(defenderEntity);
+                        }
                     }
 
                     for (int i = 0; i <= 3 + world.rand.nextInt(4); i++) {
@@ -140,7 +148,7 @@ public class EntityEventHandler {
             }
         }
 
-        if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D) {
+        if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D && SavageConfig.SKELETON_VILLAGERS_NATURAL.get()) {
             SkeletonEntity skeleton = (SkeletonEntity) event.getEntity();
 
             BlockPos pos = skeleton.getPosition();
@@ -215,8 +223,7 @@ public class EntityEventHandler {
     public void onEntityDrop(LivingDropsEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
         if (livingEntity instanceof CreeperEntity) {
-
-            if (event.getSource().isExplosion()) {
+            if (event.getSource().isExplosion() || SavageConfig.CREEPERS_ALWAYS_DROP_SPORES.get()) {
                 livingEntity.entityDropItem(new ItemStack(SavageItems.CREEPER_SPORES, 1 + livingEntity.world.rand.nextInt(11)));
             }
         }

@@ -26,7 +26,5 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(FriendlyRavagerEntity.class, FriendlyRavagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(BeastBrewEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(HyenaEntity.class, HyenaRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(RevampVindicatorEntity.class, RevampVindicatorRender::new);
-
     }
 }

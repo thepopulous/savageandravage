@@ -4,12 +4,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.core.util.Loader;
 import populousteam.savageandravage.client.IllagerEntityRender;
 import populousteam.savageandravage.event.EntityEventHandler;
 import populousteam.savageandravage.init.SavageEntityRegistry;
@@ -31,11 +35,11 @@ public class SavageAndRavageCore {
     public SavageAndRavageCore() {
         instance = this;
 
-        /*ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SavageConfig.COMMON_CONFIG);
         //ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
 
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("savageandravage-common.toml"));
-        //Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("savageandravage-client.toml"));*/
+        SavageConfig.loadConfig(SavageConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("savageandravage-common.toml"));
+        //Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("savageandravage-client.toml"));
         /**Config loading code currently disabled due to unfinishedness*/
 
         SavagePacketHandler.register();

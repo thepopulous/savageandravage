@@ -120,7 +120,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
     }
 
     private void spawnRavager(BlockPos pos, IVillagerType type) {
-        FriendlyRavagerEntity ravagerEntity = SavageEntityRegistry.FRIENDLYRAVAGER.create(this.world);
+        FriendlyRavagerEntity ravagerEntity = SavageEntityRegistry.FRIENDLY_RAVAGER.create(this.world);
         ravagerEntity.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
         if (type == IVillagerType.SNOW) {
             ravagerEntity.setRavagerType(FriendlyRavagerEntity.RavagerType.SNOW);

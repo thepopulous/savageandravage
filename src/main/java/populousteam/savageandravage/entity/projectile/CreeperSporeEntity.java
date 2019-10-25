@@ -1,5 +1,7 @@
 package populousteam.savageandravage.entity.projectile;
 
+import net.minecraft.entity.monster.CreeperEntity;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.entity.CreepieEntity;
 import populousteam.savageandravage.init.SavageEntityRegistry;
 import populousteam.savageandravage.init.SavageItems;
@@ -71,15 +73,25 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
             }
 
             entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) 2);
-
-            spawnCreepies();
+            if(SavageConfig.CREEPIES.get()) {
+                spawnCreepies();
+            }
+            else{
+                spawnCreepers();
+            }
         } else if (result.getType() == RayTraceResult.Type.BLOCK) {
-            spawnCreepies();
+            if(SavageConfig.CREEPIES.get()) {
+                spawnCreepies();
+            }
+            else{
+                spawnCreepers();
+            }
         }
         this.world.setEntityState(this, (byte) 3);
         this.remove();
     }
 
+    //TODO: Fix these rendering a pig
     private void spawnCreepies() {
         if (!this.world.isRemote) {
 
@@ -100,6 +112,37 @@ public class CreeperSporeEntity extends ProjectileItemEntity {
             areaeffectcloudentity.setDuration(100);
             areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
 
+            world.addEntity(areaeffectcloudentity);
+        }
+
+        if (this.world.isRemote) {
+            IParticleData iparticledata = ParticleTypes.SNEEZE;
+            for (int i = 0; i < 6; ++i) {
+                float f1 = this.world.rand.nextFloat() * ((float) Math.PI * 2F);
+                float f2 = MathHelper.sqrt(this.world.rand.nextFloat()) * 0.2F;
+                float f3 = MathHelper.cos(f1) * f2;
+                float f4 = MathHelper.sin(f1) * f2;
+
+                this.world.addOptionalParticle(iparticledata, this.getPosition().getX() + (double) f3, this.getPosition().getY() + 1.0F, this.getPosition().getZ() + (double) f4, 0.0D, 0.0D, 0.0D);
+
+            }
+        }
+    }
+
+    private void spawnCreepers() {
+        if (!this.world.isRemote) {
+            CreeperEntity creeperEntity = EntityType.CREEPER.create(this.world);
+            creeperEntity.setLocationAndAngles(this.getPosition().getX() + 0.5F, this.getPosition().getY(), this.getPosition().getZ() + 0.5F, 0.0F, 0.0F);
+            this.world.addEntity(creeperEntity);
+
+            AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
+
+            areaeffectcloudentity.setOwner(this.getThrower());
+            areaeffectcloudentity.setParticleData(ParticleTypes.SNEEZE);
+            areaeffectcloudentity.setRadius(0.75F);
+            areaeffectcloudentity.setRadiusOnUse(-0.05F);
+            areaeffectcloudentity.setDuration(100);
+            areaeffectcloudentity.setRadiusPerTick(-areaeffectcloudentity.getRadius() / (float) areaeffectcloudentity.getDuration());
             world.addEntity(areaeffectcloudentity);
         }
 

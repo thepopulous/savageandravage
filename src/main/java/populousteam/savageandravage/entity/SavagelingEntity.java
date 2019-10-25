@@ -1,5 +1,6 @@
 package populousteam.savageandravage.entity;
 
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.api.IRaidSuppoter;
 import populousteam.savageandravage.entity.ai.FollowHeldHatPlayer;
 import populousteam.savageandravage.entity.ai.FollowPlayerAndIllagerGoal;
@@ -60,7 +61,9 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
         this.goalSelector.addGoal(9, new LookAtGoal(this, AbstractIllagerEntity.class, 6.0F));
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setCallsForHelp());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChickenEntity.class, true));
+        if(SavageConfig.SAVAGELINGS_ATTACK_CHICKEN.get()) {
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChickenEntity.class, true));
+        }
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {

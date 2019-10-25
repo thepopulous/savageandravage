@@ -3,6 +3,7 @@ package populousteam.savageandravage.init;
 import com.google.common.base.Preconditions;
 import net.minecraftforge.registries.ObjectHolder;
 import populousteam.savageandravage.SavageAndRavageCore;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
 import populousteam.savageandravage.item.*;
 import net.minecraft.block.DispenserBlock;
@@ -40,7 +41,7 @@ public class SavageItems {
     public static final Item SAVAGELING_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.SAVAGELING, 9804699, 9804690, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SKELETON_VILLAGER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.SKELETONVILLAGER, 12698049, 4802889, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item SCAVENGER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.SCAVENGER, 9804699, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
-    public static final Item FRIENDLYRAVAGER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.FRIENDLYRAVAGER, 12698049, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
+    public static final Item FRIENDLY_RAVAGER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.FRIENDLY_RAVAGER, 12698049, 0xc2c0b7, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item HYENA_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.HYENA, 0x4f453d, 0x64453d, (new Item.Properties()).group(ItemGroup.MISC));
 
     public static List<Item> getItems() {
@@ -72,19 +73,45 @@ public class SavageItems {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> registry) {
-        register(registry, DEFENDER_SPAWN_EGG, "defender_spawn_egg");
-        register(registry, GUARD_HELM, "guard_helm");
-        register(registry, CREEPER_SPORES, "creeper_spores");
-        register(registry, POULTRY_FARMER_HAT, "poultry_farmer_hat");
-        register(registry, SINISTERHORN, "sinister_horn");
-        register(registry, BEASTBREW, "brew_of_the_beast");
-        register(registry, GRIEFER_SPAWN_EGG, "griefer_spawn_egg");
-        register(registry, POULTRY_FARMER_SPAWN_EGG, "poultry_farmer_spawn_egg");
-        register(registry, SCAVENGER_SPAWN_EGG, "scavenger_spawn_egg");
-        register(registry, SAVAGELING_SPAWN_EGG, "savageling_spawn_egg");
-        register(registry, SKELETON_VILLAGER_SPAWN_EGG, "skeleton_villager_spawn_egg");
-        register(registry, FRIENDLYRAVAGER_SPAWN_EGG, "friendly_ravager_spawn_egg");
-        register(registry, HYENA_SPAWN_EGG, "hyena_spawn_egg");
+        if(SavageConfig.DEFENDERS.get()) {
+            register(registry, DEFENDER_SPAWN_EGG, "defender_spawn_egg");
+        }
+        if(SavageConfig.GUARD_HAT.get()){
+            register(registry, GUARD_HELM, "guard_helm");
+        }
+        if(SavageConfig.CREEPER_SPORES.get()) {
+            register(registry, CREEPER_SPORES, "creeper_spores");
+        }
+        if(SavageConfig.SINISTER_HORN.get()) {
+            register(registry, SINISTERHORN, "sinister_horn");
+        }
+        if(SavageConfig.BREW_OF_THE_BEAST.get()) {
+            register(registry, BEASTBREW, "brew_of_the_beast");
+        }
+        if(SavageConfig.GRIEFERS.get()) {
+            register(registry, GRIEFER_SPAWN_EGG, "griefer_spawn_egg");
+        }
+        if(SavageConfig.POULTRY_FARMERS.get()) {
+            register(registry, POULTRY_FARMER_SPAWN_EGG, "poultry_farmer_spawn_egg");
+        }
+        if(SavageConfig.POULTRY_FARMER_HAT.get()){
+            register(registry, POULTRY_FARMER_HAT, "poultry_farmer_hat");
+        }
+        if(SavageConfig.SCAVENGERS.get()) {
+            register(registry, SCAVENGER_SPAWN_EGG, "scavenger_spawn_egg");
+        }
+        if(SavageConfig.SAVAGELINGS.get()) {
+            register(registry, SAVAGELING_SPAWN_EGG, "savageling_spawn_egg");
+        }
+        if(SavageConfig.SKELETON_VILLAGERS.get()) {
+            register(registry, SKELETON_VILLAGER_SPAWN_EGG, "skeleton_villager_spawn_egg");
+        }
+        if(SavageConfig.FRIENDLY_RAVAGERS.get()) {
+            register(registry, FRIENDLY_RAVAGER_SPAWN_EGG, "friendly_ravager_spawn_egg");
+        }
+        if(SavageConfig.HYENAS.get()) {
+            register(registry, HYENA_SPAWN_EGG, "hyena_spawn_egg");
+        }
 
         DispenserBlock.registerDispenseBehavior(CREEPER_SPORES, new ProjectileDispenseBehavior() {
             protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {

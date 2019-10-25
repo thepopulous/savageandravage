@@ -7,6 +7,7 @@ import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,6 +33,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.api.IRaidSuppoter;
 import populousteam.savageandravage.entity.ai.*;
 import populousteam.savageandravage.init.SavageEntityRegistry;
@@ -111,12 +113,14 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.targetSelector.addGoal(1, new OwnerHyenaHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(4, new NonTamedTargetGoal(this, AnimalEntity.class, false, field_213441_bD) {
-            @Override
-            public boolean shouldExecute() {
-                return !isRaiding() && super.shouldExecute();
-            }
-        });
+        if(SavageConfig.HYENAS_ATTACK_COWS.get()) {
+            this.targetSelector.addGoal(4, new NonTamedTargetGoal(this, CowEntity.class, false, field_213441_bD) {
+                @Override
+                public boolean shouldExecute() {
+                    return !isRaiding() && super.shouldExecute();
+                }
+            });
+        }
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
     }
 

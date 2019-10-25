@@ -1,5 +1,6 @@
 package populousteam.savageandravage.item;
 
+import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.client.particles.SavageParticles;
 import populousteam.savageandravage.init.SavageEffectRegistry;
 import net.minecraft.entity.LivingEntity;
@@ -57,7 +58,7 @@ public class SinisterHornItem extends Item {
             worldIn.playSound((PlayerEntity) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
 
             for (PlayerEntity aroundPlayer : playerIn.world.getEntitiesWithinAABB(PlayerEntity.class, playerIn.getBoundingBox().grow(10.0D))) {
-                aroundPlayer.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, 4800, 0));
+                aroundPlayer.addPotionEffect(new EffectInstance(SavageEffectRegistry.TENACITY, (SavageConfig.EFFECT_DURATION.get()*20), 0));
             }
 
             playerIn.addStat(Stats.ITEM_USED.get(this));
