@@ -26,6 +26,7 @@ public class SavageConfig {
     public static final String SUBCATEGORY_ADDITIONS_SAVAGELING = "savageling";
     public static final String SUBCATEGORY_ADDITIONS_SKELETON_VILLAGER = "skeleton_villager";
     public static final String SUBCATEGORY_ADDITIONS_HYENA = "hyena";
+    public static final String SUBCATEGORY_ADDITIONS_BLOCKS = "blocks";
     public static final String SUBCATEGORY_EXPERIMENTAL_CREEPER_CHANGES = "creeper_changes";
     public static final String SUBCATEGORY_EXPERIMENTAL_ILLAGERS_UNDEAD = "illagers_fight_undead_mobs";
 
@@ -63,6 +64,8 @@ public class SavageConfig {
     public static ForgeConfigSpec.BooleanValue HYENAS;
     public static ForgeConfigSpec.BooleanValue HYENAS_ATTACK_COWS;
     public static ForgeConfigSpec.BooleanValue GLOOMY_TILES;
+    public static ForgeConfigSpec.BooleanValue CREEPER_SPORE_SACKS;
+    public static ForgeConfigSpec.BooleanValue HATEFUL_IDOLS;
     public static ForgeConfigSpec.BooleanValue CREEPER_REWORK;
     public static ForgeConfigSpec.BooleanValue CREEPERS_ALWAYS_DROP_SPORES;
     public static ForgeConfigSpec.BooleanValue UNDEAD_ATTACK_ILLAGERS;
@@ -137,9 +140,13 @@ public class SavageConfig {
                 HYENAS = COMMON_BUILDER.define("Enable Hyenas", true);
                 HYENAS_ATTACK_COWS = COMMON_BUILDER.define("Hyenas attack cows", true);
             COMMON_BUILDER.pop();
-            GLOOMY_TILES = COMMON_BUILDER
-                    .comment("Disabling these will replace them with stone bricks in structures")
-                    .define("Enable Gloomy Tiles", true);
+            COMMON_BUILDER.push(SUBCATEGORY_ADDITIONS_BLOCKS);
+                GLOOMY_TILES = COMMON_BUILDER
+                        .comment("Disabling gloomy tiles will replace them with stone bricks in structures.")
+                        .define("Enable Gloomy Tiles", true);
+                CREEPER_SPORE_SACKS = COMMON_BUILDER.define("Enable Creeper Spore Sacks", true);
+                HATEFUL_IDOLS = COMMON_BUILDER.define("Enable Hateful Idols", true);
+            COMMON_BUILDER.pop();
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.push(CATEGORY_EXPERIMENTAL)
