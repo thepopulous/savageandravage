@@ -18,7 +18,7 @@
   "item.savageandravage.skeleton_villager_spawn_egg": "Œuf d'apparition de Villageois squelette",
   "item.savageandravage.friendly_ravager_spawn_egg": "Œuf d'apparition de Ravageur amical",
   "item.savageandravage.hyena_spawn_egg": "Œuf d'apparition de Hyène",
-  "item.savageandravage.guard_helm": "Casque du garde",
+  "item.savageandravage.guard_helm": "Casque de garde",
   "item.savageandravage.poultry_farmer_hat": "Chapeau d'aviculteur",
   "item.savageandravage.sinister_horn": "Corne sinistre",
   "item.savageandravage.brew_of_the_beast": "Mixture de la bête",
@@ -35,5 +35,7 @@
   "block.savageandravage.gloomy_tile_slab": "Dalle de carrelage lugubre",
   "block.savageandravage.gloomy_tile_stairs": "Escaliers de carrelage lugubre",
   "block.savageandravage.gloomy_tile_wall": "Muret de carrelage lugubre",
-  "block.savageandravage.chiseled_gloomy_tiles": "Carrelage lugubre sculpté"
+  "block.savageandravage.chiseled_gloomy_tiles": "Carrelage lugubre sculpté",
+  "block.savageandravage.creeper_spore_sack": "Sac de spores de creeper",
+  "block.savageandravage.hateful_idol": "Idole haineuse"
 }

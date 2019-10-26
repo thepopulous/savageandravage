@@ -1,7 +1,5 @@
 package populousteam.savageandravage.init;
 
-import com.google.common.base.Preconditions;
-import net.minecraftforge.registries.ObjectHolder;
 import populousteam.savageandravage.SavageAndRavageCore;
 import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
@@ -17,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -34,7 +31,7 @@ public class SavageItems {
     public static final Item CREEPER_SPORES = new CreeperSporeItem((new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRY_FARMER_HAT = new PoultryFarmerHatItem(SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.TOOLS));
     public static final Item SINISTERHORN = new SinisterHornItem((new Item.Properties()).group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(1));
-    public static final Item BEASTBREW = new BeastBrewItem((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16));
+    public static final Item BESTIAL_BREW = new BestialBrewItem((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16));
 
     public static final Item GRIEFER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.GRIEFER_ILLAGER, 9804699, 0x403e43, (new Item.Properties()).group(ItemGroup.MISC));
     public static final Item POULTRY_FARMER_SPAWN_EGG = new SpawnEggItem(SavageEntityRegistry.POULTRY_FARMER, 9804699, 0x70794e, (new Item.Properties()).group(ItemGroup.MISC));
@@ -85,8 +82,8 @@ public class SavageItems {
         if(SavageConfig.SINISTER_HORN.get()) {
             register(registry, SINISTERHORN, "sinister_horn");
         }
-        if(SavageConfig.BREW_OF_THE_BEAST.get()) {
-            register(registry, BEASTBREW, "brew_of_the_beast");
+        if(SavageConfig.BESTIAL_BREW.get()) {
+            register(registry, BESTIAL_BREW, "bestial_brew");
         }
         if(SavageConfig.GRIEFERS.get()) {
             register(registry, GRIEFER_SPAWN_EGG, "griefer_spawn_egg");

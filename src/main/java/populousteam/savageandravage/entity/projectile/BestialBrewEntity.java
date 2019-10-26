@@ -32,21 +32,21 @@ import populousteam.savageandravage.init.SavageItems;
         value = Dist.CLIENT,
         _interface = IRendersAsItem.class
 )
-public class BeastBrewEntity extends ProjectileItemEntity {
-    public BeastBrewEntity(EntityType<? extends BeastBrewEntity> p_i50159_1_, World p_i50159_2_) {
+public class BestialBrewEntity extends ProjectileItemEntity {
+    public BestialBrewEntity(EntityType<? extends BestialBrewEntity> p_i50159_1_, World p_i50159_2_) {
         super(p_i50159_1_, p_i50159_2_);
     }
 
-    public BeastBrewEntity(World worldIn, LivingEntity throwerIn) {
-        super(SavageEntityRegistry.BEAST_BREW, throwerIn, worldIn);
+    public BestialBrewEntity(World worldIn, LivingEntity throwerIn) {
+        super(SavageEntityRegistry.BESTIAL_BREW, throwerIn, worldIn);
     }
 
-    public BeastBrewEntity(World worldIn, double x, double y, double z) {
-        super(SavageEntityRegistry.BEAST_BREW, x, y, z, worldIn);
+    public BestialBrewEntity(World worldIn, double x, double y, double z) {
+        super(SavageEntityRegistry.BESTIAL_BREW, x, y, z, worldIn);
     }
 
-    public BeastBrewEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
-        this(SavageEntityRegistry.BEAST_BREW, world);
+    public BestialBrewEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+        this(SavageEntityRegistry.BESTIAL_BREW, world);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -66,7 +66,7 @@ public class BeastBrewEntity extends ProjectileItemEntity {
 
     @Override
     protected Item func_213885_i() {
-        return SavageItems.BEASTBREW;
+        return SavageItems.BESTIAL_BREW;
     }
 
     /**

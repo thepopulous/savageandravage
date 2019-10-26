@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import populousteam.savageandravage.client.render.*;
 import populousteam.savageandravage.entity.*;
 import populousteam.savageandravage.entity.illager.*;
-import populousteam.savageandravage.entity.projectile.BeastBrewEntity;
+import populousteam.savageandravage.entity.projectile.BestialBrewEntity;
 import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
 
 @OnlyIn(Dist.CLIENT)
@@ -24,7 +24,7 @@ public class IllagerEntityRender {
         RenderingRegistry.registerEntityRenderingHandler(SkeletonVillagerEntity.class, SkeletonVillagerRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ScavengersEntity.class, ScavengersRender::new);
         RenderingRegistry.registerEntityRenderingHandler(FriendlyRavagerEntity.class, FriendlyRavagerRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(BeastBrewEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(BestialBrewEntity.class, manager -> new SpriteRenderer(MC.getRenderManager(), MC.getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(HyenaEntity.class, HyenaRender::new);
     }
 }

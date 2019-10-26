@@ -55,7 +55,7 @@ public class SavageConfig {
     public static ForgeConfigSpec.BooleanValue TENACITY;
     public static ForgeConfigSpec.IntValue EFFECT_DURATION;
     public static ForgeConfigSpec.BooleanValue FRIENDLY_RAVAGERS;
-    public static ForgeConfigSpec.BooleanValue BREW_OF_THE_BEAST;
+    public static ForgeConfigSpec.BooleanValue BESTIAL_BREW;
     public static ForgeConfigSpec.BooleanValue SAVAGELINGS;
     public static ForgeConfigSpec.BooleanValue SAVAGELINGS_ATTACK_CHICKEN;
     public static ForgeConfigSpec.BooleanValue SKELETON_VILLAGERS;
@@ -123,9 +123,9 @@ public class SavageConfig {
             COMMON_BUILDER.pop();
             COMMON_BUILDER.push(SUBCATEGORY_ADDITIONS_FRIENDLY_RAVAGER);
                 FRIENDLY_RAVAGERS = COMMON_BUILDER.define("Enable Friendly Ravagers", true);
-                BREW_OF_THE_BEAST = COMMON_BUILDER
-                        .comment("Disabling Brew Of The Beast will mean friendly ravagers can only be spawned with a command.")
-                        .define("Brew Of The Beast", true);
+                BESTIAL_BREW = COMMON_BUILDER
+                        .comment("Disabling Bestial Brew will mean friendly ravagers can only be spawned with a command.")
+                        .define("Bestial Brew", true);
             COMMON_BUILDER.pop();
             COMMON_BUILDER.push(SUBCATEGORY_ADDITIONS_SAVAGELING);
                 SAVAGELINGS = COMMON_BUILDER.define("Enable Savagelings", true);
