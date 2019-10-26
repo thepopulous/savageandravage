@@ -26,7 +26,7 @@ public class SavageBlocks {
     //TODO: Work out how to properly implement this class as I don't think you can do it from mod jars
     public static final Block CHISELED_GLOOMY_TILES = new Block(Block.Properties.from(Blocks.CHISELED_STONE_BRICKS));
     public static final Block CREEPER_SPORE_SACK = new Block(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.5F).sound(SoundType.CLOTH));
-    //public static final Block HATEFUL_IDOL = new HatefulIdolBlock(Block.Properties.from(Blocks.STONE_BRICKS));
+    public static final Block HATEFUL_IDOL = new HatefulIdolBlock(Block.Properties.from(Blocks.STONE_BRICKS));
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> registry){
@@ -41,7 +41,7 @@ public class SavageBlocks {
             registry.getRegistry().register(CREEPER_SPORE_SACK.setRegistryName("creeper_spore_sack"));
         }
         if(SavageConfig.HATEFUL_IDOLS.get()){
-            //registry.getRegistry().register(HATEFUL_IDOL.setRegistryName("hateful_idol"));
+            registry.getRegistry().register(HATEFUL_IDOL.setRegistryName("hateful_idol"));
         }
 
     }
@@ -59,7 +59,7 @@ public class SavageBlocks {
             SavageItems.register(registry, new BlockItem(CREEPER_SPORE_SACK, (new Item.Properties().group(ItemGroup.DECORATIONS))));
         }
         if(SavageConfig.HATEFUL_IDOLS.get()){
-            //SavageItems.register(registry, new BlockItem(HATEFUL_IDOL, (new Item.Properties().group(ItemGroup.DECORATIONS))));
+            SavageItems.register(registry, new BlockItem(HATEFUL_IDOL, (new Item.Properties().group(ItemGroup.DECORATIONS))));
         }
     }
 }

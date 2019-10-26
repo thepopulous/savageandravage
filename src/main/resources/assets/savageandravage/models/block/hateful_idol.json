@@ -1,9 +1,17 @@
 {
 	"credit": "Made by Farcr",
+	"parent": "block/block",
 	"textures": {
-		"0": "blocks/hateful_idol",
-		"particle": "blocks/hateful_idol"
+		"0": "savageandravage:block/hateful_idol",
+		"particle": "savageandravage:block/hateful_idol"
 	},
+	"display": {
+        "fixed": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        }
+    },
 	"elements": [
 		{
 			"name": "skull",
