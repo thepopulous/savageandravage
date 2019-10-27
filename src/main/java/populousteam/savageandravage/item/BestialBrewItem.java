@@ -27,7 +27,6 @@ public class BestialBrewItem extends Item {
             worldIn.addEntity(brewentity);
         }
 
-
         playerIn.addStat(Stats.ITEM_USED.get(this));
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
     }
