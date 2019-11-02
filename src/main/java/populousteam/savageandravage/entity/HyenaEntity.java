@@ -54,7 +54,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
 
     public static final Predicate<LivingEntity> field_213441_bD = (p_213440_0_) -> {
         EntityType<?> entitytype = p_213440_0_.getType();
-        return !(p_213440_0_ instanceof AbstractHorseEntity) && entitytype != SavageEntityRegistry.HYENA && entitytype != EntityType.PANDA && (!(p_213440_0_ instanceof TameableEntity) || entitytype == EntityType.WOLF || entitytype == EntityType.CAT || entitytype == EntityType.OCELOT);
+        return entitytype == EntityType.COW;
     };
 
     private float headRotationCourse;
