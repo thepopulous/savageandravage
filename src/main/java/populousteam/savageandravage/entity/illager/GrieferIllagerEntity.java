@@ -1,11 +1,6 @@
 package populousteam.savageandravage.entity.illager;
 
 import com.google.common.collect.Lists;
-import populousteam.savageandravage.entity.CreepieEntity;
-import populousteam.savageandravage.entity.ai.RangedStrafeAttackGoal;
-import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
-import populousteam.savageandravage.init.SavageItems;
-import populousteam.savageandravage.init.SavageLootTables;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.*;
@@ -37,6 +32,10 @@ import net.minecraft.world.raid.Raid;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.entity.CreepieEntity;
+import populousteam.savageandravage.entity.ai.RangedStrafeAttackGoal;
+import populousteam.savageandravage.entity.projectile.CreeperSporeEntity;
+import populousteam.savageandravage.init.SavageItems;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -213,11 +212,6 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         return SoundEvents.ENTITY_VINDICATOR_HURT;
     }
 
-    @Nullable
-    @Override
-    protected ResourceLocation getLootTable() {
-        return SavageLootTables.GRIFER_ILLAGER;
-    }
 
     public class CelebrateRaidLossFireWorkGoal extends Goal {
         private final GrieferIllagerEntity raider;

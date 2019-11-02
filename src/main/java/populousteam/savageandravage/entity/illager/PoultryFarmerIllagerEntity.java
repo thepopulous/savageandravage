@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import populousteam.savageandravage.entity.ai.*;
 import populousteam.savageandravage.entity.path.GroundFencePathNavigator;
-import populousteam.savageandravage.init.SavageLootTables;
 
 import javax.annotation.Nullable;
 
@@ -105,11 +104,6 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
         return SoundEvents.ENTITY_VINDICATOR_HURT;
     }
 
-
-    @Override
-    protected ResourceLocation getLootTable() {
-        return SavageLootTables.POULTRY_FARMER;
-    }
 
     @Override
     protected void registerAttributes() {

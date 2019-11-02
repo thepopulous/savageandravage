@@ -1,10 +1,5 @@
 package populousteam.savageandravage.entity.illager;
 
-import populousteam.savageandravage.entity.ai.UseItemOnLeftHandGoal;
-import populousteam.savageandravage.init.SavageItems;
-import populousteam.savageandravage.init.SavageLootTables;
-import populousteam.savageandravage.message.MessageScavengerProp;
-import populousteam.savageandravage.message.SavagePacketHandler;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
@@ -21,7 +16,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +23,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
+import populousteam.savageandravage.entity.ai.UseItemOnLeftHandGoal;
+import populousteam.savageandravage.init.SavageItems;
+import populousteam.savageandravage.message.MessageScavengerProp;
+import populousteam.savageandravage.message.SavagePacketHandler;
 
 import java.util.List;
 
@@ -120,11 +118,6 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     @Override
     public SoundEvent getRaidLossSound() {
         return SoundEvents.ENTITY_VINDICATOR_CELEBRATE;
-    }
-
-    @Override
-    protected ResourceLocation getLootTable() {
-        return SavageLootTables.SCAVENGER;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {

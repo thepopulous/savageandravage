@@ -1,9 +1,6 @@
 package populousteam.savageandravage.entity.illager;
 
 import com.google.common.collect.Maps;
-import populousteam.savageandravage.init.SavageLootTables;
-import populousteam.savageandravage.init.SavageSoundsRegister;
-import populousteam.savageandravage.utils.MiscUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.enchantment.Enchantment;
@@ -33,7 +30,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.*;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -44,6 +44,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.init.SavageSoundsRegister;
+import populousteam.savageandravage.utils.MiscUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -366,12 +368,6 @@ public class DefenderEntity extends AbstractIllagerEntity {
         }
 
         return false;
-    }
-
-    @Nullable
-    @Override
-    protected ResourceLocation getLootTable() {
-        return SavageLootTables.GUARD_ILLAGER;
     }
 
     @OnlyIn(Dist.CLIENT)
