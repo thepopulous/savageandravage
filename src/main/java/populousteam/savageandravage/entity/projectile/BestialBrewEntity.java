@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.merchant.villager.VillagerData;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
@@ -90,6 +91,9 @@ public class BestialBrewEntity extends ProjectileItemEntity {
 
                         this.world.addEntity(savagelingEntity);
 
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.HOME);
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.JOB_SITE);
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.MEETING_POINT);
                         entity.remove();
                     }
                 } else {
@@ -98,6 +102,10 @@ public class BestialBrewEntity extends ProjectileItemEntity {
                         IVillagerType ivillagertype = villagerdata.getType();
 
                         spawnRavager(entity.getPosition(), villagerdata.getType());
+
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.HOME);
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.JOB_SITE);
+                        ((VillagerEntity) entity).func_213742_a(MemoryModuleType.MEETING_POINT);
 
                         entity.remove();
                     }
