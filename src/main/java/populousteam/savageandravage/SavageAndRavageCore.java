@@ -13,7 +13,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import org.apache.logging.log4j.core.util.Loader;
 import populousteam.savageandravage.client.IllagerEntityRender;
 import populousteam.savageandravage.event.EntityEventHandler;
 import populousteam.savageandravage.init.SavageEntityRegistry;
@@ -78,13 +77,11 @@ public class SavageAndRavageCore {
             }
             this.revampRaid.tick();
         } else {
-            if (event.phase == TickEvent.Phase.START) {
                 this.revampRaid = event.world.getServer().getWorld(event.world.dimension.getType()).getSavedData().getOrCreate(() -> {
                     return new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
                 }, RevampRaidManager.func_215172_a(event.world.dimension));
                 new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
-                this.revampRaid.markDirty();
-            }
+
         }
     }
 
