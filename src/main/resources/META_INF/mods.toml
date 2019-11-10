@@ -1,0 +1,19 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory. 26 for 1.14.2, 27 for 1.14.3
+issueTrackerURL="https://github.com/the-populous/SavageAndRavage/issues"
+
+[[mods]] #mandatory
+    modId="savageandravage" #mandatory
+    version="0.0.1" #TODO: make this correspond to gradle's version number?
+    displayName="Savage and Ravage" #mandatory
+    displayURL="https://www.populousteam.com/" #A URL for the "homepage" for this mod, displayed in the mod UI
+    logoFile="logo.png" # A file name (in the root of the mod JAR) containing a logo for display
+    authors="The Populous Team"
+    description="A mod that adds new illager-based content."
+    # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+    [[dependencies.savageandravage]] #optional
+        modId="forge" # the modid of the dependency
+        mandatory=true # Does this dependency have to exist - if not, ordering below must be specified
+        versionRange="[28.1.10,)" # The version range of the dependency
+        ordering="NONE" # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+        side="BOTH" # Side this dependency is applied on - BOTH, CLIENT or SERVER
