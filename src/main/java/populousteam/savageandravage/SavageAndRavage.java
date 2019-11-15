@@ -2,7 +2,8 @@ package populousteam.savageandravage;
 
 import net.minecraftforge.fml.common.Mod;
 
-@Mod(value = SavageAndRavage.MOD_ID)
+@Mod(SavageAndRavage.MOD_ID)
+@Mod.EventBusSubscriber(modid=SavageAndRavage.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SavageAndRavage {
 
     public static final String MOD_ID = "savageandravage";
