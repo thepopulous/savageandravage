@@ -1,5 +1,6 @@
 package populousteam.savageandravage.init;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import populousteam.savageandravage.SavageAndRavage;
 import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
@@ -7,13 +8,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import populousteam.savageandravage.item.PoultryFarmerHatItem;
 
 @Mod.EventBusSubscriber(modid = SavageAndRavage.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SavageItems {
 
     public static final Item GUARD_HELM = new Item /*ItemGuardHelm*/(/*SavageArmorMaterial.GUARD_HELM, EquipmentSlotType.HEAD, */(new Item.Properties()).group(ItemGroup.COMBAT));
     public static final Item CREEPER_SPORES = new Item /*CreeperSporeItem*/((new Item.Properties()).group(ItemGroup.MISC));
-    public static final Item POULTRY_FARMER_HAT = new Item /*PoultryFarmerHatItem*/(/*SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, */(new Item.Properties()).group(ItemGroup.TOOLS));
+    public static final Item POULTRY_FARMER_HAT = new PoultryFarmerHatItem(SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.TOOLS));
     public static final Item SINISTER_HORN = new Item /*SinisterHornItem*/((new Item.Properties()).group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(1));
     public static final Item BESTIAL_BREW = new Item /*BestialBrewItem*/((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16));
 

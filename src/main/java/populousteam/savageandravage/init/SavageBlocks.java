@@ -27,8 +27,8 @@ public class SavageBlocks {
     //TODO: Add this back when implementing entities
     public static final Block CREEPER_SPORE_SACK = new Block(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.5F).sound(SoundType.CLOTH));
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> registry) {
-        registry.getRegistry().register(GLOOMY_TILES.setRegistryName("gloomy_tiles"));
+        public static void registerBlocks(RegistryEvent.Register<Block> registry) {
+            registry.getRegistry().register(GLOOMY_TILES.setRegistryName("gloomy_tiles"));
         registry.getRegistry().register(GLOOMY_TILE_SLAB.setRegistryName("gloomy_tile_slab"));
         registry.getRegistry().register(GLOOMY_TILE_STAIRS.setRegistryName("gloomy_tile_stairs"));
         registry.getRegistry().register(GLOOMY_TILE_WALL.setRegistryName("gloomy_tile_wall"));
