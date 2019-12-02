@@ -4,6 +4,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,6 +21,7 @@ public class SavageItems {
     public static final Item POULTRY_FARMER_HAT = new PoultryFarmerHatItem(SavageArmorMaterial.POULTRY_FARMER_HAT, EquipmentSlotType.HEAD, (new Item.Properties()).group(ItemGroup.TOOLS));
     public static final Item SINISTER_HORN = new Item /*SinisterHornItem*/((new Item.Properties()).group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(1));
     public static final Item BESTIAL_BREW = new Item /*BestialBrewItem*/((new Item.Properties()).group(ItemGroup.MISC).maxStackSize(16));
+    public static final Item DEFENDER_SPAWN_EGG = new SpawnEggItem(SavageEntitys.DEFENDER, 9804699, 0x879C9B, (new Item.Properties()).group(ItemGroup.MISC));
 
     public static void register(RegistryEvent.Register<Item> registry, Item item, String id) {
         if (item instanceof BlockItem){
@@ -50,6 +52,7 @@ public class SavageItems {
         register(registry, CREEPER_SPORES, "creeper_spores");
         register(registry, SINISTER_HORN, "sinister_horn");
         register(registry, BESTIAL_BREW, "bestial_brew");
+        register(registry, DEFENDER_SPAWN_EGG, "defender_spawn_egg");
     }
 
 }

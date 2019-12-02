@@ -1,51 +1,45 @@
 {
-  "mob.guardillager.ambient": {
+  "mob.defender.ambient": {
     "category": "hostile",
     "sounds": [
-      "savageandravage:mob/guardillager/guardillager_ambient",
-      "savageandravage:mob/guardillager/guardillager_ambient2"
+      "savageandravage:mob/defender/defender_ambient"
     ],
     "volume": 1.25,
-    "subtitle": "savageandravage:subtitles.guardillager.ambient"
+    "subtitle": "savageandravage:subtitles.defender.ambient"
   },
-  "mob.guardillager.hurt": {
+  "mob.defender.hurt": {
     "category": "hostile",
     "sounds": [
-      "savageandravage:mob/guardillager/guardillager_hurt",
-      "savageandravage:mob/guardillager/guardillager_hurt2",
-      "savageandravage:mob/guardillager/guardillager_hurt3"
+      "savageandravage:mob/defender/defender_hurt",
+      "savageandravage:mob/defender/defender_hurt2",
+      "savageandravage:mob/defender/defender_hurt3"
     ],
     "volume": 1.25,
-    "subtitle": "savageandravage:subtitles.guardillager.hurt"
+    "subtitle": "savageandravage:subtitles.defender.hurt"
   },
-  "mob.guardillager.die": {
+  "mob.defender.die": {
     "category": "hostile",
     "sounds": [
-      "savageandravage:mob/guardillager/guardillager_death",
-      "savageandravage:mob/guardillager/guardillager_death2"
+      "savageandravage:mob/defender/defender_death",
+      "savageandravage:mob/defender/defender_death2"
     ],
     "volume": 1.25,
-    "subtitle": "savageandravage:subtitles.guardillager.die"
+    "subtitle": "savageandravage:subtitles.defender.die"
   },
-  "mob.guardillager.angry": {
+  "mob.defender.angry": {
     "category": "hostile",
     "sounds": [
-      "savageandravage:mob/guardillager/guardillager_angry"
+      "savageandravage:mob/defender/defender_angry"
     ],
     "volume": 1.25,
-    "subtitle": "savageandravage:subtitles.guardillager.angry"
+    "subtitle": "savageandravage:subtitles.defender.angry"
   },
-  "mob.guardillager.step": {
+  "mob.defender.step": {
     "category": "hostile",
     "sounds": [
-      "savageandravage:mob/guardillager/guardillager_step",
-      "savageandravage:mob/guardillager/guardillager_step2",
-      "savageandravage:mob/guardillager/guardillager_step3",
-      "savageandravage:mob/guardillager/guardillager_step4",
-      "savageandravage:mob/guardillager/guardillager_step5",
-      "savageandravage:mob/guardillager/guardillager_step6"
+
     ],
-    "subtitle": "savageandravage:subtitles.guardillager.step"
+    "subtitle": "savageandravage:subtitles.defender.step"
   },
   "mob.hyena.ambient": {
     "category": "neutral",
