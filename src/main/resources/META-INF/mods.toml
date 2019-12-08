@@ -9,6 +9,7 @@ issueTrackerURL="https://github.com/the-populous/SavageAndRavage/issues"
     displayURL="https://www.populousteam.com/" #A URL for the "homepage" for this mod, displayed in the mod UI
     logoFile="logo.png" # A file name (in the root of the mod JAR) containing a logo for display
     authors="The Populous Team"
+    credits="SmellyModder"
     description="A mod that adds new illager-based content."
     # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
     [[dependencies.savageandravage]] #optional
@@ -20,6 +21,5 @@ issueTrackerURL="https://github.com/the-populous/SavageAndRavage/issues"
     [[dependencies.savageandravage]] #optional
         modId="quark" # the modid of the dependency
         mandatory=false # Does this dependency have to exist - if not, ordering below must be specified
-        versionRange="[r2.0,)"
         ordering="BEFORE" # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
         side="BOTH" # Side this dependency is applied on - BOTH, CLIENT or SERVER
