@@ -31,11 +31,9 @@ public class SavageBlocks {
         registry.getRegistry().register(GLOOMY_TILE_SLAB.setRegistryName("gloomy_tile_slab"));
         registry.getRegistry().register(GLOOMY_TILE_STAIRS.setRegistryName("gloomy_tile_stairs"));
         registry.getRegistry().register(GLOOMY_TILE_WALL.setRegistryName("gloomy_tile_wall"));
-        if(ModList.get().isLoaded("quark")) {
-            registry.getRegistry().register(GLOOMY_TILE_VERTICAL_SLAB.setRegistryName("gloomy_tile_vertical_slab"));
-        }
         registry.getRegistry().register(CHISELED_GLOOMY_TILES.setRegistryName("chiseled_gloomy_tiles"));
         if(ModList.get().isLoaded("quark")) {
+            registry.getRegistry().register(GLOOMY_TILE_VERTICAL_SLAB.setRegistryName("gloomy_tile_vertical_slab"));
             registry.getRegistry().register(CREEPER_SPORE_SACK.setRegistryName("creeper_spore_sack"));
         }
     }
@@ -46,11 +44,9 @@ public class SavageBlocks {
         SavageItems.register(registry, new BlockItem(GLOOMY_TILE_SLAB, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS)));
         SavageItems.register(registry, new BlockItem(GLOOMY_TILE_STAIRS, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS)));
         SavageItems.register(registry, new BlockItem(GLOOMY_TILE_WALL, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS)));
-        if(ModList.get().isLoaded("quark")) {
-            SavageItems.register(registry, new BlockItem(GLOOMY_TILE_VERTICAL_SLAB, (new Item.Properties().group(ItemGroup.BUILDING_BLOCKS))));
-        }
         SavageItems.register(registry, new BlockItem(CHISELED_GLOOMY_TILES, (new Item.Properties()).group(ItemGroup.BUILDING_BLOCKS)));
         if(ModList.get().isLoaded("quark")) {
+            SavageItems.register(registry, new BlockItem(GLOOMY_TILE_VERTICAL_SLAB, (new Item.Properties().group(ItemGroup.BUILDING_BLOCKS))));
             SavageItems.register(registry, new BlockItem(CREEPER_SPORE_SACK, (new Item.Properties().group(ItemGroup.DECORATIONS))));
         }
     }
