@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/the-populous/SavageAndRavage/issues"
 
 [[mods]] #mandatory
     modId="savageandravage" #mandatory
-    version="0.0.1" #TODO: make this correspond to gradle's version number?
+    version="${file.jarVersion}"
     displayName="Savage and Ravage" #mandatory
     displayURL="https://www.populousteam.com/" #A URL for the "homepage" for this mod, displayed in the mod UI
     logoFile="logo.png" # A file name (in the root of the mod JAR) containing a logo for display
