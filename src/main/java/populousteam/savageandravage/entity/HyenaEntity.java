@@ -37,6 +37,7 @@ import populousteam.savageandravage.SavageConfig;
 import populousteam.savageandravage.api.IRaidSuppoter;
 import populousteam.savageandravage.entity.ai.*;
 import populousteam.savageandravage.init.SavageEntityRegistry;
+import populousteam.savageandravage.init.SavageSoundsRegister;
 import populousteam.savageandravage.world.RevampRaid;
 
 import javax.annotation.Nullable;
@@ -187,18 +188,18 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         if (this.isAngry()) {
             return SoundEvents.ENTITY_WOLF_GROWL;
         } else {
-            return SoundEvents.ENTITY_WOLF_AMBIENT;
+            return SavageSoundsRegister.HYENA_AMBIENT;
         }
     }
 
-    /*  protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-          return SavageSoundsRegister.HYENA_HURT;
-      }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SavageSoundsRegister.HYENA_HURT;
+    }
 
-      protected SoundEvent getDeathSound() {
-          return SavageSoundsRegister.HYENA_DEATH;
-      }
-  */
+    protected SoundEvent getDeathSound() {
+        return SavageSoundsRegister.HYENA_DEATH;
+    }
+
     protected float getSoundVolume() {
         return 0.5F;
     }
