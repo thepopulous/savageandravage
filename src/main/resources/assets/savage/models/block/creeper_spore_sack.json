@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "top": "savage:block/creeper_spore_sack_top",
+    "bottom": "savage:block/creeper_spore_sack_bottom",
+    "side": "savage:block/creeper_spore_sack_side"
+  }
+}

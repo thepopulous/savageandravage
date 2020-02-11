@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "savage:block/runed_gloomy_tiles_off"
+  }
+}

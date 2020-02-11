@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "savage:gloomy_tiles"
+  },
+  "result": "savage:gloomy_tile_slab",
+  "count": 2
+}

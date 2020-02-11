@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "savage:gloomy_tiles"
+  },
+  "result": "savage:chiseled_gloomy_tiles",
+  "count": 1
+}

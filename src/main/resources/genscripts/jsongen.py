@@ -1,6 +1,6 @@
 import sys, os, re
 
-modid = 'savageandravage'
+modid = 'savage'
 params = {}
 
 def copy_template(name, base, target):

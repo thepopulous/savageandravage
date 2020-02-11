@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"": { "model": "%modid%:block/%name%" }
-	}
+  "variants": {
+    "": {
+      "model": "%modid%:block/%name%"
+    }
+  }
 }

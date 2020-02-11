@@ -28,8 +28,8 @@ if (System.getenv("BUILD_NUMBER") != null)
     versionBuild = System.getenv("BUILD_NUMBER")
 
 version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
-group = 'populousteam.savageandravage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'savageandravage'
+group = 'com.populousteam.savageandravage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'savage'
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -40,7 +40,7 @@ minecraft {
 
     mappings channel: 'snapshot', version: '20191004-1.14.3'
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -99,19 +99,19 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.61'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.2.0'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
-                "Specification-Title": "savageandravage",
-                "Specification-Vendor": "savageandravagesareus",
+                "Specification-Title": "Savage and Ravage",
+                "Specification-Vendor": "The Populous",
                 "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"savageandravagesareus",
+                "Implementation-Vendor" :"The Populous",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

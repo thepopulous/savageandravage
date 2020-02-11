@@ -5,7 +5,7 @@ def main():
 	slabs = []
 	stairs = []
 
-	for file in os.listdir('../assets/savageandravage/blockstates'):
+	for file in os.listdir('../assets/savage/blockstates'):
 		if '.json' in file:
 			name = file.replace('.json', '')
 			if '_wall' in name:
@@ -34,7 +34,7 @@ def write_file(filename, arr):
 				writer.write(',\n')
 			else:
 				first = False
-			writer.write('    "savageandravage:' + name + '"')
+			writer.write('    "savage:' + name + '"')
 		writer.write('\n  ]\n')
 		writer.write('}\n')
 

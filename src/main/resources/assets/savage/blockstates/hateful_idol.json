@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=south": {
+      "model": "savage:block/hateful_idol"
+    },
+    "facing=west": {
+      "model": "savage:block/hateful_idol",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "savage:block/hateful_idol",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "savage:block/hateful_idol",
+      "y": 270
+    }
+  }
+}
