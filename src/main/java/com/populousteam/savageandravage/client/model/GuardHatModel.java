@@ -6,6 +6,10 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
+/**
+ * ModelGuardHat - Undefined
+ * Created using Tabula 7.0.0
+ */
 public class GuardHatModel<T extends LivingEntity> extends BipedModel<T> {
     public RendererModel Hat1;
     public RendererModel Hat2;

@@ -1,6 +1,6 @@
 package com.populousteam.savageandravage.item;
 
-import com.populousteam.savageandravage.SavageAndRavage;
+import com.populousteam.savageandravage.SavageAndRavageCore;
 import com.populousteam.savageandravage.client.model.PoultryFarmerHatModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
@@ -29,7 +29,7 @@ public class PoultryFarmerHatItem extends ArmorItem {
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return SavageAndRavage.MOD_ID + ":textures/models/armor/poultry_farmer_hat_model.png";
+        return SavageAndRavageCore.MODID + ":textures/models/armor/poultry_farmer_hat_model.png";
     }
 
 }

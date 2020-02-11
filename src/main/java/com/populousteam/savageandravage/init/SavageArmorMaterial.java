@@ -1,6 +1,6 @@
 package com.populousteam.savageandravage.init;
 
-import com.populousteam.savageandravage.SavageAndRavage;
+import com.populousteam.savageandravage.SavageAndRavageCore;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Items;
@@ -11,14 +11,14 @@ import net.minecraft.util.SoundEvents;
 public class SavageArmorMaterial {
     private static final int[] DURABILITY = new int[]{13, 15, 16, 11};
     public static final IArmorMaterial GUARD_HELM = new Builder()
-            .withName(SavageAndRavage.MOD_ID + ":guard_hat")
+            .withName(SavageAndRavageCore.MODID + ":guard_hat")
             .withDurabilityFactor(15)
             .withDamageReductionAmounts(new int[]{3, 4, 4, 3})
             .withEnchantability(12)
             .withRepairMaterial(Ingredient.fromItems(Items.IRON_INGOT))
             .build();
     public static final IArmorMaterial POULTRY_FARMER_HAT = new Builder()
-            .withName(SavageAndRavage.MOD_ID + ":poultry_farmer_hat")
+            .withName(SavageAndRavageCore.MODID + ":poultry_farmer_hat")
             .withDurabilityFactor(9)
             .withDamageReductionAmounts(new int[]{1, 2, 2, 1})
             .withEnchantability(16)
