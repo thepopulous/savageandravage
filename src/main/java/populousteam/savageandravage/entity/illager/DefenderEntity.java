@@ -1,11 +1,6 @@
 package populousteam.savageandravage.entity.illager;
 
 import com.google.common.collect.Maps;
-import populousteam.savageandravage.init.SavageLootTables;
-import populousteam.savageandravage.init.SavageSoundsRegister;
-import populousteam.savageandravage.utils.MiscUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -44,6 +39,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.raid.Raid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import populousteam.savageandravage.init.SavageLootTables;
+import populousteam.savageandravage.utils.MiscUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -476,6 +473,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
     }
 
 
+/*
     @Override
     protected SoundEvent getAmbientSound() {
         if (this.isAggressive()) {
@@ -494,8 +492,9 @@ public class DefenderEntity extends AbstractIllagerEntity {
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SavageSoundsRegister.GUARDILLAGER_HURT;
     }
+*/
 
-    @Override
+    /*@Override
     protected void playStepSound(BlockPos pos, BlockState blockState) {
 
         SoundType soundtype = blockState.getSoundType(world, pos, this);
@@ -509,5 +508,5 @@ public class DefenderEntity extends AbstractIllagerEntity {
             this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
             this.playSound(soundEvent, 0.2F, soundtype.getPitch());
         }
-    }
+    }*/
 }
