@@ -147,7 +147,7 @@ public class EntityEventHandler {
             }
         }
 
-        if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D && SavageConfig.SKELETON_VILLAGERS_NATURAL.get()) {
+        /*if (event.getEntity().getType() == EntityType.SKELETON && (double) world.getRandom().nextFloat() < 0.02D && SavageConfig.SKELETON_VILLAGERS_NATURAL.get()) {
             SkeletonEntity skeleton = (SkeletonEntity) event.getEntity();
 
             BlockPos pos = skeleton.getPosition();
@@ -159,7 +159,7 @@ public class EntityEventHandler {
             world.addEntity(skeletonVillager);
 
             event.setCanceled(true);
-        }
+        }*/
     }
 
     @SubscribeEvent
