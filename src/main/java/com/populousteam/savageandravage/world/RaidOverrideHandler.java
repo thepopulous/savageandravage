@@ -1,6 +1,5 @@
 package com.populousteam.savageandravage.world;
 
-import net.minecraft.world.raid.RaidManager;
 import net.minecraft.world.server.ServerWorld;
 
 public class RaidOverrideHandler {

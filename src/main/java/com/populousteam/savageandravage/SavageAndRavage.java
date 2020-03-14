@@ -5,9 +5,6 @@ import com.populousteam.savageandravage.event.EntityEventHandler;
 import com.populousteam.savageandravage.init.SavageEntities;
 import com.populousteam.savageandravage.message.SavagePacketHandler;
 import com.populousteam.savageandravage.world.RaidOverrideHandler;
-import com.populousteam.savageandravage.world.RevampRaid;
-import com.populousteam.savageandravage.world.RevampRaidManager;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,8 +17,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-
-import javax.annotation.Nullable;
 
 @Mod("savage")
 public class SavageAndRavage {

@@ -1,8 +1,6 @@
 package com.populousteam.savageandravage.world;
 
 import com.google.common.collect.Maps;
-import com.populousteam.savageandravage.SavageAndRavage;
-import com.populousteam.savageandravage.init.SavageEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.monster.AbstractRaiderEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -21,7 +19,6 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.raid.RaidManager;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;

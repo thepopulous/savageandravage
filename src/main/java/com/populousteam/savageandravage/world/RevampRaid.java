@@ -2,10 +2,8 @@ package com.populousteam.savageandravage.world;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.populousteam.savageandravage.SavageAndRavage;
 import com.populousteam.savageandravage.api.IRaidSuppoter;
 import com.populousteam.savageandravage.entity.SavagelingEntity;
-import com.populousteam.savageandravage.init.SavageEffects;
 import com.populousteam.savageandravage.init.SavageEntities;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
