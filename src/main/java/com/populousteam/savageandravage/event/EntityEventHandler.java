@@ -2,23 +2,24 @@ package com.populousteam.savageandravage.event;
 
 import com.populousteam.savageandravage.SavageConfig;
 import com.populousteam.savageandravage.entity.SavagelingEntity;
-import com.populousteam.savageandravage.entity.SkeletonVillagerEntity;
 import com.populousteam.savageandravage.entity.ai.FollowHeldHatPlayer;
 import com.populousteam.savageandravage.entity.illager.DefenderEntity;
 import com.populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
 import com.populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
 import com.populousteam.savageandravage.entity.illager.ScavengersEntity;
-import com.populousteam.savageandravage.entity.task.RevampVillagerTasks;
 import com.populousteam.savageandravage.init.SavageEffects;
 import com.populousteam.savageandravage.init.SavageEntities;
 import com.populousteam.savageandravage.init.SavageItems;
 import com.populousteam.savageandravage.utils.MiscUtil;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.brain.schedule.Activity;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.AbstractIllagerEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.EvokerEntity;
+import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EggEntity;
@@ -26,7 +27,6 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -51,11 +51,6 @@ public class EntityEventHandler {
             villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, ScavengersEntity.class, 16.0F, 0.6D, 0.7D));
         }
 
-        if (event.getEntity() instanceof VillagerEntity) {
-            VillagerEntity villager = (VillagerEntity) event.getEntity();
-            villager.getBrain().registerActivity(Activity.CORE, RevampVillagerTasks.core(villager.getVillagerData().getProfession(), (float) villager.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-            villager.getBrain().registerActivity(Activity.RAID, RevampVillagerTasks.raid(villager.getVillagerData().getProfession(), (float) villager.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
-        }
 
         if (event.getEntity() instanceof ChickenEntity) {
             ChickenEntity chicken = (ChickenEntity) event.getEntity();
@@ -187,23 +182,6 @@ public class EntityEventHandler {
     @SubscribeEvent
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity livingEntity = event.getEntityLiving();
-
-        if (livingEntity.getActivePotionEffect(Effects.BAD_OMEN) != null && livingEntity.ticksExisted % 4 == 0) {
-            EffectInstance effectinstance1 = livingEntity.getActivePotionEffect(SavageEffects.BADOMEN);
-            int i = 1;
-            if (effectinstance1 != null) {
-                i += effectinstance1.getAmplifier();
-                livingEntity.removeActivePotionEffect(SavageEffects.BADOMEN);
-            } else {
-                --i;
-            }
-
-            i = MathHelper.clamp(i, 0, 5);
-
-            livingEntity.removeActivePotionEffect(Effects.BAD_OMEN);
-            livingEntity.addPotionEffect(new EffectInstance(SavageEffects.BADOMEN, 120000, i));
-        }
-
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffects.TENACITY) != null && livingEntity.ticksExisted % 5 == 0) {
             if (!livingEntity.getPersistentData().contains("Tenacity")) {

@@ -4,6 +4,7 @@ import com.populousteam.savageandravage.client.IllagerEntityRender;
 import com.populousteam.savageandravage.event.EntityEventHandler;
 import com.populousteam.savageandravage.init.SavageEntities;
 import com.populousteam.savageandravage.message.SavagePacketHandler;
+import com.populousteam.savageandravage.world.RaidOverrideHandler;
 import com.populousteam.savageandravage.world.RevampRaid;
 import com.populousteam.savageandravage.world.RevampRaidManager;
 import net.minecraft.util.math.BlockPos;
@@ -27,9 +28,6 @@ public class SavageAndRavage {
     public static final String MODID = "savage";
 
     public static SavageAndRavage instance;
-
-    @Nullable
-    public RevampRaidManager revampRaid = null;
 
     public SavageAndRavage() {
         instance = this;
@@ -71,43 +69,13 @@ public class SavageAndRavage {
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
-        if (this.revampRaid != null) {
-            if (event.phase == TickEvent.Phase.END && !event.world.isRemote) {
-                this.revampRaid.markDirty();
-            }
-            this.revampRaid.tick();
-        } else {
-            if (event.phase == TickEvent.Phase.START) {
-                this.revampRaid = event.world.getServer().getWorld(event.world.dimension.getType()).getSavedData().getOrCreate(() -> {
-                    return new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
-                }, RevampRaidManager.func_215172_a(event.world.dimension));
-                new RevampRaidManager(event.world.getServer().getWorld(event.world.dimension.getType()));
-                this.revampRaid.markDirty();
-            }
-        }
-    }
 
-    @Nullable
-    public RevampRaid findRaid(BlockPos pos) {
-        if (this.revampRaid != null) {
-            return this.revampRaid.findRaid(pos, 9216);
-        } else {
-            return null;
-        }
+        RaidOverrideHandler.overrideRaidFactory(event.world.getServer().getWorld(event.world.dimension.getType()));
     }
 
   /*  public static void addWaveMenber() {
         EnumUtils.getEnumList(Raid.class).add(EntityType.RAVAGER, new int[]{0, 0, 0, 1, 0, 1, 0, 2})
     }*/
-
-
-    public boolean hasRaid(BlockPos pos) {
-        return this.findRaid(pos) != null;
-    }
-
-    public RevampRaidManager getRaids() {
-        return this.revampRaid;
-    }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         // some example code to dispatch IMC to another mod

@@ -157,7 +157,7 @@ public class RevampRaid extends Raid {
     private Predicate<ServerPlayerEntity> getParticipantsPredicate() {
         return (p_221302_1_) -> {
             BlockPos blockpos = new BlockPos(p_221302_1_);
-            return p_221302_1_.isAlive() && SavageAndRavage.instance.findRaid(blockpos) == this;
+            return p_221302_1_.isAlive() && this.world.findRaid(blockpos) == this;
         };
     }
 
@@ -188,12 +188,12 @@ public class RevampRaid extends Raid {
     }
 
     public void increaseLevel(PlayerEntity p_221309_1_) {
-        if (p_221309_1_.isPotionActive(SavageEffects.BADOMEN)) {
-            this.badOmenLevel += p_221309_1_.getActivePotionEffect(SavageEffects.BADOMEN).getAmplifier() + 1;
+        if (p_221309_1_.isPotionActive(Effects.BAD_OMEN)) {
+            this.badOmenLevel += p_221309_1_.getActivePotionEffect(Effects.BAD_OMEN).getAmplifier() + 1;
             this.badOmenLevel = MathHelper.clamp(this.badOmenLevel, 0, this.getMaxLevel());
         }
 
-        p_221309_1_.removePotionEffect(SavageEffects.BADOMEN);
+        p_221309_1_.removePotionEffect(Effects.BAD_OMEN);
     }
 
     public void stop() {
@@ -269,7 +269,7 @@ public class RevampRaid extends Raid {
                         }
 
                         --this.preRaidTicks;
-                        this.bossInfo.setPercent(MathHelper.clamp((float) (900 - this.preRaidTicks) / 900.0F, 0.0F, 1.0F));
+                        this.bossInfo.setPercent(MathHelper.clamp((float) (400 - this.preRaidTicks) / 300.0F, 0.0F, 1.0F));
                     }
                 }
 
@@ -581,9 +581,7 @@ public class RevampRaid extends Raid {
     }
 
     private void markDirty() {
-        if (SavageAndRavage.instance.revampRaid != null) {
-            SavageAndRavage.instance.revampRaid.markDirty();
-        }
+        this.world.getRaids().markDirty();
     }
 
     @Nullable

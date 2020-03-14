@@ -9,6 +9,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.play.server.SEntityStatusPacket;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -18,6 +19,7 @@ import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.raid.RaidManager;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 
@@ -27,14 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RevampRaidManager extends WorldSavedData {
+public class RevampRaidManager extends RaidManager {
     private final Map<Integer, RevampRaid> byId = Maps.newHashMap();
     private final ServerWorld world;
     private int nextAvailableId;
     private int tick;
 
     public RevampRaidManager(ServerWorld p_i50142_1_) {
-        super(func_215172_a(p_i50142_1_.dimension));
+        super(p_i50142_1_);
         this.world = p_i50142_1_;
         this.nextAvailableId = 1;
         this.markDirty();
@@ -122,7 +124,7 @@ public class RevampRaidManager extends WorldSavedData {
                 } else if (raid.func_221291_n() < raid.getMaxLevel()) {
                     flag = true;
                 } else {
-                    p_215170_1_.removePotionEffect(SavageEffects.BADOMEN);
+                    p_215170_1_.removePotionEffect(Effects.BAD_OMEN);
                     p_215170_1_.connection.sendPacket(new SEntityStatusPacket(p_215170_1_, (byte) 43));
                 }
 
@@ -142,7 +144,7 @@ public class RevampRaidManager extends WorldSavedData {
     }
 
     private RevampRaid findOrCreateRaid(ServerWorld p_215168_1_, BlockPos p_215168_2_) {
-        RevampRaid raid = SavageAndRavage.instance.findRaid(p_215168_2_);
+        RevampRaid raid = (RevampRaid) p_215168_1_.findRaid(p_215168_2_);
         return raid != null ? raid : new RevampRaid(this.incrementNextId(), p_215168_1_, p_215168_2_);
     }
 
