@@ -21,7 +21,7 @@ public class FriendlyRavagerRender extends MobRenderer<FriendlyRavagerEntity, Fr
         this.addLayer(new RavagerSaddleLayer(this));
     }
 
-    protected ResourceLocation getEntityTexture(FriendlyRavagerEntity entity) {
+    public ResourceLocation getEntityTexture(FriendlyRavagerEntity entity) {
         return FRIENDLYRAVAGER_TEXTURE;
     }
 

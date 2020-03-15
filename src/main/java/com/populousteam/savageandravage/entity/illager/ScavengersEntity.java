@@ -77,7 +77,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
     }
 
     private void addDespawnAndParticle() {
-        SavagePacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(new BlockPos(this.posX, this.posY, this.posZ))), new MessageScavengerProp(this.posX, this.posY, this.posZ));
+        SavagePacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()))), new MessageScavengerProp(this.getPosX(), this.getPosY(), this.getPosZ()));
 
         this.remove();
     }
@@ -152,9 +152,9 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
 
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
         Vec3d vec3d = target.getMotion();
-        double d0 = target.posX + vec3d.x - this.posX;
-        double d1 = target.posY + (double) target.getEyeHeight() - (double) 1.1F - this.posY;
-        double d2 = target.posZ + vec3d.z - this.posZ;
+        double d0 = target.getPosX() + vec3d.x - this.getPosX();
+        double d1 = target.getPosY() + (double) target.getEyeHeight() - (double) 1.1F - this.getPosY();
+        double d2 = target.getPosZ() + vec3d.z - this.getPosZ();
         float f = MathHelper.sqrt(d0 * d0 + d2 * d2);
         Potion potion = Potions.SLOWNESS;
         if (target instanceof AbstractRaiderEntity) {
@@ -173,7 +173,7 @@ public class ScavengersEntity extends AbstractIllagerEntity implements IRangedAt
         potionentity.setItem(PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), potion));
         potionentity.rotationPitch -= -20.0F;
         potionentity.shoot(d0, d1 + (double) (f * 0.2F), d2, 0.75F, 9.0F);
-        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+        this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
         this.world.addEntity(potionentity);
 
     }

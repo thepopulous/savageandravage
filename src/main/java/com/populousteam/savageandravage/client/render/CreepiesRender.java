@@ -1,6 +1,6 @@
 package com.populousteam.savageandravage.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.populousteam.savageandravage.client.model.CreepiesModel;
 import com.populousteam.savageandravage.client.render.layer.CreepiesChargeLayer;
 import com.populousteam.savageandravage.entity.CreepieEntity;
@@ -20,7 +20,8 @@ public class CreepiesRender extends MobRenderer<CreepieEntity, CreepiesModel<Cre
         this.addLayer(new CreepiesChargeLayer(this));
     }
 
-    protected void preRenderCallback(CreepieEntity entitylivingbaseIn, float partialTickTime) {
+    @Override
+    protected void preRenderCallback(CreepieEntity entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {
         float f4 = 0.6F;
 
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
@@ -30,8 +31,9 @@ public class CreepiesRender extends MobRenderer<CreepieEntity, CreepiesModel<Cre
         f = f * f;
         float f2 = (1.0F + f * 0.4F) * f1;
         float f3 = (1.0F + f * 0.1F) / f1;
-        GlStateManager.scalef(f2 * f4, f3 * f4, f2 * f4);
+        matrixStack.scale(f2 * f4, f3 * f4, f2 * f4);
     }
+
 
     protected int getColorMultiplier(CreepieEntity entitylivingbaseIn, float lightBrightness, float partialTickTime) {
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
@@ -44,7 +46,7 @@ public class CreepiesRender extends MobRenderer<CreepieEntity, CreepiesModel<Cre
         }
     }
 
-    protected ResourceLocation getEntityTexture(CreepieEntity entity) {
+    public ResourceLocation getEntityTexture(CreepieEntity entity) {
         return CREEPER_TEXTURES;
     }
 }

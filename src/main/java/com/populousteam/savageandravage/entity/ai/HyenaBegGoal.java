@@ -52,7 +52,7 @@ public class HyenaBegGoal extends Goal {
     private boolean shouldLookingPlayer(PlayerEntity player) {
 
         Vec3d vec3d = player.getLook(1.0F).normalize();
-        Vec3d vec3d1 = new Vec3d(this.hyena.posX - player.posX, this.hyena.getBoundingBox().minY + (double) this.hyena.getEyeHeight() - (player.posY + (double) player.getEyeHeight()), this.hyena.posZ - player.posZ);
+        Vec3d vec3d1 = new Vec3d(this.hyena.getPosX() - player.getPosX(), this.hyena.getBoundingBox().minY + (double) this.hyena.getEyeHeight() - (player.getPosY() + (double) player.getEyeHeight()), this.hyena.getPosZ() - player.getPosZ());
         double d0 = vec3d1.length();
         vec3d1 = vec3d1.normalize();
         double d1 = vec3d.dotProduct(vec3d1);
@@ -80,7 +80,7 @@ public class HyenaBegGoal extends Goal {
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        this.hyena.getLookController().setLookPosition(this.player.posX, this.player.posY + (double) this.player.getEyeHeight(), this.player.posZ, 10.0F, (float) this.hyena.getVerticalFaceSpeed());
+        this.hyena.getLookController().setLookPosition(this.player.getPosX(), this.player.getPosY() + (double) this.player.getEyeHeight(), this.player.getPosZ(), 10.0F, (float) this.hyena.getVerticalFaceSpeed());
         --this.timeoutCounter;
     }
 

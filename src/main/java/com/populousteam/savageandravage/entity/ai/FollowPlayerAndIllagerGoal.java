@@ -91,18 +91,18 @@ public class FollowPlayerAndIllagerGoal extends Goal {
             this.entity.getLookController().setLookPositionWithEntity(this.followingEntity, 10.0F, (float) this.entity.getVerticalFaceSpeed());
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
-                double d0 = this.entity.posX - this.followingEntity.posX;
-                double d1 = this.entity.posY - this.followingEntity.posY;
-                double d2 = this.entity.posZ - this.followingEntity.posZ;
+                double d0 = this.entity.getPosX() - this.followingEntity.getPosX();
+                double d1 = this.entity.getPosY() - this.followingEntity.getPosY();
+                double d2 = this.entity.getPosZ() - this.followingEntity.getPosZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 if (!(d3 <= (double) (this.stopDistance * this.stopDistance))) {
                     this.navigation.tryMoveToEntityLiving(this.followingEntity, this.speedModifier);
                 } else {
                     this.navigation.clearPath();
                     if (d3 <= (double) this.stopDistance) {
-                        double d4 = this.followingEntity.posX - this.entity.posX;
-                        double d5 = this.followingEntity.posZ - this.entity.posZ;
-                        this.navigation.tryMoveToXYZ(this.entity.posX - d4, this.entity.posY, this.entity.posZ - d5, this.speedModifier);
+                        double d4 = this.followingEntity.getPosX() - this.entity.getPosX();
+                        double d5 = this.followingEntity.getPosZ() - this.entity.getPosZ();
+                        this.navigation.tryMoveToXYZ(this.entity.getPosX() - d4, this.entity.getPosY(), this.entity.getPosZ() - d5, this.speedModifier);
                     }
                 }
             }

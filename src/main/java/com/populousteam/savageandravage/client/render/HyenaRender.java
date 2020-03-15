@@ -27,7 +27,7 @@ public class HyenaRender<T extends HyenaEntity> extends MobRenderer<T, HyenaMode
     }
 
     @Nullable
-    protected ResourceLocation getEntityTexture(HyenaEntity entity) {
+    public ResourceLocation getEntityTexture(HyenaEntity entity) {
         String s = TextFormatting.getTextWithoutFormattingCodes(entity.getName().getString());
 
         if (s != null && "bagu_chan".equals(s)) {

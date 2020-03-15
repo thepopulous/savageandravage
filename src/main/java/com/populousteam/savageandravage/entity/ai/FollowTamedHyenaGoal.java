@@ -110,10 +110,10 @@ public class FollowTamedHyenaGoal extends Goal {
             HyenaEntity entityhyena = this.hyena.getMenberHead();
             double d0 = this.hyena.getDistance(entityhyena);
             float f = 2.0F;
-            Vec3d vec3d = (new Vec3d(entityhyena.posX - this.hyena.posX, entityhyena.posY - this.hyena.posY, entityhyena.posZ - this.hyena.posZ)).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
+            Vec3d vec3d = (new Vec3d(entityhyena.getPosX() - this.hyena.getPosX(), entityhyena.getPosY() - this.hyena.getPosY(), entityhyena.getPosZ() - this.hyena.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
             if (d0 > 4.0D) {
 
-                this.hyena.getNavigator().tryMoveToXYZ(this.hyena.posX + vec3d.x, this.hyena.posY + vec3d.y, this.hyena.posZ + vec3d.z, this.speedModifier);
+                this.hyena.getNavigator().tryMoveToXYZ(this.hyena.getPosX() + vec3d.x, this.hyena.getPosY() + vec3d.y, this.hyena.getPosZ() + vec3d.z, this.speedModifier);
             }
         }
     }

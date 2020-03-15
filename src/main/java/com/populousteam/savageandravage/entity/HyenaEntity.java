@@ -93,7 +93,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
         this.goalSelector.addGoal(2, this.sitGoal);
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(6, new FollowIllagerGoal(this, 1.2D, 2.5F, 15.0F) {
             @Override
             public boolean shouldExecute() {
@@ -304,7 +304,7 @@ public class HyenaEntity extends TameableEntity implements IRaidSuppoter {
 
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
                     float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-                    this.world.addParticle(ParticleTypes.SPLASH, this.posX + (double) f1, f + 0.8F, this.posZ + (double) f2, vec3d.x, vec3d.y, vec3d.z);
+                    this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + (double) f1, f + 0.8F, this.getPosZ() + (double) f2, vec3d.x, vec3d.y, vec3d.z);
                 }
             }
         }

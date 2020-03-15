@@ -1,83 +1,84 @@
 package com.populousteam.savageandravage.client.model;
 
+import com.google.common.collect.ImmutableList;
 import com.populousteam.savageandravage.entity.FriendlyRavagerEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
-    public RendererModel Head;
-    public RendererModel RightFrontLeg;
-    public RendererModel LeftFrontLeg;
-    public RendererModel RightBackLeg;
-    public RendererModel LeftBackLeg;
-    public RendererModel TorsoFront;
-    public RendererModel Neck;
-    public RendererModel Mouth;
-    public RendererModel Nose;
-    public RendererModel RightHorn;
-    public RendererModel LeftHorn;
-    public RendererModel Hat;
-    public RendererModel TorsoBack;
-    public RendererModel RightCloth;
-    public RendererModel LeftCloth;
+public class FriendlyRavagerModel extends SegmentedModel<FriendlyRavagerEntity> {
+    public ModelRenderer Head;
+    public ModelRenderer RightFrontLeg;
+    public ModelRenderer LeftFrontLeg;
+    public ModelRenderer RightBackLeg;
+    public ModelRenderer LeftBackLeg;
+    public ModelRenderer TorsoFront;
+    public ModelRenderer Neck;
+    public ModelRenderer Mouth;
+    public ModelRenderer Nose;
+    public ModelRenderer RightHorn;
+    public ModelRenderer LeftHorn;
+    public ModelRenderer Hat;
+    public ModelRenderer TorsoBack;
+    public ModelRenderer RightCloth;
+    public ModelRenderer LeftCloth;
 
     public FriendlyRavagerModel() {
         this.textureWidth = 128;
         this.textureHeight = 128;
-        this.LeftCloth = new RendererModel(this, 0, 85);
+        this.LeftCloth = new ModelRenderer(this, 0, 85);
         this.LeftCloth.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.LeftCloth.addBox(6.0F, 6.0F, -16.0F, 0, 18, 6, 0.0F);
-        this.Nose = new RendererModel(this, 0, 0);
+        this.Nose = new ModelRenderer(this, 0, 0);
         this.Nose.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Nose.addBox(-2.0F, 4.0F, -20.0F, 4, 8, 4, 0.0F);
-        this.RightBackLeg = new RendererModel(this, 96, 0);
+        this.RightBackLeg = new ModelRenderer(this, 96, 0);
         this.RightBackLeg.setRotationPoint(-8.0F, -13.0F, 27.0F);
         this.RightBackLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.RightCloth = new RendererModel(this, 0, 50);
+        this.RightCloth = new ModelRenderer(this, 0, 50);
         this.RightCloth.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.RightCloth.addBox(-6.0F, 6.0F, -16.0F, 0, 18, 6, 0.0F);
-        this.RightFrontLeg = new RendererModel(this, 64, 0);
+        this.RightFrontLeg = new ModelRenderer(this, 64, 0);
         this.RightFrontLeg.setRotationPoint(-8.0F, -13.0F, 4.0F);
         this.RightFrontLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.Hat = new RendererModel(this, 104, 45);
+        this.Hat = new ModelRenderer(this, 104, 45);
         this.Hat.setRotationPoint(-5.0F, -8.5F, -5.0F);
         this.Hat.addBox(-4.0F, -4.0F, -4.0F, 6, 4, 6, 0.0F);
         this.setRotateAngle(Hat, 0.0F, 0.0F, -0.7853981633974483F);
-        this.LeftFrontLeg = new RendererModel(this, 64, 0);
+        this.LeftFrontLeg = new ModelRenderer(this, 64, 0);
         this.LeftFrontLeg.mirror = true;
         this.LeftFrontLeg.setRotationPoint(8.0F, -13.0F, 4.0F);
         this.LeftFrontLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.RightHorn = new RendererModel(this, 74, 55);
+        this.RightHorn = new ModelRenderer(this, 74, 55);
         this.RightHorn.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.RightHorn.addBox(-10.0F, -25.0F, -2.75F, 2, 14, 4, 0.0F);
         this.setRotateAngle(RightHorn, 1.117010721276371F, 0.0F, 0.0F);
-        this.LeftHorn = new RendererModel(this, 74, 55);
+        this.LeftHorn = new ModelRenderer(this, 74, 55);
         this.LeftHorn.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.LeftHorn.addBox(8.0F, -25.0F, -2.75F, 2, 14, 4, 0.0F);
         this.setRotateAngle(LeftHorn, 1.117010721276371F, 0.0F, 0.0F);
-        this.Neck = new RendererModel(this, 68, 73);
+        this.Neck = new ModelRenderer(this, 68, 73);
         this.Neck.setRotationPoint(0.0F, 0.0F, -1.5F);
         this.Neck.addBox(-5.0F, -5.0F, -18.0F, 10, 10, 18, 0.0F);
-        this.Head = new RendererModel(this, 0, 0);
+        this.Head = new ModelRenderer(this, 0, 0);
         this.Head.setRotationPoint(0.0F, 0.0F, -17.0F);
         this.Head.addBox(-8.0F, -10.0F, -16.0F, 16, 20, 16, 0.0F);
-        this.TorsoFront = new RendererModel(this, 0, 55);
+        this.TorsoFront = new ModelRenderer(this, 0, 55);
         this.TorsoFront.setRotationPoint(0.0F, -2.0F, 1.0F);
         this.TorsoFront.addBox(-7.0F, 0.0F, -10.0F, 14, 16, 20, 0.0F);
         this.setRotateAngle(TorsoFront, 1.5707963267948966F, 0.0F, 0.0F);
-        this.LeftBackLeg = new RendererModel(this, 96, 0);
+        this.LeftBackLeg = new ModelRenderer(this, 96, 0);
         this.LeftBackLeg.mirror = true;
         this.LeftBackLeg.setRotationPoint(8.0F, -13.0F, 27.0F);
         this.LeftBackLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 37, 8, 0.0F);
-        this.Mouth = new RendererModel(this, 0, 36);
+        this.Mouth = new ModelRenderer(this, 0, 36);
         this.Mouth.setRotationPoint(0.0F, 8.0F, 0.0F);
         this.Mouth.addBox(-8.0F, 0.0F, -16.0F, 16, 3, 16, 0.0F);
         this.setRotateAngle(Mouth, 0.030543261909900768F, 0.0F, 0.0F);
-        this.TorsoBack = new RendererModel(this, 0, 91);
+        this.TorsoBack = new ModelRenderer(this, 0, 91);
         this.TorsoBack.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.TorsoBack.addBox(-6.0F, 16.0F, -10.0F, 12, 13, 18, 0.0F);
         this.TorsoFront.addChild(this.LeftCloth);
@@ -91,17 +92,12 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
         this.TorsoFront.addChild(this.TorsoBack);
     }
 
-    public void render(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.Neck.render(scale);
-        this.TorsoFront.render(scale);
-        this.RightFrontLeg.render(scale);
-        this.RightBackLeg.render(scale);
-        this.LeftFrontLeg.render(scale);
-        this.LeftBackLeg.render(scale);
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.Neck, this.TorsoFront, this.RightFrontLeg, this.RightBackLeg, this.LeftFrontLeg, this.LeftBackLeg);
     }
 
-    public void setRotationAngles(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(FriendlyRavagerEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.Head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
         this.Head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         /*
@@ -159,7 +155,7 @@ public class FriendlyRavagerModel extends EntityModel<FriendlyRavagerEntity> {
         return (Math.abs(p_217167_1_ % p_217167_2_ - p_217167_2_ * 0.5F) - p_217167_2_ * 0.25F) / (p_217167_2_ * 0.25F);
     }
 
-    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

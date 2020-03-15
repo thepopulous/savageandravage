@@ -96,7 +96,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
         this.wingRotation += this.wingRotDelta * 2.0F;
 
         if (!this.world.isRemote && this.isAlive() && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextSneeze <= 0) {
-            this.world.addParticle(ParticleTypes.SNEEZE, this.posX - (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.sin(this.renderYawOffset * ((float) Math.PI / 180F)), this.posY + (double) this.getEyeHeight() - (double) 0.1F, this.posZ + (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.cos(this.renderYawOffset * ((float) Math.PI / 180F)), vec3d.x, 0.0D, vec3d.z);
+            this.world.addParticle(ParticleTypes.SNEEZE, this.getPosX() - (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.sin(this.renderYawOffset * ((float) Math.PI / 180F)), this.getPosY() + (double) this.getEyeHeight() - (double) 0.1F, this.getPosZ() + (double) (this.getWidth() + 1.0F) * 0.5D * (double) MathHelper.cos(this.renderYawOffset * ((float) Math.PI / 180F)), vec3d.x, 0.0D, vec3d.z);
             this.playSound(SoundEvents.ENTITY_PANDA_SNEEZE, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.timeUntilNextSneeze = 6000 + world.rand.nextInt(600);
 
@@ -176,7 +176,7 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
         float f1 = MathHelper.cos(this.renderYawOffset * ((float) Math.PI / 180F));
         float f2 = 0.1F;
         float f3 = 0.0F;
-        passenger.setPosition(this.posX + (double) (0.1F * f), this.posY + (double) (this.getHeight() * 0.5F) + passenger.getYOffset() + 0.0D, this.posZ - (double) (0.1F * f1));
+        passenger.setPosition(this.getPosX() + (double) (0.1F * f), this.getPosY() + (double) (this.getHeight() * 0.5F) + passenger.getYOffset() + 0.0D, this.getPosZ() - (double) (0.1F * f1));
         if (passenger instanceof LivingEntity) {
             ((LivingEntity) passenger).renderYawOffset = this.renderYawOffset;
         }
@@ -198,7 +198,8 @@ public class SavagelingEntity extends AnimalEntity implements IMob, IRaidSuppote
     }
 
     @Override
-    public void fall(float p_180430_1_, float p_180430_2_) {
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+        return false;
     }
 
     @Override

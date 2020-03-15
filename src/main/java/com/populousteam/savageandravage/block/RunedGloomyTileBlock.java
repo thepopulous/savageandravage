@@ -14,12 +14,12 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.concurrent.TickDelayedTask;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -55,11 +55,6 @@ public class RunedGloomyTileBlock extends Block {
 
     }
 
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-        //TODO: Make the rune effect a separate entity to solve this problem - also make it do tick
-    }
-
     @Override
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
         super.onEntityWalk(worldIn, pos, entityIn);
@@ -68,7 +63,7 @@ public class RunedGloomyTileBlock extends Block {
 
     //TODO: make this work
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
         if (state.get(TRIGGERED)) {
             worldIn.getServer().enqueue(new TickDelayedTask(20, new Runnable() {
                 @Override

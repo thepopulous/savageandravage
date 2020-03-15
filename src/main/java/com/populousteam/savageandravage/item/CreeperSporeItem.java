@@ -19,10 +19,10 @@ public class CreeperSporeItem extends Item {
             itemstack.shrink(1);
         }
 
-        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isRemote) {
             CreeperSporeEntity sporeentity = new CreeperSporeEntity(worldIn, playerIn);
-            sporeentity.func_213884_b(itemstack);
+            sporeentity.setItem(itemstack);
             sporeentity.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
             worldIn.addEntity(sporeentity);
         }

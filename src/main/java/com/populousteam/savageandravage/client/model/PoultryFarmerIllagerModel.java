@@ -1,10 +1,12 @@
 package com.populousteam.savageandravage.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.populousteam.savageandravage.entity.illager.PoultryFarmerIllagerEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,58 +17,58 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Created using Tabula 7.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class PoultryFarmerIllagerModel<T extends PoultryFarmerIllagerEntity> extends EntityModel<T> implements IHasArm, IHasHead {
-    public RendererModel Head;
-    public RendererModel HatFlap;
-    public RendererModel Body;
-    public RendererModel RightArm;
-    public RendererModel LeftArm;
-    public RendererModel RightLeg;
-    public RendererModel LeftLeg;
-    public RendererModel HatLayer;
-    public RendererModel Cloak;
-    public RendererModel Nose;
-    public RendererModel Wheat;
+public class PoultryFarmerIllagerModel<T extends PoultryFarmerIllagerEntity> extends SegmentedModel<T> implements IHasArm, IHasHead {
+    public ModelRenderer Head;
+    public ModelRenderer HatFlap;
+    public ModelRenderer Body;
+    public ModelRenderer RightArm;
+    public ModelRenderer LeftArm;
+    public ModelRenderer RightLeg;
+    public ModelRenderer LeftLeg;
+    public ModelRenderer HatLayer;
+    public ModelRenderer Cloak;
+    public ModelRenderer Nose;
+    public ModelRenderer Wheat;
 
     public PoultryFarmerIllagerModel() {
         this.textureWidth = 64;
         this.textureHeight = 128;
-        this.RightArm = new RendererModel(this, 16, 38);
+        this.RightArm = new ModelRenderer(this, 16, 38);
         this.RightArm.setRotationPoint(-5.0F, 4.0F, 0.0F);
         this.RightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(RightArm, 0.0F, 0.0F, 1.3962634015954636F);
-        this.Wheat = new RendererModel(this, -4, 0);
+        this.Wheat = new ModelRenderer(this, -4, 0);
         this.Wheat.setRotationPoint(-2.0F, -1.0F, -3.5F);
         this.Wheat.addBox(-0.5F, 0.0F, -4.0F, 1, 0, 4, 0.0F);
         this.setRotateAngle(Wheat, 0.3490658503988659F, 0.2617993877991494F, 0.0F);
-        this.HatLayer = new RendererModel(this, 32, 0);
+        this.HatLayer = new ModelRenderer(this, 32, 0);
         this.HatLayer.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.HatLayer.addBox(-4.0F, -9.9F, -4.0F, 8, 10, 8, 0.5F);
-        this.Cloak = new RendererModel(this, 0, 54);
+        this.Cloak = new ModelRenderer(this, 0, 54);
         this.Cloak.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.Cloak.addBox(-4.0F, 0.0F, -3.0F, 8, 19, 6, 0.5F);
-        this.Nose = new RendererModel(this, 24, 0);
+        this.Nose = new ModelRenderer(this, 24, 0);
         this.Nose.setRotationPoint(0.0F, -3.0F, -4.0F);
         this.Nose.addBox(-1.0F, 0.0F, -2.0F, 2, 4, 2, 0.0F);
-        this.LeftArm = new RendererModel(this, 16, 38);
+        this.LeftArm = new ModelRenderer(this, 16, 38);
         this.LeftArm.mirror = true;
         this.LeftArm.setRotationPoint(5.0F, 4.0F, 0.0F);
         this.LeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(LeftArm, 0.0F, 0.0F, -1.3962634015954636F);
-        this.Body = new RendererModel(this, 16, 20);
+        this.Body = new ModelRenderer(this, 16, 20);
         this.Body.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.Body.addBox(-4.0F, 0.0F, -3.0F, 8, 12, 6, 0.0F);
-        this.HatFlap = new RendererModel(this, 16, 38);
+        this.HatFlap = new ModelRenderer(this, 16, 38);
         this.HatFlap.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.HatFlap.addBox(-8.0F, -6.0F, -8.0F, 16, 0, 16, 0.0F);
-        this.Head = new RendererModel(this, 0, 0);
+        this.Head = new ModelRenderer(this, 0, 0);
         this.Head.setRotationPoint(0.0F, 2.0F, 0.0F);
         this.Head.addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, 0.0F);
-        this.RightLeg = new RendererModel(this, 0, 22);
+        this.RightLeg = new ModelRenderer(this, 0, 22);
         this.RightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
         this.RightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(RightLeg, -0.17453292519943295F, 0.5235987755982988F, 0.0F);
-        this.LeftLeg = new RendererModel(this, 0, 38);
+        this.LeftLeg = new ModelRenderer(this, 0, 38);
         this.LeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
         this.LeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F);
         this.setRotateAngle(LeftLeg, 0.3490658503988659F, 0.17453292519943295F, 0.0F);
@@ -75,20 +77,12 @@ public class PoultryFarmerIllagerModel<T extends PoultryFarmerIllagerEntity> ext
     }
 
     @Override
-    public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.RightArm.render(scale);
-        this.HatLayer.render(scale);
-        this.Cloak.render(scale);
-        this.LeftArm.render(scale);
-        this.Body.render(scale);
-        this.HatFlap.render(scale);
-        this.Head.render(scale);
-        this.RightLeg.render(scale);
-        this.LeftLeg.render(scale);
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.RightArm, this.HatLayer, this.Cloak, this.LeftArm, this.Body, this.HatFlap, this.Head, this.RightLeg, this.LeftLeg);
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.Head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         this.Head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
 
@@ -181,20 +175,21 @@ public class PoultryFarmerIllagerModel<T extends PoultryFarmerIllagerEntity> ext
 
     }
 
-    private RendererModel getArm(HandSide p_191216_1_) {
+    private ModelRenderer getArm(HandSide p_191216_1_) {
         return p_191216_1_ == HandSide.LEFT ? this.LeftArm : this.RightArm;
     }
 
-    public RendererModel func_205072_a() {
+    public ModelRenderer getModelHead() {
         return this.Head;
     }
 
-    public void postRenderArm(float scale, HandSide side) {
-        this.getArm(side).postRender(0.0625F);
+    @Override
+    public void translateHand(HandSide handSide, MatrixStack matrixStack) {
+        this.getArm(handSide).translateRotate(matrixStack);
     }
 
 
-    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

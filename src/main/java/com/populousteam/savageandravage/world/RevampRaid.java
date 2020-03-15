@@ -28,9 +28,13 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.*;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.raid.Raid;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 
@@ -431,13 +435,13 @@ public class RevampRaid extends Raid {
         int i = 64;
 
         for (PlayerEntity playerentity : this.world.getPlayers()) {
-            Vec3d vec3d = new Vec3d(playerentity.posX, playerentity.posY, playerentity.posZ);
+            Vec3d vec3d = new Vec3d(playerentity.getPosX(), playerentity.getPosY(), playerentity.getPosZ());
             Vec3d vec3d1 = new Vec3d(p_221293_1_.getX(), p_221293_1_.getY(), p_221293_1_.getZ());
             float f1 = MathHelper.sqrt((vec3d1.x - vec3d.x) * (vec3d1.x - vec3d.x) + (vec3d1.z - vec3d.z) * (vec3d1.z - vec3d.z));
             double d0 = vec3d.x + (double) (13.0F / f1) * (vec3d1.x - vec3d.x);
             double d1 = vec3d.z + (double) (13.0F / f1) * (vec3d1.z - vec3d.z);
             if (f1 <= 64.0F || this.world.func_217483_b_(new BlockPos(playerentity))) {
-                ((ServerPlayerEntity) playerentity).connection.sendPacket(new SPlaySoundEffectPacket(SoundEvents.EVENT_RAID_HORN, SoundCategory.NEUTRAL, d0, playerentity.posY, d1, 64.0F, 1.0F));
+                ((ServerPlayerEntity) playerentity).connection.sendPacket(new SPlaySoundEffectPacket(SoundEvents.EVENT_RAID_HORN, SoundCategory.NEUTRAL, d0, playerentity.getPosY(), d1, 64.0F, 1.0F));
             }
         }
 
@@ -590,7 +594,7 @@ public class RevampRaid extends Raid {
     @Nullable
     private BlockPos func_221298_a(int p_221298_1_, int p_221298_2_) {
         int i = p_221298_1_ == 0 ? 2 : 2 - p_221298_1_;
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
         for (int i1 = 0; i1 < p_221298_2_; ++i1) {
             float f = this.world.rand.nextFloat() * ((float) Math.PI * 2F);

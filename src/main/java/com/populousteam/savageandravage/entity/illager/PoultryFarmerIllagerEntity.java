@@ -133,7 +133,7 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         /*ChickenEntity chickenentity1 = EntityType.CHICKEN.create(this.world);
-        chickenentity1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+        chickenentity1.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
         chickenentity1.onInitialSpawn(worldIn, difficultyIn, SpawnReason.JOCKEY, (ILivingEntityData)null, (CompoundNBT)null);
         worldIn.addEntity(chickenentity1);
         chickenentity1.startRiding(this);*/
@@ -264,14 +264,14 @@ public class PoultryFarmerIllagerEntity extends AbstractHouseIllagerEntity imple
 
         this.swingArm(Hand.MAIN_HAND);
 
-        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+        this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
 
         EggEntity eggEntity = new EggEntity(this.world, this);
 
-        double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-        double d1 = target.posX - this.posX;
-        double d2 = d0 - eggEntity.posY;
-        double d3 = target.posZ - this.posZ;
+        double d0 = target.getPosY() + (double) target.getEyeHeight() - (double) 1.1F;
+        double d1 = target.getPosX() - this.getPosX();
+        double d2 = d0 - eggEntity.getPosY();
+        double d3 = target.getPosZ() - this.getPosZ();
 
         float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.03F;
         eggEntity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);

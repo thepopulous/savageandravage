@@ -190,9 +190,9 @@ public class FriendlyRavagerEntity extends CreatureEntity {
 
     private void func_213682_eh() {
         if (this.rand.nextInt(6) == 0) {
-            double d0 = this.posX - (double) this.getWidth() * Math.sin(this.renderYawOffset * ((float) Math.PI / 180F)) + (this.rand.nextDouble() * 0.6D - 0.3D);
-            double d1 = this.posY + (double) this.getHeight() - 0.3D;
-            double d2 = this.posZ + (double) this.getWidth() * Math.cos(this.renderYawOffset * ((float) Math.PI / 180F)) + (this.rand.nextDouble() * 0.6D - 0.3D);
+            double d0 = this.getPosX() - (double) this.getWidth() * Math.sin(this.renderYawOffset * ((float) Math.PI / 180F)) + (this.rand.nextDouble() * 0.6D - 0.3D);
+            double d1 = this.getPosY() + (double) this.getHeight() - 0.3D;
+            double d2 = this.getPosZ() + (double) this.getWidth() * Math.cos(this.renderYawOffset * ((float) Math.PI / 180F)) + (this.rand.nextDouble() * 0.6D - 0.3D);
             this.world.addParticle(ParticleTypes.ENTITY_EFFECT, d0, d1, d2, 0.4980392156862745D, 0.5137254901960784D, 0.5725490196078431D);
         }
 
@@ -244,8 +244,8 @@ public class FriendlyRavagerEntity extends CreatureEntity {
     }
 
     private void launch(Entity p_213688_1_) {
-        double d0 = p_213688_1_.posX - this.posX;
-        double d1 = p_213688_1_.posZ - this.posZ;
+        double d0 = p_213688_1_.getPosX() - this.getPosX();
+        double d1 = p_213688_1_.getPosZ() - this.getPosZ();
         double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
         p_213688_1_.addVelocity(d0 / d2 * 4.0D, 0.2D, d1 / d2 * 4.0D);
     }
@@ -340,12 +340,12 @@ public class FriendlyRavagerEntity extends CreatureEntity {
                 }
             }
 
-            if ((mc.gameSettings.keyBindSprint.isKeyDown() || mc.gameSettings.keyBindJump.isKeyDown()) && mc.gameSettings.keyBindForward.isKeyDown() && Entity.func_213296_b(this.getMotion()) > (double) 2.5000003E-7F) {
+            if ((mc.gameSettings.keyBindSprint.isKeyDown() || mc.gameSettings.keyBindJump.isKeyDown()) && mc.gameSettings.keyBindForward.isKeyDown() && Entity.horizontalMag(this.getMotion()) > (double) 2.5000003E-7F) {
                 dushStart();
             } else if (!mc.gameSettings.keyBindForward.isKeyDown()) {
                 dushFinish();
             }
-            /*else if (this.isBoosting() && Entity.func_213296_b(this.getMotion()) < (double) 5.000003E-7F){
+            /*else if (this.isBoosting() && Entity.horizontalMag(this.getMotion()) < (double) 5.000003E-7F){
                 dushFinish();
             }*/
         }
@@ -590,10 +590,10 @@ public class FriendlyRavagerEntity extends CreatureEntity {
                 }
             }
 
-            BlockState blockstate = this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.2D - (double) this.prevRotationYaw, this.posZ));
+            BlockState blockstate = this.world.getBlockState(new BlockPos(this.getPosX(), this.getPosY() - 0.2D - (double) this.prevRotationYaw, this.getPosZ()));
             if (!blockstate.isAir() && !this.isSilent()) {
                 SoundType soundtype = blockstate.getSoundType();
-                this.world.playSound(null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
 
         }

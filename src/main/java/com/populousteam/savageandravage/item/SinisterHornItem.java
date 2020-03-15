@@ -36,14 +36,14 @@ public class SinisterHornItem extends Item {
                     aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
                 }
 
-                worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
+                worldIn.playSound(null, entityLiving.getPosX(), entityLiving.getPosY(), entityLiving.getPosZ(), SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
             } else {
                 for (LivingEntity aroundEntity : entityLiving.world.getEntitiesWithinAABB(entityLiving.getClass(), entityLiving.getBoundingBox().grow(10.0D))) {
                     aroundEntity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 0));
                     aroundEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 1200, 0));
                 }
 
-                worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
+                worldIn.playSound(null, entityLiving.getPosX(), entityLiving.getPosY(), entityLiving.getPosZ(), SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
 
             }
         } else {
@@ -55,7 +55,7 @@ public class SinisterHornItem extends Item {
                 });
             }
 
-            worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
+            worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 64.0F, 1.0F);
 
             for (PlayerEntity aroundPlayer : playerIn.world.getEntitiesWithinAABB(PlayerEntity.class, playerIn.getBoundingBox().grow(10.0D))) {
                 aroundPlayer.addPotionEffect(new EffectInstance(SavageEffects.TENACITY, (SavageConfig.EFFECT_DURATION.get() * 20), 0));

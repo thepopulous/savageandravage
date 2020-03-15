@@ -1,6 +1,6 @@
 package com.populousteam.savageandravage.item;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.populousteam.savageandravage.SavageAndRavage;
 import com.populousteam.savageandravage.client.model.GuardHatModel;
 import net.minecraft.client.Minecraft;
@@ -42,24 +42,23 @@ public class ItemGuardHelm extends ArmorItem {
 
     @Override
     public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks) {
-
-        GlStateManager.disableDepthTest();
-        GlStateManager.depthMask(false);
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableAlphaTest();
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableAlphaTest();
         Minecraft.getInstance().getTextureManager().bindTexture(HAT_TEX);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, height, -90.0D).tex(0.0D, 1.0D).endVertex();
-        bufferbuilder.pos(width, height, -90.0D).tex(1.0D, 1.0D).endVertex();
-        bufferbuilder.pos(width, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
+        bufferbuilder.pos(0.0D, (double) height, -90.0D).tex(0.0F, 1.0F).endVertex();
+        bufferbuilder.pos((double) width, (double) height, -90.0D).tex(1.0F, 1.0F).endVertex();
+        bufferbuilder.pos((double) width, 0.0D, -90.0D).tex(1.0F, 0.0F).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0F, 0.0F).endVertex();
         tessellator.draw();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableDepthTest();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

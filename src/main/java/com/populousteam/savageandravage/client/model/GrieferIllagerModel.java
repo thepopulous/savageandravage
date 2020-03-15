@@ -1,11 +1,12 @@
 package com.populousteam.savageandravage.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.populousteam.savageandravage.entity.illager.GrieferIllagerEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.model.ModelBox;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
@@ -18,66 +19,60 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 
 @OnlyIn(Dist.CLIENT)
-public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends EntityModel<T> implements IHasArm, IHasHead {
-    private final RendererModel right_leg;
-    private final RendererModel left_leg;
-    private final RendererModel body;
-    private final RendererModel right_arm;
-    private final RendererModel left_arm;
-    private final RendererModel head;
+public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends SegmentedModel<T> implements IHasArm, IHasHead {
+    public ModelRenderer right_leg;
+    public ModelRenderer left_leg;
+    public ModelRenderer body;
+    public ModelRenderer right_arm;
+    public ModelRenderer left_arm;
+    public ModelRenderer head;
 
     public GrieferIllagerModel() {
         this.textureWidth = 64;
         this.textureHeight = 64;
-        right_leg = new RendererModel(this);
+        right_leg = new ModelRenderer(this);
         right_leg.setRotationPoint(-2.0F, 12.0F, 2.0F);
-        right_leg.cubeList.add(new ModelBox(right_leg, 0, 18, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
+        right_leg.setTextureOffset(0, 18).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false);
 
-        left_leg = new RendererModel(this);
+        left_leg = new ModelRenderer(this);
         left_leg.setRotationPoint(2.0F, 12.0F, 2.0F);
-        left_leg.cubeList.add(new ModelBox(left_leg, 0, 18, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, true));
+        left_leg.setTextureOffset(0, 18).addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, true);
 
-        body = new RendererModel(this);
+        body = new ModelRenderer(this);
         body.setRotationPoint(0.0F, 5.0F, 2.0F);
-        body.cubeList.add(new ModelBox(body, 36, 0, -4.0F, -5.0F, -3.0F, 8, 12, 6, 0.0F, false));
-        body.cubeList.add(new ModelBox(body, 36, 18, -4.0F, -5.0F, -3.0F, 8, 12, 6, 0.3F, false));
-        body.cubeList.add(new ModelBox(body, 50, 45, 0.0F, 1.0F, -6.0F, 4, 4, 3, 0.0F, false));
-        body.cubeList.add(new ModelBox(body, 46, 36, -3.0F, -4.0F, 3.0F, 6, 6, 3, 0.0F, false));
+        body.setTextureOffset(36, 0).addBox(-4.0F, -5.0F, -3.0F, 8, 12, 6, 0.0F, false);
+        body.setTextureOffset(36, 18).addBox(-4.0F, -5.0F, -3.0F, 8, 12, 6, 0.3F, false);
+        body.setTextureOffset(50, 45).addBox(0.0F, 1.0F, -6.0F, 4, 4, 3, 0.0F, false);
+        body.setTextureOffset(46, 36).addBox(-3.0F, -4.0F, 3.0F, 6, 6, 3, 0.0F, false);
 
-        right_arm = new RendererModel(this);
+        right_arm = new ModelRenderer(this);
         right_arm.setRotationPoint(-4.0F, 0.0F, 2.0F);
-        right_arm.cubeList.add(new ModelBox(right_arm, 16, 34, -4.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
-        right_arm.cubeList.add(new ModelBox(right_arm, 11, 51, -5.0F, -1.0F, -3.0F, 5, 6, 6, 0.0F, false));
+        right_arm.setTextureOffset(16, 34).addBox(-4.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false);
+        right_arm.setTextureOffset(11, 51).addBox(-5.0F, -1.0F, -3.0F, 5, 6, 6, 0.0F, false);
 
-        left_arm = new RendererModel(this);
+        left_arm = new ModelRenderer(this);
         left_arm.setRotationPoint(4.0F, 0.0F, 2.0F);
-        left_arm.cubeList.add(new ModelBox(left_arm, 16, 18, 0.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
+        left_arm.setTextureOffset(16, 18).addBox(0.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false);
 
-        head = new RendererModel(this);
+        head = new ModelRenderer(this);
         head.setRotationPoint(0.0F, 0.0F, 2.0F);
-        head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -10.0F, -4.0F, 8, 10, 8, 0.0F, false));
-        head.cubeList.add(new ModelBox(head, 24, 0, -1.0F, -3.0F, -6.0F, 2, 4, 2, 0.0F, false));
+        head.setTextureOffset(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, 0.0F, false);
+        head.setTextureOffset(24, 0).addBox(-1.0F, -3.0F, -6.0F, 2, 4, 2, 0.0F, false);
     }
 
     @Override
-    public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.left_leg.render(scale);
-        this.right_arm.render(scale);
-        this.right_leg.render(scale);
-        this.head.render(scale);
-        this.body.render(scale);
-        this.left_arm.render(scale);
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.left_leg, this.right_arm, this.right_leg, this.head, this.body, this.left_arm);
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
 
         GrieferIllagerEntity.ArmPose abstractillagerentity$armpose = entityIn.getArmPose();
 
-        if (Entity.func_213296_b(entityIn.getMotion()) > 0.0D) {
+        if (Entity.horizontalMag(entityIn.getMotion()) > 0.0D) {
             this.right_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.2F;
             this.left_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.2F;
             this.right_arm.rotateAngleY = 0.0F;
@@ -156,22 +151,23 @@ public class GrieferIllagerModel<T extends GrieferIllagerEntity> extends EntityM
 
     }
 
-    private RendererModel getArm(HandSide p_191216_1_) {
+    private ModelRenderer getArm(HandSide p_191216_1_) {
         return p_191216_1_ == HandSide.LEFT ? this.left_arm : this.right_arm;
     }
 
-    public RendererModel func_205072_a() {
+    public ModelRenderer getModelHead() {
         return this.head;
     }
 
-    public void postRenderArm(float scale, HandSide side) {
-        this.getArm(side).postRender(0.0625F);
+    @Override
+    public void translateHand(HandSide handSide, MatrixStack matrixStack) {
+        this.getArm(handSide).translateRotate(matrixStack);
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

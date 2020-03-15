@@ -70,7 +70,7 @@ public abstract class InteractFenceGateGoal extends Goal {
                 for (int i = 0; i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i) {
                     PathPoint pathpoint = path.getPathPointFromIndex(i);
                     this.doorPosition = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
-                    if (!(this.entity.getDistanceSq(this.doorPosition.getX(), this.entity.posY, this.doorPosition.getZ()) > 2.25D)) {
+                    if (!(this.entity.getDistanceSq(this.doorPosition.getX(), this.entity.getPosY(), this.doorPosition.getZ()) > 2.25D)) {
                         this.doorInteract = func_220695_a(this.entity.world, this.doorPosition);
                         if (this.doorInteract) {
                             return true;
@@ -99,16 +99,16 @@ public abstract class InteractFenceGateGoal extends Goal {
      */
     public void startExecuting() {
         this.hasStoppedDoorInteraction = false;
-        this.entityPositionX = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.entity.posX);
-        this.entityPositionZ = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.entity.posZ);
+        this.entityPositionX = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.entity.getPosX());
+        this.entityPositionZ = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.entity.getPosZ());
     }
 
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        float f = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.entity.posX);
-        float f1 = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.entity.posZ);
+        float f = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.entity.getPosX());
+        float f1 = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.entity.getPosZ());
         float f2 = this.entityPositionX * f + this.entityPositionZ * f1;
         if (f2 < 0.0F) {
             this.hasStoppedDoorInteraction = true;

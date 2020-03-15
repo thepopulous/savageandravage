@@ -56,17 +56,17 @@ public class BestialBrewEntity extends ProjectileItemEntity {
             double d0 = 0.08D;
 
             for (int i = 0; i < 3; ++i) {
-                SavageParticles.BREWGLASS.spawn(world, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+                SavageParticles.BREWGLASS.spawn(world, this.getPosX(), this.getPosY(), this.getPosZ(), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
 
             for (int i = 0; i < 5; ++i) {
-                SavageParticles.BREWSPLASH.spawn(world, this.posX + rand.nextInt(3) - rand.nextInt(3), this.posY, this.posZ + rand.nextInt(3) - rand.nextInt(3), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
+                SavageParticles.BREWSPLASH.spawn(world, this.getPosX() + rand.nextInt(3) - rand.nextInt(3), this.getPosY(), this.getPosZ() + rand.nextInt(3) - rand.nextInt(3), ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
             }
         }
     }
 
     @Override
-    protected Item func_213885_i() {
+    protected Item getDefaultItem() {
         return SavageItems.BESTIAL_BREW;
     }
 

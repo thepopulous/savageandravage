@@ -1,9 +1,9 @@
 package com.populousteam.savageandravage.entity.path;
 
-import com.populousteam.savageandravage.entity.path.processor.UseFenceNodeProcessor;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.world.World;
 
 public class GroundFencePathNavigator extends GroundPathNavigator {
@@ -12,7 +12,7 @@ public class GroundFencePathNavigator extends GroundPathNavigator {
     }
 
     protected PathFinder getPathFinder(int p_179679_1_) {
-        this.nodeProcessor = new UseFenceNodeProcessor();
+        this.nodeProcessor = new WalkNodeProcessor();
         this.nodeProcessor.setCanEnterDoors(true);
         return new PathFinder(this.nodeProcessor, p_179679_1_);
     }

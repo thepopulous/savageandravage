@@ -85,8 +85,8 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             BlockPos blockpos = this.illager.getIllagerHome();
             if (blockpos != null && AbstractHouseIllagerEntity.this.navigator.noPath()) {
                 if (this.func_220846_a(blockpos, 6.0D)) {
-                    Vec3d vec3d = (new Vec3d((double) blockpos.getX() - this.illager.posX, (double) blockpos.getY() - this.illager.posY, (double) blockpos.getZ() - this.illager.posZ)).normalize();
-                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.illager.posX, this.illager.posY, this.illager.posZ);
+                    Vec3d vec3d = (new Vec3d((double) blockpos.getX() - this.illager.getPosX(), (double) blockpos.getY() - this.illager.getPosY(), (double) blockpos.getZ() - this.illager.getPosZ())).normalize();
+                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.illager.getPosX(), this.illager.getPosY(), this.illager.getPosZ());
                     AbstractHouseIllagerEntity.this.navigator.tryMoveToXYZ(vec3d1.x, vec3d1.y, vec3d1.z, this.speed);
                 } else {
                     AbstractHouseIllagerEntity.this.navigator.tryMoveToXYZ((double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), this.speed);
@@ -131,8 +131,8 @@ public abstract class AbstractHouseIllagerEntity extends AbstractIllagerEntity {
             BlockPos blockpos = this.illager.getIllagerHome();
             if (blockpos != null && AbstractHouseIllagerEntity.this.navigator.noPath()) {
                 if (this.func_220846_a(blockpos, 6.0D)) {
-                    Vec3d vec3d = (new Vec3d((double) blockpos.getX() - this.illager.posX, (double) blockpos.getY() - this.illager.posY, (double) blockpos.getZ() - this.illager.posZ)).normalize();
-                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.illager.posX, this.illager.posY, this.illager.posZ);
+                    Vec3d vec3d = (new Vec3d((double) blockpos.getX() - this.illager.getPosX(), (double) blockpos.getY() - this.illager.getPosY(), (double) blockpos.getZ() - this.illager.getPosZ())).normalize();
+                    Vec3d vec3d1 = vec3d.scale(10.0D).add(this.illager.getPosX(), this.illager.getPosY(), this.illager.getPosZ());
                     AbstractHouseIllagerEntity.this.navigator.tryMoveToXYZ(vec3d1.x, vec3d1.y, vec3d1.z, this.speed);
                 } else {
                     AbstractHouseIllagerEntity.this.navigator.tryMoveToXYZ((double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), this.speed);

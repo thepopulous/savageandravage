@@ -182,8 +182,8 @@ public class SavageConfig {
 
     }
 
-    public static void onFileChange(final ModConfig.ConfigReloading configEvent) {
+    /*public static void onFileChange(final ModConfig.ConfigReloading configEvent) {
 
-    }
+    }*/
     //TODO add onLoad and onReload
 }

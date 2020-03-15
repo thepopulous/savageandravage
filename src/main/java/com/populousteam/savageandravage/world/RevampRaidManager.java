@@ -92,7 +92,7 @@ public class RevampRaidManager extends RaidManager {
                 return null;
             } else {
                 BlockPos blockpos = new BlockPos(p_215170_1_);
-                List<PointOfInterest> list = this.world.func_217443_B().func_219146_b(PointOfInterestType.field_221053_a, blockpos, 64, PointOfInterestManager.Status.IS_OCCUPIED).collect(Collectors.toList());
+                List<PointOfInterest> list = this.world.getPointOfInterestManager().func_219146_b(PointOfInterestType.field_221053_a, blockpos, 64, PointOfInterestManager.Status.IS_OCCUPIED).collect(Collectors.toList());
                 int i = 0;
                 Vec3d vec3d = new Vec3d(0.0D, 0.0D, 0.0D);
 

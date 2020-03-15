@@ -236,7 +236,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
                     potion.shrink(1);
                     this.itemUseTimer = this.getHeldItemOffhand().getUseDuration();
                     this.setDrinkingPotion(true);
-                    this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+                    this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
                     IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
                     iattributeinstance.removeModifier(MODIFIER);
                     iattributeinstance.applyModifier(MODIFIER);
@@ -293,9 +293,9 @@ public class DefenderEntity extends AbstractIllagerEntity {
 
         this.capeY += gravity;
 
-        this.capeX += (this.posX - this.capeX) * elasticity;
-        this.capeY += (this.posY - this.capeY) * elasticity;
-        this.capeZ += (this.posZ - this.capeZ) * elasticity;
+        this.capeX += (this.getPosX() - this.capeX) * elasticity;
+        this.capeY += (this.getPosY() - this.capeY) * elasticity;
+        this.capeZ += (this.getPosZ() - this.capeZ) * elasticity;
     }
 
     public void setRevengeTarget(@Nullable LivingEntity livingBase) {
@@ -355,7 +355,7 @@ public class DefenderEntity extends AbstractIllagerEntity {
             Vec3d vec3d2 = damageSourceIn.getDamageLocation();
             if (vec3d2 != null) {
                 Vec3d vec3d = this.getLook(1.0F);
-                Vec3d vec3d1 = vec3d2.subtractReverse(new Vec3d(this.posX, this.posY, this.posZ)).normalize();
+                Vec3d vec3d1 = vec3d2.subtractReverse(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())).normalize();
                 vec3d1 = new Vec3d(vec3d1.x, 0.0D, vec3d1.z);
                 return vec3d1.dotProduct(vec3d) < 0.0D;
             }
@@ -450,11 +450,11 @@ public class DefenderEntity extends AbstractIllagerEntity {
 
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        int i = MathHelper.floor(this.posX);
+        int i = MathHelper.floor(this.getPosX());
         int j = MathHelper.floor(this.getBoundingBox().minY);
-        int k = MathHelper.floor(this.posZ);
+        int k = MathHelper.floor(this.getPosZ());
         BlockPos blockpos = new BlockPos(i, j, k);
-        return this.world.getDifficulty() != Difficulty.PEACEFUL && !this.world.canBlockSeeSky(new BlockPos(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ)) && this.world.getLight(blockpos) > 6;
+        return this.world.getDifficulty() != Difficulty.PEACEFUL && !this.world.canBlockSeeSky(new BlockPos(this.getPosX(), this.getPosY() + (double) this.getEyeHeight(), this.getPosZ())) && this.world.getLight(blockpos) > 6;
     }
 
     /**

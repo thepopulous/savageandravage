@@ -209,7 +209,7 @@ public class EntityEventHandler {
 
     @SubscribeEvent
     public void onEntityAttack(AttackEntityEvent event) {
-        PlayerEntity livingEntity = event.getEntityPlayer();
+        PlayerEntity livingEntity = event.getPlayer();
 
         if (livingEntity.isAlive() && livingEntity.getActivePotionEffect(SavageEffects.TENACITY) != null) {
             if (livingEntity.getPersistentData().contains("Tenacity")) {

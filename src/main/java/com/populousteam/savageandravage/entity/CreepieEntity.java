@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
 
-public class CreepieEntity extends MonsterEntity {
+public class CreepieEntity extends MonsterEntity implements IChargeableMob {
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreepieEntity.class, DataSerializers.BOOLEAN);
@@ -93,13 +93,14 @@ public class CreepieEntity extends MonsterEntity {
         return this.getAttackTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
     }
 
-    public void fall(float distance, float damageMultiplier) {
-        super.fall(distance, damageMultiplier);
+    @Override
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+
         this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
         if (this.timeSinceIgnited > this.fuseTime - 5) {
             this.timeSinceIgnited = this.fuseTime - 5;
         }
-
+        return super.onLivingFall(distance, damageMultiplier);
     }
 
     protected void registerData() {
@@ -268,7 +269,7 @@ public class CreepieEntity extends MonsterEntity {
     protected boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            this.world.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+            this.world.playSound(player, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
             player.swingArm(hand);
             if (!this.world.isRemote) {
                 this.ignite();
@@ -309,7 +310,7 @@ public class CreepieEntity extends MonsterEntity {
         if (!this.world.isRemote) {
             float f = this.getPowered() ? 1.8F * this.getRenderScale() : 0.8F * this.getRenderScale();
             this.dead = true;
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, Explosion.Mode.NONE);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionRadius * f, Explosion.Mode.NONE);
             this.remove();
             this.spawnLingeringCloud();
         }
@@ -319,7 +320,7 @@ public class CreepieEntity extends MonsterEntity {
     private void spawnLingeringCloud() {
         Collection<EffectInstance> collection = this.getActivePotionEffects();
         if (!collection.isEmpty()) {
-            AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, this.posX, this.posY, this.posZ);
+            AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ());
             areaeffectcloudentity.setRadius(1.5F);
             areaeffectcloudentity.setRadiusOnUse(-0.2F);
             areaeffectcloudentity.setWaitTime(60);
@@ -413,6 +414,11 @@ public class CreepieEntity extends MonsterEntity {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean func_225509_J__() {
+        return getPowered();
     }
 
     class CopyOwnerTargetGoal extends TargetGoal {

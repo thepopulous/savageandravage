@@ -24,7 +24,7 @@ public class EntitySpawnEventHandler {
         BlockPos pos = event.getPos();
 
         if (event.getType() == EntityClassification.MONSTER) {
-            List<PointOfInterest> list = world.getServer().getWorld(DimensionType.OVERWORLD).func_217443_B().func_219146_b(PointOfInterestType.field_221053_a, pos, 64, PointOfInterestManager.Status.IS_OCCUPIED).collect(Collectors.toList());
+            List<PointOfInterest> list = world.getServer().getWorld(DimensionType.OVERWORLD).getPointOfInterestManager().func_219146_b(PointOfInterestType.field_221053_a, pos, 64, PointOfInterestManager.Status.IS_OCCUPIED).collect(Collectors.toList());
 
             if (Feature.VILLAGE.isPositionInStructure(world, pos) && list.isEmpty() && SavageConfig.SKELETON_VILLAGERS_ZOMBIE_VILLAGE.get()) {
                 event.getList().add(new Biome.SpawnListEntry(SavageEntities.SKELETONVILLAGER, 160, 2, 3));

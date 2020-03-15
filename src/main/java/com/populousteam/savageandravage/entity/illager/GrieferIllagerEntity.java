@@ -179,14 +179,14 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         if (i < 5) {
             this.swingArm(Hand.MAIN_HAND);
 
-            this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (this.world.rand.nextFloat() * 0.4F + 0.8F));
 
             CreeperSporeEntity spore = new CreeperSporeEntity(this.world, this);
 
-            double d0 = target.posY + (double) target.getEyeHeight() - (double) 1.1F;
-            double d1 = target.posX - this.posX;
-            double d2 = d0 - spore.posY;
-            double d3 = target.posZ - this.posZ;
+            double d0 = target.getPosY() + (double) target.getEyeHeight() - (double) 1.1F;
+            double d1 = target.getPosX() - this.getPosX();
+            double d2 = d0 - spore.getPosY();
+            double d3 = target.getPosZ() - this.getPosZ();
 
             float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.05F;
             spore.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
@@ -249,7 +249,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         private boolean func_220863_h() {
             ServerWorld serverworld = (ServerWorld) this.field_220864_a.world;
             BlockPos blockpos = new BlockPos(this.field_220864_a);
-            Optional<BlockPos> optional = serverworld.func_217443_B().func_219163_a((p_220859_0_) -> {
+            Optional<BlockPos> optional = serverworld.getPointOfInterestManager().func_219163_a((p_220859_0_) -> {
                 return p_220859_0_ == PointOfInterestType.HOME;
             }, this::func_220860_a, PointOfInterestManager.Status.ANY, blockpos, 48, this.field_220864_a.rand);
             if (!optional.isPresent()) {
@@ -380,7 +380,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
                 DyeColor dyecolor = DyeColor.values()[this.raider.rand.nextInt(DyeColor.values().length)];
                 int i = this.raider.rand.nextInt(3);
                 ItemStack itemstack = this.makeFirework(dyecolor, i);
-                FireworkRocketEntity fireworkrocketentity = new FireworkRocketEntity(this.raider.world, this.raider.posX, this.raider.posY + (double) this.raider.getEyeHeight(), this.raider.posZ, itemstack);
+                FireworkRocketEntity fireworkrocketentity = new FireworkRocketEntity(this.raider.world, this.raider.getPosX(), this.raider.getPosY() + (double) this.raider.getEyeHeight(), this.raider.getPosZ(), itemstack);
                 this.raider.world.addEntity(fireworkrocketentity);
             }
 
@@ -389,7 +389,7 @@ public class GrieferIllagerEntity extends AbstractIllagerEntity implements IRang
         }
 
         public boolean canSeeSky(ServerWorld p_223015_0_, LivingEntity p_223015_1_) {
-            return p_223015_0_.isSkyLightMax(new BlockPos(p_223015_1_)) && (double) p_223015_0_.getHeight(Heightmap.Type.MOTION_BLOCKING, new BlockPos(p_223015_1_)).getY() <= p_223015_1_.posY;
+            return p_223015_0_.canSeeSky(new BlockPos(p_223015_1_)) && (double) p_223015_0_.getHeight(Heightmap.Type.MOTION_BLOCKING, new BlockPos(p_223015_1_)).getY() <= p_223015_1_.getPosY();
         }
 
         private ItemStack makeFirework(DyeColor color, int flightTime) {

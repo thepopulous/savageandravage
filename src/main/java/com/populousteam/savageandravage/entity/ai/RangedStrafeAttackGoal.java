@@ -80,7 +80,7 @@ public class RangedStrafeAttackGoal<T extends MobEntity & IRangedAttackMob> exte
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        double d0 = this.attacker.getDistanceSq(this.field_75323_c.posX, this.field_75323_c.getBoundingBox().minY, this.field_75323_c.posZ);
+        double d0 = this.attacker.getDistanceSq(this.field_75323_c.getPosX(), this.field_75323_c.getBoundingBox().minY, this.field_75323_c.getPosZ());
         boolean flag = this.attacker.getEntitySenses().canSee(this.field_75323_c);
         if (flag) {
             ++this.seeTime;

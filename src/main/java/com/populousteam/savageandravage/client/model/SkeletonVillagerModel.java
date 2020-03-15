@@ -1,89 +1,80 @@
 package com.populousteam.savageandravage.client.model;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.populousteam.savageandravage.api.entity.EntityArmPose;
 import com.populousteam.savageandravage.entity.SkeletonVillagerEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.IHasHead;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends EntityModel<T> implements IHasArm, IHasHead {
-    public RendererModel Head;
-    public RendererModel Body;
-    public RendererModel RightArm;
-    public RendererModel LeftArm;
-    public RendererModel RightLeg;
-    public RendererModel LeftLeg;
-    public RendererModel MiddleClosedArm;
-    public RendererModel Nose;
-    public RendererModel RightClosedArm;
-    public RendererModel LeftClosedArm;
+public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends SegmentedModel<T> implements IHasArm, IHasHead {
+    public ModelRenderer Head;
+    public ModelRenderer Body;
+    public ModelRenderer RightArm;
+    public ModelRenderer LeftArm;
+    public ModelRenderer RightLeg;
+    public ModelRenderer LeftLeg;
+    public ModelRenderer MiddleClosedArm;
+    public ModelRenderer Nose;
+    public ModelRenderer RightClosedArm;
+    public ModelRenderer LeftClosedArm;
     private float field_217145_m;
 
     public SkeletonVillagerModel() {
         this.textureWidth = 64;
         this.textureHeight = 64;
-        this.RightLeg = new RendererModel(this, 0, 18);
+        this.RightLeg = new ModelRenderer(this, 0, 18);
         this.RightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
         this.RightLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, 0.0F);
-        this.RightClosedArm = new RendererModel(this, 32, 0);
+        this.RightClosedArm = new ModelRenderer(this, 32, 0);
         this.RightClosedArm.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.RightClosedArm.addBox(-7.0F, -2.0F, -1.0F, 3, 8, 3, 0.0F);
-        this.LeftClosedArm = new RendererModel(this, 32, 0);
+        this.LeftClosedArm = new ModelRenderer(this, 32, 0);
         this.LeftClosedArm.mirror = true;
         this.LeftClosedArm.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.LeftClosedArm.addBox(4.0F, -2.0F, -1.0F, 3, 8, 3, 0.0F);
-        this.LeftLeg = new RendererModel(this, 0, 18);
+        this.LeftLeg = new ModelRenderer(this, 0, 18);
         this.LeftLeg.mirror = true;
         this.LeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
         this.LeftLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, 0.0F);
-        this.Head = new RendererModel(this, 0, 0);
+        this.Head = new ModelRenderer(this, 0, 0);
         this.Head.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Head.addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, 0.0F);
-        this.LeftArm = new RendererModel(this, 40, 19);
+        this.LeftArm = new ModelRenderer(this, 40, 19);
         this.LeftArm.mirror = true;
         this.LeftArm.setRotationPoint(5.5F, 2.0F, 0.0F);
         this.LeftArm.addBox(-1.5F, -2.0F, -1.5F, 3, 12, 3, 0.0F);
-        this.RightArm = new RendererModel(this, 40, 19);
+        this.RightArm = new ModelRenderer(this, 40, 19);
         this.RightArm.setRotationPoint(-5.5F, 2.0F, 0.0F);
         this.RightArm.addBox(-1.5F, -2.0F, -1.5F, 3, 12, 3, 0.0F);
-        this.Body = new RendererModel(this, 12, 18);
+        this.Body = new ModelRenderer(this, 12, 18);
         this.Body.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Body.addBox(-4.0F, 0.0F, -3.0F, 8, 12, 6, 0.0F);
-        this.MiddleClosedArm = new RendererModel(this, 32, 11);
+        this.MiddleClosedArm = new ModelRenderer(this, 32, 11);
         this.MiddleClosedArm.setRotationPoint(0.0F, 3.0F, -1.0F);
         this.MiddleClosedArm.addBox(-4.0F, 3.0F, -1.0F, 8, 3, 3, 0.0F);
         this.setRotateAngle(MiddleClosedArm, -0.7853981633974483F, 0.0F, 0.0F);
-        this.Nose = new RendererModel(this, 24, 0);
+        this.Nose = new ModelRenderer(this, 24, 0);
         this.Nose.setRotationPoint(0.0F, -3.0F, -4.0F);
         this.Nose.addBox(-1.0F, 0.0F, -2.0F, 2, 4, 2, 0.0F);
         this.MiddleClosedArm.addChild(this.RightClosedArm);
         this.MiddleClosedArm.addChild(this.LeftClosedArm);
         this.Head.addChild(this.Nose);
     }
-
     @Override
-    public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch, float scale) {
-        this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch, scale);
-        this.RightLeg.render(scale);
-        this.LeftLeg.render(scale);
-        this.Head.render(scale);
-
-        this.Body.render(scale);
-        if (entity.getEntityArmPose() == EntityArmPose.CROSSED) {
-            this.MiddleClosedArm.render(scale);
-        } else {
-            this.LeftArm.render(scale);
-            this.RightArm.render(scale);
-        }
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(this.RightLeg, this.LeftLeg, this.Head, this.Body, this.MiddleClosedArm, this.LeftArm, this.RightArm);
     }
 
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch, float scaleFactor) {
+
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
         this.Head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         this.Head.rotateAngleX = HeadPitch * ((float) Math.PI / 180F);
         this.MiddleClosedArm.rotationPointY = 3.0F;
@@ -175,6 +166,15 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
             this.LeftArm.rotateAngleY = 0.0F;
         }
 
+        if (abstractillagerentity$armpose == EntityArmPose.CROSSED) {
+            this.MiddleClosedArm.showModel = true;
+            this.RightArm.showModel = false;
+            this.LeftArm.showModel = false;
+        } else {
+            this.MiddleClosedArm.showModel = false;
+            this.RightArm.showModel = true;
+            this.LeftArm.showModel = true;
+        }
     }
 
     public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
@@ -183,27 +183,27 @@ public class SkeletonVillagerModel<T extends SkeletonVillagerEntity> extends Ent
     }
 
     @Override
-    public RendererModel func_205072_a() {
+    public ModelRenderer getModelHead() {
         return this.Head;
     }
 
-    public RendererModel getArm(HandSide handSide) {
+    public ModelRenderer getArm(HandSide handSide) {
         return handSide == HandSide.LEFT ? this.LeftArm : this.RightArm;
     }
 
     @Override
-    public void postRenderArm(float scale, HandSide side) {
-        this.getArm(side).postRender(0.0625F);
+    public void translateHand(HandSide handSide, MatrixStack matrixStack) {
+        this.getArm(handSide).translateRotate(matrixStack);
     }
 
-    public RendererModel crossHand() {
+    public ModelRenderer crossHand() {
         return this.MiddleClosedArm;
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;

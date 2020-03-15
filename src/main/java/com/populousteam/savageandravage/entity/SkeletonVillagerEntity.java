@@ -117,10 +117,10 @@ public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements IC
     @Override
     public void shoot(LivingEntity p_213670_1_, ItemStack p_213670_2_, IProjectile p_213670_3_, float p_213670_4_) {
         Entity entity = (Entity) p_213670_3_;
-        double d0 = p_213670_1_.posX - this.posX;
-        double d1 = p_213670_1_.posZ - this.posZ;
+        double d0 = p_213670_1_.getPosX() - this.getPosX();
+        double d1 = p_213670_1_.getPosZ() - this.getPosZ();
         double d2 = MathHelper.sqrt(d0 * d0 + d1 * d1);
-        double d3 = p_213670_1_.getBoundingBox().minY + (double) (p_213670_1_.getHeight() / 3.0F) - entity.posY + d2 * (double) 0.2F;
+        double d3 = p_213670_1_.getBoundingBox().minY + (double) (p_213670_1_.getHeight() / 3.0F) - entity.getPosY() + d2 * (double) 0.2F;
         Vector3f vector3f = this.func_213673_a(new Vec3d(d0, d3, d1), p_213670_4_);
         p_213670_3_.shoot(vector3f.getX(), vector3f.getY(), vector3f.getZ(), 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ITEM_CROSSBOW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -135,15 +135,15 @@ public class SkeletonVillagerEntity extends AbstractSkeletonEntity implements IC
         Vec3d vec3d = p_213673_1_.normalize();
         Vec3d vec3d1 = vec3d.crossProduct(new Vec3d(0.0D, 1.0D, 0.0D));
         if (vec3d1.lengthSquared() <= 1.0E-7D) {
-            vec3d1 = vec3d.crossProduct(this.func_213286_i(1.0F));
+            vec3d1 = vec3d.crossProduct(this.getUpVector(1.0F));
         }
 
         Quaternion quaternion = new Quaternion(new Vector3f(vec3d1), 90.0F, true);
         Vector3f vector3f = new Vector3f(vec3d);
-        vector3f.func_214905_a(quaternion);
+        vector3f.transform(quaternion);
         Quaternion quaternion1 = new Quaternion(vector3f, p_213673_2_, true);
         Vector3f vector3f1 = new Vector3f(vec3d);
-        vector3f1.func_214905_a(quaternion1);
+        vector3f1.transform(quaternion1);
         return vector3f1;
     }
 

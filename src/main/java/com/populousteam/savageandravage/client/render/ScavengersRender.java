@@ -18,7 +18,7 @@ public class ScavengersRender<T extends ScavengersEntity> extends MobRenderer<T,
         this.addLayer(new HeldCrossOffHandItemLayer<>(this));
     }
 
-    protected ResourceLocation getEntityTexture(ScavengersEntity entity) {
+    public ResourceLocation getEntityTexture(ScavengersEntity entity) {
         return ILLAGER_TEXTURE;
     }
 

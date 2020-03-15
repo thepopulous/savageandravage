@@ -1,65 +1,66 @@
 package com.populousteam.savageandravage.client.model;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.populousteam.savageandravage.entity.HyenaEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasHead;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class HyenaModel<T extends HyenaEntity> extends EntityModel<T> implements IHasHead {
-    public RendererModel Body;
-    public RendererModel RightFrontLeg;
-    public RendererModel LeftFrontLeg;
-    public RendererModel RightBackLeg;
-    public RendererModel LeftBackLeg;
-    public RendererModel Head;
-    public RendererModel Tail;
-    public RendererModel Fluff;
-    public RendererModel Snout;
-    public RendererModel RightEar;
-    public RendererModel LeftEar;
+    public ModelRenderer Body;
+    public ModelRenderer RightFrontLeg;
+    public ModelRenderer LeftFrontLeg;
+    public ModelRenderer RightBackLeg;
+    public ModelRenderer LeftBackLeg;
+    public ModelRenderer Head;
+    public ModelRenderer Tail;
+    public ModelRenderer Fluff;
+    public ModelRenderer Snout;
+    public ModelRenderer RightEar;
+    public ModelRenderer LeftEar;
 
     public HyenaModel() {
         this.textureWidth = 64;
         this.textureHeight = 32;
-        this.LeftFrontLeg = new RendererModel(this, 0, 0);
+        this.LeftFrontLeg = new ModelRenderer(this, 0, 0);
         this.LeftFrontLeg.setRotationPoint(2.0F, 0.0F, 2.0F);
         this.LeftFrontLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 10, 3, 0.0F);
-        this.RightBackLeg = new RendererModel(this, 0, 0);
+        this.RightBackLeg = new ModelRenderer(this, 0, 0);
         this.RightBackLeg.setRotationPoint(-2.0F, 0.0F, 11.0F);
         this.RightBackLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 10, 3, 0.0F);
-        this.LeftEar = new RendererModel(this, 44, 0);
+        this.LeftEar = new ModelRenderer(this, 44, 0);
         this.LeftEar.mirror = true;
         this.LeftEar.setRotationPoint(3.0F, -2.0F, 1.0F);
         this.LeftEar.addBox(-1.0F, -4.0F, 0.0F, 2, 4, 1, 0.0F);
         this.setRotateAngle(LeftEar, -0.3490658503988659F, -0.17453292519943295F, 0.0F);
-        this.Head = new RendererModel(this, 38, 8);
+        this.Head = new ModelRenderer(this, 38, 8);
         this.Head.setRotationPoint(0.0F, 10.0F, -5.0F);
         this.Head.addBox(-3.5F, -3.0F, -3.0F, 7, 6, 6, 0.0F);
-        this.Fluff = new RendererModel(this, 10, -14);
+        this.Fluff = new ModelRenderer(this, 10, -14);
         this.Fluff.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Fluff.addBox(0.0F, -5.0F, 0.0F, 0, 2, 14, 0.0F);
-        this.RightEar = new RendererModel(this, 44, 0);
+        this.RightEar = new ModelRenderer(this, 44, 0);
         this.RightEar.setRotationPoint(-3.0F, -2.0F, 1.0F);
         this.RightEar.addBox(-1.0F, -4.0F, 0.0F, 2, 4, 1, 0.0F);
         this.setRotateAngle(RightEar, -0.3490658503988659F, 0.17453292519943295F, 0.0F);
-        this.RightFrontLeg = new RendererModel(this, 0, 0);
+        this.RightFrontLeg = new ModelRenderer(this, 0, 0);
         this.RightFrontLeg.setRotationPoint(-2.0F, 0.0F, 2.0F);
         this.RightFrontLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 10, 3, 0.0F);
-        this.LeftBackLeg = new RendererModel(this, 0, 0);
+        this.LeftBackLeg = new ModelRenderer(this, 0, 0);
         this.LeftBackLeg.setRotationPoint(2.0F, 0.0F, 11.0F);
         this.LeftBackLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 10, 3, 0.0F);
-        this.Body = new RendererModel(this, 0, 12);
+        this.Body = new ModelRenderer(this, 0, 12);
         this.Body.setRotationPoint(0.0F, 13.0F, -5.0F);
         this.Body.addBox(-3.5F, -3.0F, 0.0F, 7, 6, 14, 0.0F);
-        this.Tail = new RendererModel(this, 0, 14);
+        this.Tail = new ModelRenderer(this, 0, 14);
         this.Tail.setRotationPoint(0.0F, 0.0F, 13.0F);
         this.Tail.addBox(-1.0F, 0.0F, -0.5F, 2, 10, 2, 0.0F);
-        this.Snout = new RendererModel(this, 50, 0);
+        this.Snout = new ModelRenderer(this, 50, 0);
         this.Snout.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.Snout.addBox(-2.0F, 0.0F, -6.0F, 4, 3, 3, 0.0F);
         this.Body.addChild(this.Fluff);
@@ -75,24 +76,22 @@ public class HyenaModel<T extends HyenaEntity> extends EntityModel<T> implements
     }
 
     @Override
-    public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.isChild) {
             float f = 2.0F;
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0.0F, 7.0F * scale, 2.0F * scale);
-            this.Head.render(scale);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-            GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
-            this.Body.render(scale);
+            matrixStackIn.push();
+            matrixStackIn.translate(0.0F, 7.0F / 16.0F, 2.0F / 16.0F);
+            this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            matrixStackIn.pop();
+            matrixStackIn.push();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0F, 24.0F / 16.0F, 0.0F);
+            this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-            GlStateManager.popMatrix();
+            matrixStackIn.pop();
         } else {
-            this.Body.render(scale);
-            this.Head.render(scale);
+            this.Body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.Head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         }
     }
 
@@ -114,8 +113,7 @@ public class HyenaModel<T extends HyenaEntity> extends EntityModel<T> implements
         this.Tail.rotateAngleZ = entityIn.getShakeAngle(partialTickTime, -0.2F);
     }
 
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float f = ageInTicks - (float) entityIn.ticksExisted;
         float f1 = entityIn.getSittingAnimationScale(f);
         f1 = f1 * f1;
@@ -160,14 +158,14 @@ public class HyenaModel<T extends HyenaEntity> extends EntityModel<T> implements
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(RendererModel modelRenderer, float x, float y, float z) {
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
 
     @Override
-    public RendererModel func_205072_a() {
+    public ModelRenderer getModelHead() {
         return this.Head;
     }
 }

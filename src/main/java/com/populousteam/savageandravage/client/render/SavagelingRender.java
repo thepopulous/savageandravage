@@ -1,6 +1,6 @@
 package com.populousteam.savageandravage.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.populousteam.savageandravage.SavageAndRavage;
 import com.populousteam.savageandravage.client.model.SavagelingModel;
 import com.populousteam.savageandravage.entity.SavagelingEntity;
@@ -19,10 +19,16 @@ public class SavagelingRender<T extends SavagelingEntity> extends MobRenderer<T,
         super(p_i50959_1_, new SavagelingModel<>(), 0.3F);
     }
 
-    protected void preRenderCallback(SavagelingEntity entitylivingbaseIn, float partialTickTime) {
-        float f = entitylivingbaseIn.getRenderScale();
 
-        GlStateManager.scalef(f, f, f);
+    @Override
+    protected void preRenderCallback(T entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {
+        float f = entitylivingbaseIn.getRenderScale();
+        matrixStack.scale(f, f, f);
+    }
+
+    protected void preRenderCallback(SavagelingEntity entitylivingbaseIn, float partialTickTime) {
+
+
     }
 
     protected float handleRotationFloat(SavagelingEntity livingBase, float partialTicks) {
@@ -31,7 +37,7 @@ public class SavagelingRender<T extends SavagelingEntity> extends MobRenderer<T,
         return (MathHelper.sin(f) + 1.0F) * f1;
     }
 
-    protected ResourceLocation getEntityTexture(SavagelingEntity entity) {
+    public ResourceLocation getEntityTexture(SavagelingEntity entity) {
         return TEXTURES;
     }
 }
